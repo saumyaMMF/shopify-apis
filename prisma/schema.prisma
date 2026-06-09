@@ -1,0 +1,500 @@
+// Shopify Admin Dashboard - Prisma Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ AUTH / RBAC ============
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  isActive      Boolean        @default(true)
+  lastLoginAt   DateTime?
+  roleId        String
+  role          Role           @relation(fields: [roleId], references: [id])
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  description String?
+  isSystem    Boolean      @default(false)
+  permissions Permission[] @relation("RolePermissions")
+  users       User[]
+}
+
+model Permission {
+  id       String @id @default(uuid())
+  key      String @unique
+  resource String
+  action   String
+  roles    Role[] @relation("RolePermissions")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+}
+
+// ============ CATALOG ============
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  ARCHIVED
+}
+
+model Product {
+  id               String              @id @default(uuid())
+  shopifyGid       String              @unique
+  shopifyId        BigInt              @unique
+  title            String
+  handle           String              @unique
+  description      String?
+  status           ProductStatus
+  productType      String?
+  vendor           String?
+  tags             String[]
+  publishedAt      DateTime?
+  metafields       Json?
+  shopifyCreatedAt DateTime
+  shopifyUpdatedAt DateTime
+  syncedAt         DateTime            @default(now())
+  variants         Variant[]
+  images           ProductImage[]
+  collections      CollectionProduct[]
+
+  @@index([status])
+  @@index([vendor])
+}
+
+model Variant {
+  id              String   @id @default(uuid())
+  shopifyGid      String   @unique
+  shopifyId       BigInt   @unique
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku             String?
+  barcode         String?
+  title           String
+  price           Decimal  @db.Decimal(12, 2)
+  compareAtPrice  Decimal? @db.Decimal(12, 2)
+  inventoryItemId BigInt
+  inventoryQty    Int      @default(0)
+  position        Int
+  options         Json?
+
+  @@index([sku])
+  @@index([inventoryItemId])
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  shopifyId BigInt? @unique
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String?
+  position  Int
+  width     Int?
+  height    Int?
+}
+
+enum CollectionType {
+  CUSTOM
+  SMART
+}
+
+model Collection {
+  id         String              @id @default(uuid())
+  shopifyGid String              @unique
+  shopifyId  BigInt              @unique
+  title      String
+  handle     String              @unique
+  type       CollectionType
+  rules      Json?
+  products   CollectionProduct[]
+}
+
+model CollectionProduct {
+  collectionId String
+  productId    String
+  position     Int
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, productId])
+}
+
+// ============ INVENTORY ============
+model Location {
+  id              String           @id @default(uuid())
+  shopifyGid      String           @unique
+  shopifyId       BigInt           @unique
+  name            String
+  address         Json?
+  isActive        Boolean          @default(true)
+  inventoryLevels InventoryLevel[]
+}
+
+model InventoryLevel {
+  id              String   @id @default(uuid())
+  inventoryItemId BigInt
+  locationId      String
+  location        Location @relation(fields: [locationId], references: [id])
+  available       Int
+  committed       Int      @default(0)
+  incoming        Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  @@unique([inventoryItemId, locationId])
+}
+
+model InventoryAdjustment {
+  id              String   @id @default(uuid())
+  inventoryItemId BigInt
+  locationId      String
+  delta           Int
+  reason          String
+  reference       String?
+  notedBy         String
+  createdAt       DateTime @default(now())
+}
+
+enum TransferStatus {
+  DRAFT
+  IN_TRANSIT
+  RECEIVED
+  CANCELLED
+}
+
+model InventoryTransfer {
+  id         String                  @id @default(uuid())
+  fromLocId  String
+  toLocId    String
+  status     TransferStatus
+  createdBy  String
+  shippedAt  DateTime?
+  receivedAt DateTime?
+  createdAt  DateTime                @default(now())
+  items      InventoryTransferItem[]
+}
+
+model InventoryTransferItem {
+  id          String            @id @default(uuid())
+  transferId  String
+  transfer    InventoryTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
+  variantId   String
+  quantity    Int
+  receivedQty Int               @default(0)
+}
+
+model StockAlert {
+  id        String   @id @default(uuid())
+  variantId String
+  threshold Int
+  channels  String[]
+  active    Boolean  @default(true)
+}
+
+// ============ ORDERS ============
+model Order {
+  id                String          @id @default(uuid())
+  shopifyGid        String          @unique
+  shopifyId         BigInt          @unique
+  name              String
+  email             String?
+  customerId        String?
+  customer          Customer?       @relation(fields: [customerId], references: [id])
+  financialStatus   String
+  fulfillmentStatus String?
+  totalPrice        Decimal         @db.Decimal(12, 2)
+  subtotalPrice     Decimal         @db.Decimal(12, 2)
+  totalTax          Decimal         @db.Decimal(12, 2)
+  totalDiscounts    Decimal         @db.Decimal(12, 2)
+  currency          String
+  shippingAddress   Json?
+  billingAddress    Json?
+  tags              String[]
+  shopifyCreatedAt  DateTime
+  shopifyUpdatedAt  DateTime
+  syncedAt          DateTime        @default(now())
+  lineItems         OrderLineItem[]
+  fulfillments      Fulfillment[]
+  refunds           Refund[]
+
+  @@index([financialStatus, fulfillmentStatus])
+  @@index([shopifyCreatedAt])
+}
+
+model OrderLineItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId String?
+  title     String
+  sku       String?
+  quantity  Int
+  price     Decimal @db.Decimal(12, 2)
+}
+
+model Fulfillment {
+  id          String   @id @default(uuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  shopifyGid  String   @unique
+  status      String
+  trackingCo  String?
+  trackingNo  String?
+  trackingUrl String?
+  createdAt   DateTime @default(now())
+}
+
+model Refund {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  shopifyGid String   @unique
+  amount     Decimal  @db.Decimal(12, 2)
+  reason     String?
+  createdBy  String
+  createdAt  DateTime @default(now())
+}
+
+model DraftOrder {
+  id         String   @id @default(uuid())
+  shopifyGid String?  @unique
+  status     String
+  customerId String?
+  lineItems  Json
+  totals     Json
+  createdBy  String
+  createdAt  DateTime @default(now())
+}
+
+// ============ CUSTOMERS ============
+model Customer {
+  id               String            @id @default(uuid())
+  shopifyGid       String            @unique
+  shopifyId        BigInt            @unique
+  email            String?           @unique
+  firstName        String?
+  lastName         String?
+  phone            String?
+  acceptsMarketing Boolean           @default(false)
+  totalSpent       Decimal           @default(0) @db.Decimal(12, 2)
+  ordersCount      Int               @default(0)
+  tags             String[]
+  addresses        Json?
+  shopifyCreatedAt DateTime
+  syncedAt         DateTime          @default(now())
+  segments         CustomerSegment[] @relation("CustomerSegments")
+  orders           Order[]
+}
+
+model CustomerSegment {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  rules     Json
+  createdAt DateTime   @default(now())
+  customers Customer[] @relation("CustomerSegments")
+}
+
+// ============ PURCHASE ORDERS ============
+model Vendor {
+  id             String          @id @default(uuid())
+  name           String
+  contactName    String?
+  email          String?
+  phone          String?
+  address        Json?
+  taxNumber      String?
+  paymentTerms   String?
+  isActive       Boolean         @default(true)
+  purchaseOrders PurchaseOrder[]
+}
+
+enum POStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
+  CLOSED
+}
+
+model PurchaseOrder {
+  id         String              @id @default(uuid())
+  poNumber   String              @unique
+  vendorId   String
+  vendor     Vendor              @relation(fields: [vendorId], references: [id])
+  locationId String
+  status     POStatus
+  subtotal   Decimal             @db.Decimal(12, 2)
+  tax        Decimal             @default(0) @db.Decimal(12, 2)
+  shipping   Decimal             @default(0) @db.Decimal(12, 2)
+  total      Decimal             @db.Decimal(12, 2)
+  currency   String              @default("USD")
+  expectedAt DateTime?
+  notes      String?
+  createdBy  String
+  approvedBy String?
+  approvedAt DateTime?
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  items      PurchaseOrderItem[]
+  receipts   GoodsReceipt[]
+
+  @@index([status])
+  @@index([vendorId])
+}
+
+model PurchaseOrderItem {
+  id            String        @id @default(uuid())
+  poId          String
+  purchaseOrder PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  variantId     String
+  sku           String
+  title         String
+  orderedQty    Int
+  receivedQty   Int           @default(0)
+  unitCost      Decimal       @db.Decimal(12, 2)
+  lineTotal     Decimal       @db.Decimal(12, 2)
+}
+
+model GoodsReceipt {
+  id            String             @id @default(uuid())
+  poId          String
+  purchaseOrder PurchaseOrder      @relation(fields: [poId], references: [id])
+  grNumber      String             @unique
+  receivedBy    String
+  receivedAt    DateTime           @default(now())
+  notes         String?
+  items         GoodsReceiptItem[]
+}
+
+model GoodsReceiptItem {
+  id        String       @id @default(uuid())
+  grId      String
+  receipt   GoodsReceipt @relation(fields: [grId], references: [id], onDelete: Cascade)
+  poItemId  String
+  quantity  Int
+  condition String?
+}
+
+// ============ CMS ============
+enum CmsBlockType {
+  HEADER_MENU
+  FOOTER_MENU
+  HERO_BANNER
+  HOMEPAGE_SECTION
+  PAGE
+  FAQ
+  BLOG_POST
+}
+
+model CmsBlock {
+  id                  String       @id @default(uuid())
+  type                CmsBlockType
+  handle              String       @unique
+  shopifyMetaobjectId String?      @unique
+  data                Json
+  status              String       @default("draft")
+  publishedAt         DateTime?
+  createdBy           String
+  updatedAt           DateTime     @updatedAt
+}
+
+// ============ MEDIA ============
+model MediaAsset {
+  id            String   @id @default(uuid())
+  url           String
+  cdnKey        String   @unique
+  mimeType      String
+  width         Int?
+  height        Int?
+  sizeBytes     Int
+  folder        String?
+  tags          String[]
+  shopifyFileId String?  @unique
+  uploadedBy    String
+  createdAt     DateTime @default(now())
+}
+
+// ============ SETTINGS ============
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+  updatedBy String
+}
+
+// ============ SYNC + WEBHOOKS ============
+enum WebhookStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+  DEAD
+}
+
+model WebhookEvent {
+  id          String        @id @default(uuid())
+  topic       String
+  shopifyId   String
+  payload     Json
+  status      WebhookStatus
+  attempts    Int           @default(0)
+  lastError   String?
+  receivedAt  DateTime      @default(now())
+  processedAt DateTime?
+
+  @@index([topic, status])
+}
+
+model SyncJob {
+  id         String    @id @default(uuid())
+  type       String
+  status     String
+  cursor     String?
+  totalCount Int       @default(0)
+  doneCount  Int       @default(0)
+  startedAt  DateTime?
+  finishedAt DateTime?
+  error      String?
+}
+
+// ============ AUDIT ============
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  resource   String
+  resourceId String?
+  diff       Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([resource, resourceId])
+}
