@@ -19,11 +19,15 @@ export class AdminGraphQLService {
         body: JSON.stringify({ query, variables }),
       });
       if (res.status === 429) throw new Error('THROTTLED');
-      const json = await res.json();
+      const json: any = await res.json();
+      if (!res.ok) {
+        throw new Error(`Shopify HTTP ${res.status}: ${JSON.stringify(json).slice(0, 500)}`);
+      }
       if (json.errors) {
-        const throttled = json.errors.find((e: any) => e?.extensions?.code === 'THROTTLED');
+        const errs = Array.isArray(json.errors) ? json.errors : [json.errors];
+        const throttled = errs.find((e: any) => e?.extensions?.code === 'THROTTLED');
         if (throttled) throw new Error('THROTTLED');
-        throw new Error(JSON.stringify(json.errors));
+        throw new Error(JSON.stringify(errs));
       }
       return json.data as T;
     };
