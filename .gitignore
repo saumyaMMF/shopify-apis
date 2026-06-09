@@ -10,3 +10,4 @@ coverage/
 .cache/
 prisma/migrations/dev/
 .vscode/
+*.tsbuildinfo
