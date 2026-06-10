@@ -367,6 +367,47 @@
       ]
     },
     {
+      "name": "11b. Themes & Banners",
+      "item": [
+        { "name": "List themes", "request": { "method": "GET", "url": "{{base_url}}/themes" } },
+        { "name": "Published theme", "request": { "method": "GET", "url": "{{base_url}}/themes/published" } },
+        { "name": "Theme assets", "request": { "method": "GET", "url": "{{base_url}}/themes/<theme-id>/assets" } },
+        {
+          "name": "Theme asset (settings_data.json)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/themes/<theme-id>/asset?key=config/settings_data.json",
+              "host": ["{{base_url}}"], "path": ["themes", "<theme-id>", "asset"],
+              "query": [{ "key": "key", "value": "config/settings_data.json" }]
+            }
+          }
+        },
+        {
+          "name": "Banners from theme (index template)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/banners/from-theme?template=index",
+              "host": ["{{base_url}}"], "path": ["banners", "from-theme"],
+              "query": [{ "key": "template", "value": "index" }]
+            }
+          }
+        },
+        {
+          "name": "Banners from metaobjects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/banners/from-metaobjects?type=banner",
+              "host": ["{{base_url}}"], "path": ["banners", "from-metaobjects"],
+              "query": [{ "key": "type", "value": "banner" }]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "12. Media",
       "item": [
         {

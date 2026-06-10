@@ -18,6 +18,7 @@ import { MediaModule } from './media/media.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
 import { AuditModule } from './audit/audit.module';
+import { ThemesModule } from './themes/themes.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AuditModule } from './audit/audit.module';
     ReportsModule,
     SettingsModule,
     AuditModule,
+    ThemesModule,
   ],
 })
 export class AppModule {}
