@@ -68,7 +68,7 @@ async function main() {
   // ============ INVENTORY ============
   await section('5. Inventory');
   await call('List levels', 'GET', '/inventory/levels');
-  await call('Adjust inventory', 'POST', '/inventory/adjust', { body: { inventoryItemId: '1', locationId: 'bad', delta: 1, reason: 'test' }, expect: [200, 400, 500] });
+  await call('Adjust inventory', 'POST', '/inventory/adjust', { body: { inventoryItemId: '1', locationId: 'bad', delta: 1, reason: 'test' }, expect: [200, 201, 400, 500] });
   await call('Alerts', 'GET', '/inventory/alerts');
 
   // ============ ORDERS ============

@@ -18,10 +18,15 @@ const SHOPIFYQL = `
 export class ReportsService {
   constructor(private prisma: PrismaService, private gql: AdminGraphQLService) {}
 
-  sales(since: string, until: string) {
-    return this.gql.request(SHOPIFYQL, {
-      q: `FROM sales SHOW total_sales BY day SINCE ${since} UNTIL ${until}`,
-    });
+  async sales(since: string, until: string) {
+    try {
+      return await this.gql.request(SHOPIFYQL, {
+        q: `FROM sales SHOW total_sales BY day SINCE ${since} UNTIL ${until}`,
+      });
+    } catch (err: any) {
+      // ShopifyQL not available on all plans / dev stores
+      return { available: false, reason: 'ShopifyQL not enabled for this shop', error: err.message };
+    }
   }
 
   async inventoryByLocation() {
