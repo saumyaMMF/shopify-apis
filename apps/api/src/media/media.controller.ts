@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Get, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { MediaService } from './media.service';
 import { JwtAuthGuard } from '../common/guards/jwt.guard';
 import { PermissionsGuard } from '../common/guards/permissions.guard';
@@ -24,5 +25,34 @@ export class MediaController {
   @Post('register') @RequirePermissions('media.upload')
   register(@Body() body: any, @CurrentUser('sub') userId: string) {
     return this.media.registerFile({ ...body, userId });
+  }
+
+  // Full upload: send multipart/form-data with field "file"
+  @Post('upload')
+  @RequirePermissions('media.upload')
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 20 * 1024 * 1024 } }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: { type: 'string', format: 'binary' },
+        folder: { type: 'string', nullable: true },
+      },
+    },
+  })
+  async upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('folder') folder: string,
+    @CurrentUser('sub') userId: string,
+  ) {
+    if (!file) throw new BadRequestException('field "file" required (multipart/form-data)');
+    return this.media.uploadImage({
+      filename: file.originalname,
+      mimeType: file.mimetype,
+      buffer: file.buffer,
+      folder,
+      userId,
+    });
   }
 }
