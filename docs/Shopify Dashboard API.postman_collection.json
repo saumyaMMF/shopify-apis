@@ -218,8 +218,36 @@
     {
       "name": "4. Catalog - Collections",
       "item": [
-        { "name": "List collections", "request": { "method": "GET", "url": "{{base_url}}/collections" } },
-        { "name": "Get collection", "request": { "method": "GET", "url": "{{base_url}}/collections/<collection-id>" } }
+        { "name": "List collections (live)", "request": { "method": "GET", "url": "{{base_url}}/collections" } },
+        { "name": "Get collection", "request": { "method": "GET", "url": "{{base_url}}/collections/<gid-or-id>" } },
+        {
+          "name": "Create custom collection",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/collections",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Snowboards\",\n  \"descriptionHtml\": \"<p>All snowboards.</p>\"\n}" }
+          }
+        },
+        {
+          "name": "Create smart collection (rule-based)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/collections",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Premium Items\",\n  \"ruleSet\": {\n    \"rules\": [\n      { \"column\": \"VARIANT_PRICE\", \"relation\": \"GREATER_THAN\", \"condition\": \"500\" }\n    ],\n    \"appliedDisjunctively\": false\n  }\n}" }
+          }
+        },
+        {
+          "name": "Update collection",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/collections/gid://shopify/Collection/123",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated title\"\n}" }
+          }
+        },
+        { "name": "Delete collection", "request": { "method": "DELETE", "url": "{{base_url}}/collections/gid://shopify/Collection/123" } }
       ]
     },
     {
