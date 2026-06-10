@@ -1,0 +1,233 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/products?first=5",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTgzODI1MywibGFzdF92YWx1ZSI6MTAyOTExMzk4MzgyNTMsIm9mZnNldCI6NH0="
+      },
+      "edges": [
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTY3NDQxMywibGFzdF92YWx1ZSI6MTAyOTExMzk2NzQ0MTMsIm9mZnNldCI6MH0=",
+          "node": {
+            "id": "gid://shopify/Product/10291139674413",
+            "handle": "the-inventory-not-tracked-snowboard",
+            "title": "The Inventory Not Tracked Snowboard",
+            "description": "",
+            "vendor": "test store",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+              "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples.",
+              "width": 3097,
+              "height": 3908
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "949.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "949.95",
+                "currencyCode": "INR"
+              }
+            },
+            "images": {
+              "edges": [
+                {
+                  "node": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+                    "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples."
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTcwNzE4MSwibGFzdF92YWx1ZSI6MTAyOTExMzk3MDcxODEsIm9mZnNldCI6MX0=",
+          "node": {
+            "id": "gid://shopify/Product/10291139707181",
+            "handle": "gift-card",
+            "title": "Gift Card",
+            "description": "This is a gift card for the store",
+            "vendor": "Snowboard Vendor",
+            "productType": "giftcard",
+            "tags": [],
+            "availableForSale": false,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/gift_card.png?v=1781002289",
+              "altText": "Gift card that shows text: Generated data gift card",
+              "width": 2881,
+              "height": 2881
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "10.0",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "100.0",
+                "currencyCode": "INR"
+              }
+            },
+            "images": {
+              "edges": [
+                {
+                  "node": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/gift_card.png?v=1781002289",
+                    "altText": "Gift card that shows text: Generated data gift card"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTc3MjcxNywibGFzdF92YWx1ZSI6MTAyOTExMzk3NzI3MTcsIm9mZnNldCI6Mn0=",
+          "node": {
+            "id": "gid://shopify/Product/10291139772717",
+            "handle": "the-out-of-stock-snowboard",
+            "title": "The Out of Stock Snowboard",
+            "description": "",
+            "vendor": "test store",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": false,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_f44a9605-cd62-464d-b095-d45cdaa0d0d7.jpg?v=1781002289",
+              "altText": "Top and bottom view of a snowboard. The top view shows a toggle at the top in shades of blue and\n        yellow. The bottom view shows an abstract illustration of toggles in blues and yellows.",
+              "width": 3908,
+              "height": 3908
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "885.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "885.95",
+                "currencyCode": "INR"
+              }
+            },
+            "images": {
+              "edges": [
+                {
+                  "node": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_f44a9605-cd62-464d-b095-d45cdaa0d0d7.jpg?v=1781002289",
+                    "altText": "Top and bottom view of a snowboard. The top view shows a toggle at the top in shades of blue and\n        yellow. The bottom view shows an abstract illustration of toggles in blues and yellows."
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTgwNTQ4NSwibGFzdF92YWx1ZSI6MTAyOTExMzk4MDU0ODUsIm9mZnNldCI6M30=",
+          "node": {
+            "id": "gid://shopify/Product/10291139805485",
+            "handle": "the-compare-at-price-snowboard",
+            "title": "The Compare at Price Snowboard",
+            "description": "",
+            "vendor": "test store",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_sky.png?v=1781002289",
+              "altText": "Top and bottom view of a snowboard. The top view shows pixelated clouds, with the top-most one being\n        the shape of the Shopify bag logo. The bottom view has a pixelated cloudy sky with blue, pink and purple\n        colours.",
+              "width": 3097,
+              "height": 3908
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "785.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "785.95",
+                "currencyCode": "INR"
+              }
+            },
+            "images": {
+              "edges": [
+                {
+                  "node": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_sky.png?v=1781002289",
+                    "altText": "Top and bottom view of a snowboard. The top view shows pixelated clouds, with the top-most one being\n        the shape of the Shopify bag logo. The bottom view has a pixelated cloudy sky with blue, pink and purple\n        colours."
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTgzODI1MywibGFzdF92YWx1ZSI6MTAyOTExMzk4MzgyNTMsIm9mZnNldCI6NH0=",
+          "node": {
+            "id": "gid://shopify/Product/10291139838253",
+            "handle": "the-collection-snowboard-hydrogen",
+            "title": "The Collection Snowboard: Hydrogen",
+            "description": "",
+            "vendor": "Hydrogen Vendor",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_0a40b01b-5021-48c1-80d1-aa8ab4876d3d.jpg?v=1781002289",
+              "altText": "Top and bottom view of a snowboard. The top view shows stylized hydrogen bonds and the bottom view shows \"H2\" in a brush script typeface.",
+              "width": 1600,
+              "height": 1600
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "600.0",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "600.0",
+                "currencyCode": "INR"
+              }
+            },
+            "images": {
+              "edges": [
+                {
+                  "node": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_0a40b01b-5021-48c1-80d1-aa8ab4876d3d.jpg?v=1781002289",
+                    "altText": "Top and bottom view of a snowboard. The top view shows stylized hydrogen bonds and the bottom view shows \"H2\" in a brush script typeface."
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:08Z"
+}

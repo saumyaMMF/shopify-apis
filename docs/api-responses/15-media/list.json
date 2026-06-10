@@ -13,6 +13,34 @@
     "error": null,
     "body": [
       {
+        "id": "5163bc6b-05ce-409d-89af-55f80daac292",
+        "url": "https://shopify-staged-uploads.storage.googleapis.com/tmp/95517901101/products/2ba43c0c-cd0e-4cff-bb4d-d8786e8af8bd/download.jpg",
+        "cdnKey": "products /1781076627929-download.jpg",
+        "mimeType": "image/jpeg",
+        "width": null,
+        "height": null,
+        "sizeBytes": 7941,
+        "folder": "products ",
+        "tags": [],
+        "shopifyFileId": "gid://shopify/MediaImage/44689370513709",
+        "uploadedBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "createdAt": "2026-06-10T07:30:27.930Z"
+      },
+      {
+        "id": "de923dbc-0cbe-4d41-9a84-7cc1e9a9ddd6",
+        "url": "https://shopify-staged-uploads.storage.googleapis.com/tmp/95517901101/products/03d62ce2-ad78-4bb5-8e45-7d61592756f9/icon-1024.png",
+        "cdnKey": "test/1781076070467-icon-1024.png",
+        "mimeType": "image/png",
+        "width": null,
+        "height": null,
+        "sizeBytes": 594165,
+        "folder": "test",
+        "tags": [],
+        "shopifyFileId": "gid://shopify/MediaImage/44689328472365",
+        "uploadedBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "createdAt": "2026-06-10T07:21:10.469Z"
+      },
+      {
         "id": "8f5b6ee6-be07-479b-9340-09d61c1494b5",
         "url": "https://cdn.shopify.com/staged-uploads/...",
         "cdnKey": "products/hero-abc.png",
@@ -28,5 +56,5 @@
       }
     ]
   },
-  "capturedAt": "2026-06-10T07:03:01Z"
+  "capturedAt": "2026-06-10T13:43:44Z"
 }

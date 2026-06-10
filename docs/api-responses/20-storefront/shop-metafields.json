@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/storefront/shop/metafields",
+    "headers": {},
+    "body": {
+      "identifiers": [
+        {
+          "namespace": "custom",
+          "key": "support_phone"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "metafields": [
+        null
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:06Z"
+}

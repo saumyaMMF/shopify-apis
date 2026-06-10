@@ -204,6 +204,138 @@ async function main() {
   await section('19. Shopify Shops');
   await save('19-shops', 'list', 'GET', '/shopify/shops');
 
+  // ============ 20. Storefront (public) ============
+  await section('20. Storefront (Public)');
+  await save('20-storefront', 'shop', 'GET', '/storefront/shop', { noAuth: true });
+  await save('20-storefront', 'menu-footer', 'GET', '/storefront/menu/footer', { noAuth: true });
+  await save('20-storefront', 'variant-by-options', 'POST', '/storefront/products/variant', {
+    noAuth: true,
+    body: { handle: 'the-complete-snowboard', selectedOptions: [{ name: 'Color', value: 'Ice' }] },
+  });
+  await save('20-storefront', 'search-products', 'GET', '/storefront/search?q=snowboard&sortKey=BEST_SELLING&first=5', { noAuth: true });
+  await save('20-storefront', 'collection-filtered', 'POST', '/storefront/collections/filtered', {
+    noAuth: true,
+    body: { handle: 'hydrogen', first: 5, sortKey: 'PRICE', filters: [{ price: { min: 100, max: 2000 } }] },
+  });
+  await save('20-storefront', 'newsletter-signup', 'POST', '/storefront/newsletter', {
+    noAuth: true,
+    body: { email: `subscriber-${Date.now()}@yopmail.com`, firstName: 'Sub', acceptsMarketing: true },
+  });
+  await save('20-storefront', 'metaobjects-list', 'GET', '/storefront/metaobjects?type=banner&first=10', { noAuth: true });
+  await save('20-storefront', 'metaobject', 'GET', '/storefront/metaobject?type=banner&handle=homepage-hero', { noAuth: true });
+  await save('20-storefront', 'product-metafields', 'POST', '/storefront/products/the-complete-snowboard/metafields', {
+    noAuth: true,
+    body: { identifiers: [{ namespace: 'custom', key: 'spec' }, { namespace: 'custom', key: 'size_chart' }] },
+  });
+  await save('20-storefront', 'collection-metafields', 'POST', '/storefront/collections/hydrogen/metafields', {
+    noAuth: true,
+    body: { identifiers: [{ namespace: 'custom', key: 'hero' }] },
+  });
+  await save('20-storefront', 'shop-metafields', 'POST', '/storefront/shop/metafields', {
+    noAuth: true,
+    body: { identifiers: [{ namespace: 'custom', key: 'support_phone' }] },
+  });
+  await save('20-storefront', 'selling-plans', 'GET', '/storefront/products/selling-plans-ski-wax/selling-plans', { noAuth: true });
+  await save('20-storefront', 'variant-store-availability', 'GET', `/storefront/variant/store-availability?variantId=${encodeURIComponent('gid://shopify/ProductVariant/52130746401069')}&first=5`, { noAuth: true });
+  await save('20-storefront', 'policies', 'GET', '/storefront/policies', { noAuth: true });
+  await save('20-storefront', 'menu', 'GET', '/storefront/menu/main-menu', { noAuth: true });
+  await save('20-storefront', 'pages-list', 'GET', '/storefront/pages?first=10', { noAuth: true });
+  await save('20-storefront', 'blogs-list', 'GET', '/storefront/blogs?first=10', { noAuth: true });
+  await save('20-storefront', 'blog-news', 'GET', '/storefront/blogs/news?first=10', { noAuth: true });
+  await save('20-storefront', 'search-suggest', 'GET', '/storefront/search/suggest?q=snowboard&limit=5', { noAuth: true });
+  await save('20-storefront', 'recommendations', 'GET', '/storefront/recommendations?productId=' + encodeURIComponent('gid://shopify/Product/10291140034861') + '&intent=RELATED', { noAuth: true });
+  await save('20-storefront', 'localization', 'GET', '/storefront/localization', { noAuth: true });
+  const sfProducts = await save('20-storefront', 'products-list', 'GET', '/storefront/products?first=5', { noAuth: true });
+  const sfHandle = sfProducts?.edges?.[0]?.node?.handle;
+  const sfVariantId = sfProducts?.edges?.[0]?.node?.variants?.edges?.[0]?.node?.id;
+  if (sfHandle) {
+    const prod = await save('20-storefront', 'product-by-handle', 'GET', `/storefront/products/${encodeURIComponent(sfHandle)}`, { noAuth: true });
+    if (!sfVariantId && prod?.variants?.edges?.[0]?.node?.id) {
+      tracked.sfVariantId = prod.variants.edges[0].node.id;
+    }
+  }
+  const variantId = sfVariantId ?? tracked.sfVariantId;
+  const sfCols = await save('20-storefront', 'collections-list', 'GET', '/storefront/collections?first=5', { noAuth: true });
+  const colHandle = sfCols?.edges?.[0]?.node?.handle;
+  if (colHandle) {
+    await save('20-storefront', 'collection-by-handle', 'GET', `/storefront/collections/${encodeURIComponent(colHandle)}?first=5`, { noAuth: true });
+  }
+  if (variantId) {
+    const cart = await save('20-storefront', 'cart-create', 'POST', '/storefront/cart', {
+      noAuth: true,
+      body: { lines: [{ merchandiseId: variantId, quantity: 1 }] },
+    });
+    const cartId = cart?.id;
+    if (cartId) {
+      const q = `id=${encodeURIComponent(cartId)}`;
+      await save('20-storefront', 'cart-get', 'GET', `/storefront/cart?${q}`, { noAuth: true });
+      const added = await save('20-storefront', 'cart-lines-add', 'POST', `/storefront/cart/lines?${q}`, {
+        noAuth: true,
+        body: { lines: [{ merchandiseId: variantId, quantity: 1 }] },
+      });
+      const lineId = added?.lines?.edges?.[0]?.node?.id;
+      if (lineId) {
+        await save('20-storefront', 'cart-lines-update', 'PATCH', `/storefront/cart/lines?${q}`, {
+          noAuth: true,
+          body: { lines: [{ id: lineId, quantity: 3 }] },
+        });
+        await save('20-storefront', 'cart-lines-remove', 'DELETE', `/storefront/cart/lines?${q}`, {
+          noAuth: true,
+          body: { lineIds: [lineId] },
+        });
+      }
+      await save('20-storefront', 'cart-buyer-identity-update', 'PATCH', `/storefront/cart/buyer-identity?${q}`, {
+        noAuth: true,
+        body: { email: 'buyer@example.com', countryCode: 'US' },
+      });
+      await save('20-storefront', 'cart-discount-codes-update', 'PATCH', `/storefront/cart/discount-codes?${q}`, {
+        noAuth: true,
+        body: { discountCodes: ['SAVE10'] },
+      });
+      await save('20-storefront', 'cart-note-update', 'PATCH', `/storefront/cart/note?${q}`, {
+        noAuth: true,
+        body: { note: 'Gift wrap please' },
+      });
+      await save('20-storefront', 'cart-attributes-update', 'PATCH', `/storefront/cart/attributes?${q}`, {
+        noAuth: true,
+        body: { attributes: [{ key: 'delivery_window', value: 'morning' }] },
+      });
+      await save('20-storefront', 'cart-gift-cards-update', 'PATCH', `/storefront/cart/gift-cards?${q}`, {
+        noAuth: true,
+        body: { giftCardCodes: ['GIFTCARD-XXXX'] },
+      });
+    }
+  }
+
+  // ============ 21. Storefront Customer Account ============
+  // Needs a valid customer access token from Customer Account API OAuth flow.
+  // Set env CUSTOMER_TOKEN to capture these. If absent or expired, section is skipped.
+  const cT = process.env.CUSTOMER_TOKEN;
+  if (cT) {
+    await section('21. Storefront — Customer Account');
+    const cAuth = { noAuth: true, headers: { 'X-Customer-Token': cT } };
+    await save('21-customer-account', 'profile', 'GET', '/storefront/customer', cAuth);
+    await save('21-customer-account', 'addresses-list', 'GET', '/storefront/customer/addresses?first=10', cAuth);
+    await save('21-customer-account', 'orders-list', 'GET', '/storefront/customer/orders?first=10', cAuth);
+    const orderId = process.env.ORDER_ID;
+    if (orderId) {
+      const enc = encodeURIComponent(orderId);
+      await save('21-customer-account', 'order-get', 'GET', `/storefront/customer/order?id=${enc}`, cAuth);
+      await save('21-customer-account', 'order-buy-again', 'GET', `/storefront/customer/order/buy-again?id=${enc}`, cAuth);
+      await save('21-customer-account', 'order-digital-assets', 'GET', `/storefront/customer/order/digital-assets?id=${enc}`, cAuth);
+      await save('21-customer-account', 'order-returnable', 'GET', `/storefront/customer/order/returnable?id=${enc}`, cAuth);
+    }
+    await save('21-customer-account', 'returns-list', 'GET', '/storefront/customer/returns?first=10', cAuth);
+    await save('21-customer-account', 'subscriptions-list', 'GET', '/storefront/customer/subscriptions?first=10', cAuth);
+    await save('21-customer-account', 'store-credit', 'GET', '/storefront/customer/store-credit', cAuth);
+    await save('21-customer-account', 'profile-update', 'PATCH', '/storefront/customer', {
+      ...cAuth,
+      body: { firstName: 'Baljeet', lastName: 'Singh' },
+    });
+  } else {
+    console.log(`${C.d}— skipping 21. Storefront Customer Account (set CUSTOMER_TOKEN env var to capture)${C.n}`);
+  }
+
   console.log(`\n${C.g}✓ Done.${C.n} Responses in ${OUT}`);
   process.exit(0);
 }

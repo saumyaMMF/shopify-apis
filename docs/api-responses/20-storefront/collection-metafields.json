@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/storefront/collections/hydrogen/metafields",
+    "headers": {},
+    "body": {
+      "identifiers": [
+        {
+          "namespace": "custom",
+          "key": "hero"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Collection/540659646765",
+      "handle": "hydrogen",
+      "title": "Hydrogen",
+      "metafields": [
+        null
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:05Z"
+}

@@ -16,7 +16,7 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+      "id": "2bad9f20-b33f-43ba-a1af-3de477fb4caa",
       "name": "Capture Vendor",
       "contactName": null,
       "email": "capture@v.com",
@@ -27,5 +27,5 @@
       "isActive": true
     }
   },
-  "capturedAt": "2026-06-10T07:02:56Z"
+  "capturedAt": "2026-06-10T13:43:39Z"
 }

@@ -1,0 +1,43 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/storefront/products/variant",
+    "headers": {},
+    "body": {
+      "handle": "the-complete-snowboard",
+      "selectedOptions": [
+        {
+          "name": "Color",
+          "value": "Ice"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/ProductVariant/52130746401069",
+      "title": "Ice",
+      "sku": null,
+      "availableForSale": true,
+      "price": {
+        "amount": "699.95",
+        "currencyCode": "INR"
+      },
+      "compareAtPrice": null,
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1781002289",
+        "altText": "Top and bottom view of a snowboard. The top view shows abstract circles and lines in shades of\n          teal. The bottom view shows abstract circles and lines in shades of purple and blue with the text “SHOPIFY”\n          in a sans serif typeface on top."
+      },
+      "selectedOptions": [
+        {
+          "name": "Color",
+          "value": "Ice"
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:03Z"
+}

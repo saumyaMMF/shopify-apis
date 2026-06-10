@@ -1,688 +1,3980 @@
 {
   "info": {
+    "_postman_id": "8eac3b1b-5f27-41b7-959f-221e67aeb600",
     "name": "Shopify Dashboard API",
-    "_postman_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
     "description": "All NestJS endpoints exposed by apps/api. Auth via JWT bearer. Login first → token auto-stored in {{access_token}}. Refresh via httpOnly cookie.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "variable": [
-    { "key": "base_url", "value": "http://localhost:4000/api" },
-    { "key": "access_token", "value": "" },
-    { "key": "refresh_token", "value": "" },
-    { "key": "user_id", "value": "" },
-    { "key": "user_email", "value": "" },
-    { "key": "user_role", "value": "" },
-    { "key": "user_perms", "value": "" },
-    { "key": "admin_email", "value": "admin@example.com" },
-    { "key": "admin_password", "value": "Admin@12345" }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51318780",
+    "_collection_link": "https://go.postman.co/collection/51318780-8eac3b1b-5f27-41b7-959f-221e67aeb600?source=collection_link"
   },
   "item": [
     {
-      "name": "1. Auth",
+      "name": "Admin API",
+      "description": "Authenticated admin/dashboard endpoints. Require JWT via /auth/login.",
       "item": [
         {
-          "name": "Login",
-          "event": [{
-            "listen": "test",
-            "script": { "exec": [
-              "const r = pm.response.json();",
-              "if (pm.response.code === 200 || pm.response.code === 201) {",
-              "  if (r.accessToken) {",
-              "    pm.collectionVariables.set('access_token', r.accessToken);",
-              "    pm.environment.set('access_token', r.accessToken);",
-              "    console.log('✓ access_token saved');",
-              "  }",
-              "  if (r.user) {",
-              "    pm.collectionVariables.set('user_id', r.user.id);",
-              "    pm.collectionVariables.set('user_email', r.user.email);",
-              "    pm.collectionVariables.set('user_role', r.user.role);",
-              "    if (Array.isArray(r.user.permissions)) {",
-              "      pm.collectionVariables.set('user_perms', r.user.permissions.join(','));",
-              "    }",
-              "    console.log('✓ user:', r.user.email, '(' + r.user.role + ')');",
-              "  }",
-              "  const setCookie = pm.response.headers.get('Set-Cookie');",
-              "  if (setCookie) {",
-              "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
-              "    if (m) {",
-              "      const raw = decodeURIComponent(m[1]);",
-              "      pm.collectionVariables.set('refresh_token', raw);",
-              "      pm.environment.set('refresh_token', raw);",
-              "      console.log('✓ refresh_token saved');",
-              "    }",
-              "  }",
-              "  pm.test('Login 2xx', () => pm.response.to.be.success);",
-              "  pm.test('Has accessToken', () => pm.expect(r.accessToken).to.be.a('string'));",
-              "} else {",
-              "  pm.test('Login failed', () => pm.expect.fail(r.message || 'unknown'));",
-              "}"
-            ], "type": "text/javascript" }
-          }],
-          "request": {
-            "auth": { "type": "noauth" },
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/auth/login",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+          "name": "1. Auth",
+          "item": [
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const r = pm.response.json();",
+                      "if (pm.response.code === 200 || pm.response.code === 201) {",
+                      "  if (r.accessToken) {",
+                      "    pm.collectionVariables.set('access_token', r.accessToken);",
+                      "    pm.environment.set('access_token', r.accessToken);",
+                      "    console.log('✓ access_token saved');",
+                      "  }",
+                      "  if (r.user) {",
+                      "    pm.collectionVariables.set('user_id', r.user.id);",
+                      "    pm.collectionVariables.set('user_email', r.user.email);",
+                      "    pm.collectionVariables.set('user_role', r.user.role);",
+                      "    if (Array.isArray(r.user.permissions)) {",
+                      "      pm.collectionVariables.set('user_perms', r.user.permissions.join(','));",
+                      "    }",
+                      "    console.log('✓ user:', r.user.email, '(' + r.user.role + ')');",
+                      "  }",
+                      "  const setCookie = pm.response.headers.get('Set-Cookie');",
+                      "  if (setCookie) {",
+                      "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+                      "    if (m) {",
+                      "      const raw = decodeURIComponent(m[1]);",
+                      "      pm.collectionVariables.set('refresh_token', raw);",
+                      "      pm.environment.set('refresh_token', raw);",
+                      "      console.log('✓ refresh_token saved');",
+                      "    }",
+                      "  }",
+                      "  pm.test('Login 2xx', () => pm.response.to.be.success);",
+                      "  pm.test('Has accessToken', () => pm.expect(r.accessToken).to.be.a('string'));",
+                      "} else {",
+                      "  pm.test('Login failed', () => pm.expect.fail(r.message || 'unknown'));",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh (uses httpOnly cookie)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const r = pm.response.json();",
+                      "if (pm.response.code === 200 || pm.response.code === 201) {",
+                      "  if (r.accessToken) {",
+                      "    pm.collectionVariables.set('access_token', r.accessToken);",
+                      "    pm.environment.set('access_token', r.accessToken);",
+                      "    console.log('✓ access_token rotated');",
+                      "  }",
+                      "  const setCookie = pm.response.headers.get('Set-Cookie');",
+                      "  if (setCookie) {",
+                      "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+                      "    if (m) {",
+                      "      const raw = decodeURIComponent(m[1]);",
+                      "      pm.collectionVariables.set('refresh_token', raw);",
+                      "      pm.environment.set('refresh_token', raw);",
+                      "      console.log('✓ refresh_token rotated');",
+                      "    }",
+                      "  }",
+                      "  pm.test('Refresh ok', () => pm.response.to.be.success);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/auth/refresh",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logout",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/auth/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Me",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/auth/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
             }
-          }
+          ]
         },
         {
-          "name": "Refresh (uses httpOnly cookie)",
-          "event": [{
-            "listen": "test",
-            "script": { "exec": [
-              "const r = pm.response.json();",
-              "if (pm.response.code === 200 || pm.response.code === 201) {",
-              "  if (r.accessToken) {",
-              "    pm.collectionVariables.set('access_token', r.accessToken);",
-              "    pm.environment.set('access_token', r.accessToken);",
-              "    console.log('✓ access_token rotated');",
-              "  }",
-              "  const setCookie = pm.response.headers.get('Set-Cookie');",
-              "  if (setCookie) {",
-              "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
-              "    if (m) {",
-              "      const raw = decodeURIComponent(m[1]);",
-              "      pm.collectionVariables.set('refresh_token', raw);",
-              "      pm.environment.set('refresh_token', raw);",
-              "      console.log('✓ refresh_token rotated');",
-              "    }",
-              "  }",
-              "  pm.test('Refresh ok', () => pm.response.to.be.success);",
-              "}"
-            ], "type": "text/javascript" }
-          }],
-          "request": { "method": "POST", "url": "{{base_url}}/auth/refresh" }
+          "name": "2. Users",
+          "item": [
+            {
+              "name": "List users",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create user",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"manager@example.com\",\n  \"password\": \"Manager@12345\",\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Manager\",\n  \"roleId\": \"<get-from-GET /roles>\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Assign role",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleId\": \"<role-uuid>\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/<user-id>/role",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "<user-id>",
+                    "role"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Set active",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/<user-id>/active",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "<user-id>",
+                    "active"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         },
         {
-          "name": "Logout",
-          "request": { "method": "POST", "url": "{{base_url}}/auth/logout" }
+          "name": "2b. Roles & Permissions",
+          "item": [
+            {
+              "name": "List roles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get role",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles/<role-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "<role-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create role",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"warehouse\",\n  \"description\": \"Warehouse operator\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"inventory.read\",\n    \"inventory.adjust\",\n    \"po.read\",\n    \"po.receive\"\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/roles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update role",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"Updated description\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"order.read\"\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/roles/<role-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "<role-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List permissions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/permissions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "permissions"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         },
         {
-          "name": "Me",
-          "request": { "method": "GET", "url": "{{base_url}}/auth/me" }
+          "name": "3. Catalog - Products",
+          "item": [
+            {
+              "name": "List products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products?take=25&skip=0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "25"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "q",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "ACTIVE",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get product",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/<product-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "<product-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Sync from Shopify",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/sync",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "sync"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create product",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Sample T-Shirt\",\n  \"description\": \"100% cotton\",\n  \"productType\": \"Apparel\",\n  \"vendor\": \"Acme\",\n  \"tags\": [\"new\", \"summer\"],\n  \"status\": \"DRAFT\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/products",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update product",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated title\",\n  \"status\": \"ACTIVE\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/products/gid://shopify/Product/12345",
+                  "protocol": "{{base_url}}/products/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Product",
+                    "12345"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete product",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/gid://shopify/Product/12345",
+                  "protocol": "{{base_url}}/products/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Product",
+                    "12345"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "4. Catalog - Collections",
+          "item": [
+            {
+              "name": "List collections (live)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "collections"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get collection",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/collections/<gid-or-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "collections",
+                    "<gid-or-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create custom collection",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Snowboards\",\n  \"descriptionHtml\": \"<p>All snowboards.</p>\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "collections"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create smart collection (rule-based)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Premium Items\",\n  \"ruleSet\": {\n    \"rules\": [\n      { \"column\": \"VARIANT_PRICE\", \"relation\": \"GREATER_THAN\", \"condition\": \"500\" }\n    ],\n    \"appliedDisjunctively\": false\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "collections"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update collection",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated title\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/collections/gid://shopify/Collection/123",
+                  "protocol": "{{base_url}}/collections/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Collection",
+                    "123"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete collection",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/collections/gid://shopify/Collection/123",
+                  "protocol": "{{base_url}}/collections/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Collection",
+                    "123"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "5. Inventory",
+          "item": [
+            {
+              "name": "Levels",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/inventory/levels",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "levels"
+                  ],
+                  "query": [
+                    {
+                      "key": "locationId",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Adjust inventory",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inventoryItemId\": \"42424242\",\n  \"locationId\": \"<location-id>\",\n  \"delta\": 50,\n  \"reason\": \"correction\",\n  \"reference\": \"manual-001\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/inventory/adjust",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "adjust"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Stock alerts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/inventory/alerts",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "alerts"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "6. Orders",
+          "item": [
+            {
+              "name": "List orders",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders?take=25&skip=0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "25"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "status",
+                      "value": "paid",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get order",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders/<order-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "<order-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fulfill order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lineItems\": [{ \"id\": \"gid://shopify/LineItem/1\", \"quantity\": 1 }],\n  \"tracking\": { \"company\": \"DHL\", \"number\": \"TR123\", \"url\": \"https://track.dhl/TR123\" }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/orders/gid://shopify/Order/12345/fulfill",
+                  "protocol": "{{base_url}}/orders/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Order",
+                    "12345",
+                    "fulfill"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refund order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 10.0,\n  \"currencyCode\": \"USD\",\n  \"note\": \"Customer request\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/orders/gid://shopify/Order/12345/refund",
+                  "protocol": "{{base_url}}/orders/gid",
+                  "host": [
+                    "shopify"
+                  ],
+                  "path": [
+                    "Order",
+                    "12345",
+                    "refund"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "7. Customers",
+          "item": [
+            {
+              "name": "List customers",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/customers?take=25",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "25"
+                    },
+                    {
+                      "key": "q",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get customer",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/customers/<customer-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    "<customer-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Set tags",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tags\": [\"vip\", \"newsletter\"]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/customers/<customer-id>/tags",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    "<customer-id>",
+                    "tags"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List segments",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/customers/segments/list",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    "segments",
+                    "list"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create segment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"VIP\",\n  \"rules\": { \"totalSpent\": { \"gt\": 1000 }, \"tags\": [\"vip\"] }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/customers/segments",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    "segments"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "8. Purchase Orders",
+          "item": [
+            {
+              "name": "List POs",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "APPROVED",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get PO",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders/<po-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders",
+                    "<po-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create PO",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"<vendor-id>\",\n  \"locationId\": \"<location-id>\",\n  \"expectedAt\": \"2026-07-15\",\n  \"notes\": \"Q3 restock\",\n  \"tax\": 0,\n  \"shipping\": 25,\n  \"items\": [\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-001\", \"title\": \"Widget A\", \"qty\": 100, \"unitCost\": 5.00 },\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-002\", \"title\": \"Widget B\", \"qty\": 50, \"unitCost\": 8.00 }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Submit PO",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders/<po-id>/submit",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders",
+                    "<po-id>",
+                    "submit"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve PO",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders/<po-id>/approve",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders",
+                    "<po-id>",
+                    "approve"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancel PO",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders/<po-id>/cancel",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders",
+                    "<po-id>",
+                    "cancel"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Receive PO (full or partial)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"Partial shipment 1 of 2\",\n  \"items\": [\n    { \"poItemId\": \"<po-item-id>\", \"quantity\": 50, \"condition\": \"good\" },\n    { \"poItemId\": \"<po-item-id-2>\", \"quantity\": 25, \"condition\": \"good\" }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders/<po-id>/receive",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders",
+                    "<po-id>",
+                    "receive"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "9. Vendors",
+          "item": [
+            {
+              "name": "List vendors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get vendor",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/vendors/<vendor-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors",
+                    "<vendor-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create vendor",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Acme Distributors\",\n  \"contactName\": \"John Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+1-555-0100\",\n  \"address\": { \"line1\": \"1 Main St\", \"city\": \"NYC\", \"country\": \"US\" },\n  \"taxNumber\": \"VAT-12345\",\n  \"paymentTerms\": \"NET-30\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update vendor",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentTerms\": \"NET-45\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/vendors/<vendor-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors",
+                    "<vendor-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Deactivate vendor",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/vendors/<vendor-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors",
+                    "<vendor-id>"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "10. Goods Receipts",
+          "item": [
+            {
+              "name": "List receipts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/goods-receipts",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "goods-receipts"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get receipt",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/goods-receipts/<gr-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "goods-receipts",
+                    "<gr-id>"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "11. CMS",
+          "item": [
+            {
+              "name": "List blocks",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/cms",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "HERO_BANNER",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get block",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/cms/<block-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms",
+                    "<block-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Upsert block",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"HERO_BANNER\",\n  \"handle\": \"home-hero\",\n  \"data\": {\n    \"title\": \"Summer Sale\",\n    \"subtitle\": \"Up to 50% off\",\n    \"imageUrl\": \"https://cdn.shopify.com/...\",\n    \"ctaText\": \"Shop now\",\n    \"ctaUrl\": \"/collections/sale\"\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/cms",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Publish block",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/cms/<block-id>/publish",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms",
+                    "<block-id>",
+                    "publish"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "11b. Themes & Banners",
+          "item": [
+            {
+              "name": "List themes",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/themes",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Published theme",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/themes/published",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes",
+                    "published"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Theme assets",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/themes/<theme-id>/assets",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes",
+                    "<theme-id>",
+                    "assets"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Theme asset (settings_data.json)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/themes/<theme-id>/asset?key=config/settings_data.json",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes",
+                    "<theme-id>",
+                    "asset"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "config/settings_data.json"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Banners from theme (index template)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/banners/from-theme?template=index",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "banners",
+                    "from-theme"
+                  ],
+                  "query": [
+                    {
+                      "key": "template",
+                      "value": "index"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Banners from metaobjects",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/banners/from-metaobjects?type=banner",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "banners",
+                    "from-metaobjects"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "banner"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "11c. Pages & Policies",
+          "item": [
+            {
+              "name": "List pages",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/pages?limit=50",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "published_status",
+                      "value": "published",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get page",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/pages/<page-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages",
+                    "<page-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create page (About Us)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"About Us\",\n  \"body_html\": \"<h2>Our story</h2><p>We sell premium snowboards since 2020.</p>\",\n  \"handle\": \"about-us\",\n  \"author\": \"Admin\",\n  \"published\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/pages",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update page",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"About Us — Updated\",\n  \"body_html\": \"<p>New content</p>\",\n  \"published\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/pages/<page-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages",
+                    "<page-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete page",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/pages/<page-id>",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages",
+                    "<page-id>"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List shop policies",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/policies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "policies"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update policy (e.g. REFUND_POLICY)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": \"<h2>Refund Policy</h2><p>30-day money back guarantee on all snowboards.</p>\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/policies/REFUND_POLICY",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "policies",
+                    "REFUND_POLICY"
+                  ]
+                },
+                "description": "Policy types: REFUND_POLICY, PRIVACY_POLICY, TERMS_OF_SERVICE, SHIPPING_POLICY, SUBSCRIPTION_POLICY, LEGAL_NOTICE, TERMS_OF_SALE, CONTACT_INFORMATION"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "12. Media",
+          "item": [
+            {
+              "name": "List media",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/media",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "media"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder",
+                      "value": "products",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Staged upload",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filename\": \"hero.png\",\n  \"mimeType\": \"image/png\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/media/staged-upload",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "media",
+                    "staged-upload"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register file (after upload to staged URL)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://cdn.shopify.com/staged-uploads/...\",\n  \"cdnKey\": \"products/hero-abc.png\",\n  \"mimeType\": \"image/png\",\n  \"sizeBytes\": 154233,\n  \"folder\": \"products\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/media/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "media",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "13. Reports",
+          "item": [
+            {
+              "name": "Sales (ShopifyQL)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/reports/sales?since=-30d&until=today",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "sales"
+                  ],
+                  "query": [
+                    {
+                      "key": "since",
+                      "value": "-30d"
+                    },
+                    {
+                      "key": "until",
+                      "value": "today"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Inventory by location",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/reports/inventory",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "inventory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Vendor spend",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/reports/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "vendors"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "14. Settings",
+          "item": [
+            {
+              "name": "List all settings",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/settings",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get setting",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/settings/tax.default_rate",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "settings",
+                    "tax.default_rate"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Set setting",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": 0.18\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/settings/tax.default_rate",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "settings",
+                    "tax.default_rate"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "15. Audit Logs",
+          "item": [
+            {
+              "name": "List audit logs",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/audit-logs?take=50&skip=0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "audit-logs"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "50"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "resource",
+                      "value": "PurchaseOrder",
+                      "disabled": true
+                    },
+                    {
+                      "key": "userId",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "16. Webhooks (Shopify → API)",
+          "item": [
+            {
+              "name": "orders/create",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-Shopify-Hmac-Sha256",
+                    "value": "<computed>"
+                  },
+                  {
+                    "key": "X-Shopify-Topic",
+                    "value": "orders/create"
+                  },
+                  {
+                    "key": "X-Shopify-Shop-Domain",
+                    "value": "test-store-uzhiv0ib.myshopify.com"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"id\": 1001, \"name\": \"#1001\", \"financial_status\": \"paid\" }"
+                },
+                "url": {
+                  "raw": "{{base_url}}/webhooks/shopify/orders-create",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    "shopify",
+                    "orders-create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "products/update",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-Shopify-Hmac-Sha256",
+                    "value": "<computed>"
+                  },
+                  {
+                    "key": "X-Shopify-Topic",
+                    "value": "products/update"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"id\": 555, \"title\": \"Updated\", \"status\": \"active\" }"
+                },
+                "url": {
+                  "raw": "{{base_url}}/webhooks/shopify/products-update",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    "shopify",
+                    "products-update"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "customers/redact (GDPR)",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-Shopify-Hmac-Sha256",
+                    "value": "<computed>"
+                  },
+                  {
+                    "key": "X-Shopify-Topic",
+                    "value": "customers/redact"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"shop_id\": 1, \"customer\": { \"id\": 999, \"email\": \"x@y.com\" } }"
+                },
+                "url": {
+                  "raw": "{{base_url}}/webhooks/shopify/customers-redact",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    "shopify",
+                    "customers-redact"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": "Shopify POSTs here. HMAC verified with SHOPIFY_API_SECRET. Topic in URL uses dash instead of slash (orders/create → orders-create)."
         }
       ]
     },
     {
-      "name": "2. Users",
+      "name": "Storefront API",
+      "description": "Public customer-facing Storefront API (no auth). Products, collections, cart, checkout.",
       "item": [
-        { "name": "List users", "request": { "method": "GET", "url": "{{base_url}}/users" } },
         {
-          "name": "Create user",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/users",
-            "body": { "mode": "raw", "raw": "{\n  \"email\": \"manager@example.com\",\n  \"password\": \"Manager@12345\",\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Manager\",\n  \"roleId\": \"<get-from-GET /roles>\"\n}" }
-          }
+          "name": "20. Storefront (Public)",
+          "description": "Public Storefront API — no auth. Customer-facing browse + cart + checkout via Shopify Storefront GraphQL.",
+          "item": [
+            {
+              "name": "List products",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products?first=24&after=&q=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    },
+                    {
+                      "key": "after",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "q",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get product by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products/{{product_handle}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products",
+                    "{{product_handle}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List collections",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/collections?first=24&after=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "collections"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    },
+                    {
+                      "key": "after",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get collection by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/collections/{{collection_handle}}?first=24",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "collections",
+                    "{{collection_handle}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cart create",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"merchandiseId\": \"gid://shopify/ProductVariant/000\",\n      \"quantity\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart get",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cart lines add",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/lines?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "lines"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"merchandiseId\": \"gid://shopify/ProductVariant/000\",\n      \"quantity\": 2\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart lines update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/lines?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "lines"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"id\": \"gid://shopify/CartLine/000\",\n      \"quantity\": 5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart lines remove",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/lines?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "lines"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lineIds\": [\n    \"gid://shopify/CartLine/000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart buyer identity update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/buyer-identity?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "buyer-identity"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"buyer@example.com\",\n  \"countryCode\": \"US\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart discount codes update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/discount-codes?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "discount-codes"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"discountCodes\": [\n    \"SAVE10\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart note update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/note?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "note"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"Gift wrap please\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart attributes update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/attributes?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "attributes"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attributes\": [\n    {\n      \"key\": \"delivery_window\",\n      \"value\": \"morning\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart gift card codes update",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/gift-cards?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "gift-cards"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"giftCardCodes\": [\n    \"GIFTCARD-XXXX\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Shop info",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/shop",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "shop"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Policies",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/policies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "policies"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Menu by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/menu/{{menu_handle}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "menu",
+                    "{{menu_handle}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Pages list",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/pages?first=24",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "pages"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Page by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/pages/{{page_handle}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "pages",
+                    "{{page_handle}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Blogs list",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/blogs?first=24",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "blogs"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Blog by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/blogs/{{blog_handle}}?first=24",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "blogs",
+                    "{{blog_handle}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "24"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Article by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/blogs/{{blog_handle}}/articles/{{article_handle}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "blogs",
+                    "{{blog_handle}}",
+                    "articles",
+                    "{{article_handle}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Predictive search",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/search/suggest?q=snowboard&limit=6",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "search",
+                    "suggest"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "snowboard"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "6"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Product recommendations",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/recommendations?productId={{product_gid}}&intent=RELATED",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "recommendations"
+                  ],
+                  "query": [
+                    {
+                      "key": "productId",
+                      "value": "{{product_gid}}"
+                    },
+                    {
+                      "key": "intent",
+                      "value": "RELATED"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Localization",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/localization",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "localization"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Footer menu",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/menu/footer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "menu",
+                    "footer"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Variant by selected options",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products/variant",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products",
+                    "variant"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"handle\": \"{{product_handle}}\",\n  \"selectedOptions\": [\n    {\n      \"name\": \"Color\",\n      \"value\": \"Ice\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Search products",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/search?q=snowboard&first=12&sortKey=BEST_SELLING&reverse=false",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "snowboard"
+                    },
+                    {
+                      "key": "first",
+                      "value": "12"
+                    },
+                    {
+                      "key": "sortKey",
+                      "value": "BEST_SELLING"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Collection filtered + sorted",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/collections/filtered",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "collections",
+                    "filtered"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"handle\": \"{{collection_handle}}\",\n  \"first\": 12,\n  \"sortKey\": \"PRICE\",\n  \"reverse\": false,\n  \"filters\": [\n    {\n      \"price\": {\n        \"min\": 100,\n        \"max\": 2000\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cart delivery groups",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/delivery?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "delivery"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Newsletter signup",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/newsletter",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "newsletter"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"subscriber@example.com\",\n  \"firstName\": \"Sub\",\n  \"lastName\": \"Scriber\",\n  \"acceptsMarketing\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Metaobjects list",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/metaobjects?type=banner&first=10",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "metaobjects"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "banner"
+                    },
+                    {
+                      "key": "first",
+                      "value": "10"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Metaobject by handle",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/metaobject?type=banner&handle=homepage-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "metaobject"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "banner"
+                    },
+                    {
+                      "key": "handle",
+                      "value": "homepage-hero"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Product metafields",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products/{{product_handle}}/metafields",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products",
+                    "{{product_handle}}",
+                    "metafields"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifiers\": [\n    {\n      \"namespace\": \"custom\",\n      \"key\": \"spec\"\n    },\n    {\n      \"namespace\": \"custom\",\n      \"key\": \"size_chart\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Collection metafields",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/collections/{{collection_handle}}/metafields",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "collections",
+                    "{{collection_handle}}",
+                    "metafields"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifiers\": [\n    {\n      \"namespace\": \"custom\",\n      \"key\": \"hero\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Shop metafields",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/storefront/shop/metafields",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "shop",
+                    "metafields"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifiers\": [\n    {\n      \"namespace\": \"custom\",\n      \"key\": \"support_phone\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Product selling plans",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products/selling-plans-ski-wax/selling-plans",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products",
+                    "selling-plans-ski-wax",
+                    "selling-plans"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Variant store availability (pickup)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/variant/store-availability?variantId={{variant_id}}&first=5",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "variant",
+                    "store-availability"
+                  ],
+                  "query": [
+                    {
+                      "key": "variantId",
+                      "value": "{{variant_id}}"
+                    },
+                    {
+                      "key": "first",
+                      "value": "5"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
-          "name": "Assign role",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/users/<user-id>/role",
-            "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<role-uuid>\"\n}" }
-          }
-        },
-        {
-          "name": "Set active",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/users/<user-id>/active",
-            "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
-          }
+          "name": "21. Storefront — Customer Account",
+          "description": "Customer-facing self-service: profile, orders, returns, subscriptions, store credit. Auth via X-Customer-Token header (OAuth access token from Customer Account API login flow).",
+          "item": [
+            {
+              "name": "Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Profile update",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"Baljeet\",\n  \"lastName\": \"Singh\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List addresses",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/addresses?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create address",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/addresses",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "addresses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"address1\": \"42 Test Lane\",\n    \"city\": \"Pune\",\n    \"zip\": \"411001\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\",\n    \"phoneNumber\": \"+919999988877\"\n  },\n  \"defaultAddress\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Update address",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/address?id={{address_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "address"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{address_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"address1\": \"99 Updated Rd\",\n    \"city\": \"Pune\",\n    \"zip\": \"411002\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Delete address",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/address/delete?id={{address_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "address",
+                    "delete"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{address_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List orders",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/orders?first=20&after=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get order",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Order digital assets",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/digital-assets?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "digital-assets"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buy again (returns line items)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/buy-again?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "buy-again"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cancel order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/cancel?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "cancel"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"CUSTOMER\",\n  \"refund\": true,\n  \"restock\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Edit shipping address",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/shipping-address?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "shipping-address"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address1\": \"123 New St\",\n  \"city\": \"Mumbai\",\n  \"zip\": \"400001\",\n  \"territoryCode\": \"IN\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/returns?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "returns"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get returnable line items",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/returnable?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "returnable"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Request return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/return?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "return"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lineItems\": [\n    {\n      \"fulfillmentLineItemId\": \"gid://shopify/FulfillmentLineItem/000\",\n      \"quantity\": 1,\n      \"returnReason\": \"DEFECTIVE\",\n      \"returnReasonNote\": \"Stitching loose\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List subscriptions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscriptions?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscriptions"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update subscription",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nextBillingDate\": \"2026-08-01\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Pause subscription",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription/pause?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription",
+                    "pause"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cancel subscription",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription/cancel?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription",
+                    "cancel"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Store credit balance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/store-credit",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "store-credit"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Gift cards (owned by customer)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/gift-cards?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "gift-cards"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Marketing preferences",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/marketing-prefs",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "marketing-prefs"
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     },
     {
-      "name": "2b. Roles & Permissions",
-      "item": [
-        { "name": "List roles", "request": { "method": "GET", "url": "{{base_url}}/roles" } },
-        { "name": "Get role", "request": { "method": "GET", "url": "{{base_url}}/roles/<role-id>" } },
-        {
-          "name": "Create role",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/roles",
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"warehouse\",\n  \"description\": \"Warehouse operator\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"inventory.read\",\n    \"inventory.adjust\",\n    \"po.read\",\n    \"po.receive\"\n  ]\n}" }
-          }
-        },
-        {
-          "name": "Update role",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/roles/<role-id>",
-            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated description\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"order.read\"\n  ]\n}" }
-          }
-        },
-        { "name": "List permissions", "request": { "method": "GET", "url": "{{base_url}}/permissions" } }
-      ]
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000/api"
     },
     {
-      "name": "3. Catalog - Products",
-      "item": [
-        {
-          "name": "List products",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/products?take=25&skip=0",
-              "host": ["{{base_url}}"], "path": ["products"],
-              "query": [
-                { "key": "take", "value": "25" },
-                { "key": "skip", "value": "0" },
-                { "key": "q", "value": "", "disabled": true },
-                { "key": "status", "value": "ACTIVE", "disabled": true }
-              ]
-            }
-          }
-        },
-        { "name": "Get product", "request": { "method": "GET", "url": "{{base_url}}/products/<product-id>" } },
-        { "name": "Sync from Shopify", "request": { "method": "POST", "url": "{{base_url}}/products/sync" } },
-        {
-          "name": "Create product",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/products",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Sample T-Shirt\",\n  \"description\": \"100% cotton\",\n  \"productType\": \"Apparel\",\n  \"vendor\": \"Acme\",\n  \"tags\": [\"new\", \"summer\"],\n  \"status\": \"DRAFT\"\n}" }
-          }
-        },
-        {
-          "name": "Update product",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/products/gid://shopify/Product/12345",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated title\",\n  \"status\": \"ACTIVE\"\n}" }
-          }
-        },
-        {
-          "name": "Delete product",
-          "request": { "method": "DELETE", "url": "{{base_url}}/products/gid://shopify/Product/12345" }
-        }
-      ]
+      "key": "access_token",
+      "value": ""
     },
     {
-      "name": "4. Catalog - Collections",
-      "item": [
-        { "name": "List collections (live)", "request": { "method": "GET", "url": "{{base_url}}/collections" } },
-        { "name": "Get collection", "request": { "method": "GET", "url": "{{base_url}}/collections/<gid-or-id>" } },
-        {
-          "name": "Create custom collection",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/collections",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Snowboards\",\n  \"descriptionHtml\": \"<p>All snowboards.</p>\"\n}" }
-          }
-        },
-        {
-          "name": "Create smart collection (rule-based)",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/collections",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Premium Items\",\n  \"ruleSet\": {\n    \"rules\": [\n      { \"column\": \"VARIANT_PRICE\", \"relation\": \"GREATER_THAN\", \"condition\": \"500\" }\n    ],\n    \"appliedDisjunctively\": false\n  }\n}" }
-          }
-        },
-        {
-          "name": "Update collection",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/collections/gid://shopify/Collection/123",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated title\"\n}" }
-          }
-        },
-        { "name": "Delete collection", "request": { "method": "DELETE", "url": "{{base_url}}/collections/gid://shopify/Collection/123" } }
-      ]
+      "key": "refresh_token",
+      "value": ""
     },
     {
-      "name": "5. Inventory",
-      "item": [
-        {
-          "name": "Levels",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/inventory/levels",
-              "host": ["{{base_url}}"], "path": ["inventory", "levels"],
-              "query": [{ "key": "locationId", "value": "", "disabled": true }]
-            }
-          }
-        },
-        {
-          "name": "Adjust inventory",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/inventory/adjust",
-            "body": { "mode": "raw", "raw": "{\n  \"inventoryItemId\": \"42424242\",\n  \"locationId\": \"<location-id>\",\n  \"delta\": 50,\n  \"reason\": \"correction\",\n  \"reference\": \"manual-001\"\n}" }
-          }
-        },
-        { "name": "Stock alerts", "request": { "method": "GET", "url": "{{base_url}}/inventory/alerts" } }
-      ]
+      "key": "user_id",
+      "value": ""
     },
     {
-      "name": "6. Orders",
-      "item": [
-        {
-          "name": "List orders",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/orders?take=25&skip=0",
-              "host": ["{{base_url}}"], "path": ["orders"],
-              "query": [
-                { "key": "take", "value": "25" },
-                { "key": "skip", "value": "0" },
-                { "key": "status", "value": "paid", "disabled": true }
-              ]
-            }
-          }
-        },
-        { "name": "Get order", "request": { "method": "GET", "url": "{{base_url}}/orders/<order-id>" } },
-        {
-          "name": "Fulfill order",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/orders/gid://shopify/Order/12345/fulfill",
-            "body": { "mode": "raw", "raw": "{\n  \"lineItems\": [{ \"id\": \"gid://shopify/LineItem/1\", \"quantity\": 1 }],\n  \"tracking\": { \"company\": \"DHL\", \"number\": \"TR123\", \"url\": \"https://track.dhl/TR123\" }\n}" }
-          }
-        },
-        {
-          "name": "Refund order",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/orders/gid://shopify/Order/12345/refund",
-            "body": { "mode": "raw", "raw": "{\n  \"amount\": 10.0,\n  \"currencyCode\": \"USD\",\n  \"note\": \"Customer request\"\n}" }
-          }
-        }
-      ]
+      "key": "user_email",
+      "value": ""
     },
     {
-      "name": "7. Customers",
-      "item": [
-        {
-          "name": "List customers",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/customers?take=25",
-              "host": ["{{base_url}}"], "path": ["customers"],
-              "query": [
-                { "key": "take", "value": "25" },
-                { "key": "q", "value": "", "disabled": true }
-              ]
-            }
-          }
-        },
-        { "name": "Get customer", "request": { "method": "GET", "url": "{{base_url}}/customers/<customer-id>" } },
-        {
-          "name": "Set tags",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/customers/<customer-id>/tags",
-            "body": { "mode": "raw", "raw": "{\n  \"tags\": [\"vip\", \"newsletter\"]\n}" }
-          }
-        },
-        { "name": "List segments", "request": { "method": "GET", "url": "{{base_url}}/customers/segments/list" } },
-        {
-          "name": "Create segment",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/customers/segments",
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"VIP\",\n  \"rules\": { \"totalSpent\": { \"gt\": 1000 }, \"tags\": [\"vip\"] }\n}" }
-          }
-        }
-      ]
+      "key": "user_role",
+      "value": ""
     },
     {
-      "name": "8. Purchase Orders",
-      "item": [
-        {
-          "name": "List POs",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/purchase-orders",
-              "host": ["{{base_url}}"], "path": ["purchase-orders"],
-              "query": [{ "key": "status", "value": "APPROVED", "disabled": true }]
-            }
-          }
-        },
-        { "name": "Get PO", "request": { "method": "GET", "url": "{{base_url}}/purchase-orders/<po-id>" } },
-        {
-          "name": "Create PO",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/purchase-orders",
-            "body": { "mode": "raw", "raw": "{\n  \"vendorId\": \"<vendor-id>\",\n  \"locationId\": \"<location-id>\",\n  \"expectedAt\": \"2026-07-15\",\n  \"notes\": \"Q3 restock\",\n  \"tax\": 0,\n  \"shipping\": 25,\n  \"items\": [\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-001\", \"title\": \"Widget A\", \"qty\": 100, \"unitCost\": 5.00 },\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-002\", \"title\": \"Widget B\", \"qty\": 50, \"unitCost\": 8.00 }\n  ]\n}" }
-          }
-        },
-        { "name": "Submit PO", "request": { "method": "PATCH", "url": "{{base_url}}/purchase-orders/<po-id>/submit" } },
-        { "name": "Approve PO", "request": { "method": "PATCH", "url": "{{base_url}}/purchase-orders/<po-id>/approve" } },
-        { "name": "Cancel PO", "request": { "method": "PATCH", "url": "{{base_url}}/purchase-orders/<po-id>/cancel" } },
-        {
-          "name": "Receive PO (full or partial)",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/purchase-orders/<po-id>/receive",
-            "body": { "mode": "raw", "raw": "{\n  \"notes\": \"Partial shipment 1 of 2\",\n  \"items\": [\n    { \"poItemId\": \"<po-item-id>\", \"quantity\": 50, \"condition\": \"good\" },\n    { \"poItemId\": \"<po-item-id-2>\", \"quantity\": 25, \"condition\": \"good\" }\n  ]\n}" }
-          }
-        }
-      ]
+      "key": "user_perms",
+      "value": ""
     },
     {
-      "name": "9. Vendors",
-      "item": [
-        { "name": "List vendors", "request": { "method": "GET", "url": "{{base_url}}/vendors" } },
-        { "name": "Get vendor", "request": { "method": "GET", "url": "{{base_url}}/vendors/<vendor-id>" } },
-        {
-          "name": "Create vendor",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/vendors",
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Distributors\",\n  \"contactName\": \"John Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+1-555-0100\",\n  \"address\": { \"line1\": \"1 Main St\", \"city\": \"NYC\", \"country\": \"US\" },\n  \"taxNumber\": \"VAT-12345\",\n  \"paymentTerms\": \"NET-30\"\n}" }
-          }
-        },
-        {
-          "name": "Update vendor",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/vendors/<vendor-id>",
-            "body": { "mode": "raw", "raw": "{\n  \"paymentTerms\": \"NET-45\"\n}" }
-          }
-        },
-        { "name": "Deactivate vendor", "request": { "method": "DELETE", "url": "{{base_url}}/vendors/<vendor-id>" } }
-      ]
+      "key": "admin_email",
+      "value": "admin@example.com"
     },
     {
-      "name": "10. Goods Receipts",
-      "item": [
-        { "name": "List receipts", "request": { "method": "GET", "url": "{{base_url}}/goods-receipts" } },
-        { "name": "Get receipt", "request": { "method": "GET", "url": "{{base_url}}/goods-receipts/<gr-id>" } }
-      ]
+      "key": "admin_password",
+      "value": "Admin@12345"
     },
     {
-      "name": "11. CMS",
-      "item": [
-        {
-          "name": "List blocks",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/cms",
-              "host": ["{{base_url}}"], "path": ["cms"],
-              "query": [{ "key": "type", "value": "HERO_BANNER", "disabled": true }]
-            }
-          }
-        },
-        { "name": "Get block", "request": { "method": "GET", "url": "{{base_url}}/cms/<block-id>" } },
-        {
-          "name": "Upsert block",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/cms",
-            "body": { "mode": "raw", "raw": "{\n  \"type\": \"HERO_BANNER\",\n  \"handle\": \"home-hero\",\n  \"data\": {\n    \"title\": \"Summer Sale\",\n    \"subtitle\": \"Up to 50% off\",\n    \"imageUrl\": \"https://cdn.shopify.com/...\",\n    \"ctaText\": \"Shop now\",\n    \"ctaUrl\": \"/collections/sale\"\n  }\n}" }
-          }
-        },
-        { "name": "Publish block", "request": { "method": "PATCH", "url": "{{base_url}}/cms/<block-id>/publish" } }
-      ]
+      "key": "product_handle",
+      "value": ""
     },
     {
-      "name": "11b. Themes & Banners",
-      "item": [
-        { "name": "List themes", "request": { "method": "GET", "url": "{{base_url}}/themes" } },
-        { "name": "Published theme", "request": { "method": "GET", "url": "{{base_url}}/themes/published" } },
-        { "name": "Theme assets", "request": { "method": "GET", "url": "{{base_url}}/themes/<theme-id>/assets" } },
-        {
-          "name": "Theme asset (settings_data.json)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/themes/<theme-id>/asset?key=config/settings_data.json",
-              "host": ["{{base_url}}"], "path": ["themes", "<theme-id>", "asset"],
-              "query": [{ "key": "key", "value": "config/settings_data.json" }]
-            }
-          }
-        },
-        {
-          "name": "Banners from theme (index template)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/banners/from-theme?template=index",
-              "host": ["{{base_url}}"], "path": ["banners", "from-theme"],
-              "query": [{ "key": "template", "value": "index" }]
-            }
-          }
-        },
-        {
-          "name": "Banners from metaobjects",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/banners/from-metaobjects?type=banner",
-              "host": ["{{base_url}}"], "path": ["banners", "from-metaobjects"],
-              "query": [{ "key": "type", "value": "banner" }]
-            }
-          }
-        }
-      ]
+      "key": "collection_handle",
+      "value": ""
     },
     {
-      "name": "11c. Pages & Policies",
-      "item": [
-        {
-          "name": "List pages",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/pages?limit=50",
-              "host": ["{{base_url}}"], "path": ["pages"],
-              "query": [
-                { "key": "limit", "value": "50" },
-                { "key": "published_status", "value": "published", "disabled": true }
-              ]
-            }
-          }
-        },
-        { "name": "Get page", "request": { "method": "GET", "url": "{{base_url}}/pages/<page-id>" } },
-        {
-          "name": "Create page (About Us)",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/pages",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"About Us\",\n  \"body_html\": \"<h2>Our story</h2><p>We sell premium snowboards since 2020.</p>\",\n  \"handle\": \"about-us\",\n  \"author\": \"Admin\",\n  \"published\": true\n}" }
-          }
-        },
-        {
-          "name": "Update page",
-          "request": {
-            "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/pages/<page-id>",
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"About Us — Updated\",\n  \"body_html\": \"<p>New content</p>\",\n  \"published\": true\n}" }
-          }
-        },
-        { "name": "Delete page", "request": { "method": "DELETE", "url": "{{base_url}}/pages/<page-id>" } },
-        { "name": "List shop policies", "request": { "method": "GET", "url": "{{base_url}}/policies" } },
-        {
-          "name": "Update policy (e.g. REFUND_POLICY)",
-          "request": {
-            "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/policies/REFUND_POLICY",
-            "body": { "mode": "raw", "raw": "{\n  \"body\": \"<h2>Refund Policy</h2><p>30-day money back guarantee on all snowboards.</p>\"\n}" },
-            "description": "Policy types: REFUND_POLICY, PRIVACY_POLICY, TERMS_OF_SERVICE, SHIPPING_POLICY, SUBSCRIPTION_POLICY, LEGAL_NOTICE, TERMS_OF_SALE, CONTACT_INFORMATION"
-          }
-        }
-      ]
+      "key": "cart_id",
+      "value": ""
     },
     {
-      "name": "12. Media",
-      "item": [
-        {
-          "name": "List media",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/media",
-              "host": ["{{base_url}}"], "path": ["media"],
-              "query": [{ "key": "folder", "value": "products", "disabled": true }]
-            }
-          }
-        },
-        {
-          "name": "Staged upload",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/media/staged-upload",
-            "body": { "mode": "raw", "raw": "{\n  \"filename\": \"hero.png\",\n  \"mimeType\": \"image/png\"\n}" }
-          }
-        },
-        {
-          "name": "Register file (after upload to staged URL)",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/media/register",
-            "body": { "mode": "raw", "raw": "{\n  \"url\": \"https://cdn.shopify.com/staged-uploads/...\",\n  \"cdnKey\": \"products/hero-abc.png\",\n  \"mimeType\": \"image/png\",\n  \"sizeBytes\": 154233,\n  \"folder\": \"products\"\n}" }
-          }
-        }
-      ]
+      "key": "customer_token",
+      "value": ""
     },
     {
-      "name": "13. Reports",
-      "item": [
-        {
-          "name": "Sales (ShopifyQL)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/reports/sales?since=-30d&until=today",
-              "host": ["{{base_url}}"], "path": ["reports", "sales"],
-              "query": [
-                { "key": "since", "value": "-30d" },
-                { "key": "until", "value": "today" }
-              ]
-            }
-          }
-        },
-        { "name": "Inventory by location", "request": { "method": "GET", "url": "{{base_url}}/reports/inventory" } },
-        { "name": "Vendor spend", "request": { "method": "GET", "url": "{{base_url}}/reports/vendors" } }
-      ]
+      "key": "order_id",
+      "value": ""
     },
     {
-      "name": "14. Settings",
-      "item": [
-        { "name": "List all settings", "request": { "method": "GET", "url": "{{base_url}}/settings" } },
-        { "name": "Get setting", "request": { "method": "GET", "url": "{{base_url}}/settings/tax.default_rate" } },
-        {
-          "name": "Set setting",
-          "request": {
-            "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{base_url}}/settings/tax.default_rate",
-            "body": { "mode": "raw", "raw": "{\n  \"value\": 0.18\n}" }
-          }
-        }
-      ]
+      "key": "subscription_id",
+      "value": ""
     },
     {
-      "name": "15. Audit Logs",
-      "item": [
-        {
-          "name": "List audit logs",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/audit-logs?take=50",
-              "host": ["{{base_url}}"], "path": ["audit-logs"],
-              "query": [
-                { "key": "take", "value": "50" },
-                { "key": "skip", "value": "0" },
-                { "key": "resource", "value": "PurchaseOrder", "disabled": true },
-                { "key": "userId", "value": "", "disabled": true }
-              ]
-            }
-          }
-        }
-      ]
+      "key": "cart_line_id",
+      "value": ""
     },
     {
-      "name": "16. Webhooks (Shopify → API)",
-      "description": "Shopify POSTs here. HMAC verified with SHOPIFY_API_SECRET. Topic in URL uses dash instead of slash (orders/create → orders-create).",
-      "item": [
-        {
-          "name": "orders/create",
-          "request": {
-            "auth": { "type": "noauth" },
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Shopify-Hmac-Sha256", "value": "<computed>" },
-              { "key": "X-Shopify-Topic", "value": "orders/create" },
-              { "key": "X-Shopify-Shop-Domain", "value": "test-store-uzhiv0ib.myshopify.com" }
-            ],
-            "url": "{{base_url}}/webhooks/shopify/orders-create",
-            "body": { "mode": "raw", "raw": "{ \"id\": 1001, \"name\": \"#1001\", \"financial_status\": \"paid\" }" }
-          }
-        },
-        {
-          "name": "products/update",
-          "request": {
-            "auth": { "type": "noauth" },
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Shopify-Hmac-Sha256", "value": "<computed>" },
-              { "key": "X-Shopify-Topic", "value": "products/update" }
-            ],
-            "url": "{{base_url}}/webhooks/shopify/products-update",
-            "body": { "mode": "raw", "raw": "{ \"id\": 555, \"title\": \"Updated\", \"status\": \"active\" }" }
-          }
-        },
-        {
-          "name": "customers/redact (GDPR)",
-          "request": {
-            "auth": { "type": "noauth" },
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-Shopify-Hmac-Sha256", "value": "<computed>" },
-              { "key": "X-Shopify-Topic", "value": "customers/redact" }
-            ],
-            "url": "{{base_url}}/webhooks/shopify/customers-redact",
-            "body": { "mode": "raw", "raw": "{ \"shop_id\": 1, \"customer\": { \"id\": 999, \"email\": \"x@y.com\" } }" }
-          }
-        }
-      ]
+      "key": "menu_handle",
+      "value": "main-menu"
+    },
+    {
+      "key": "page_handle",
+      "value": ""
+    },
+    {
+      "key": "blog_handle",
+      "value": "news"
+    },
+    {
+      "key": "article_handle",
+      "value": ""
+    },
+    {
+      "key": "product_gid",
+      "value": ""
+    },
+    {
+      "key": "address_id",
+      "value": ""
+    },
+    {
+      "key": "fulfillment_line_item_id",
+      "value": ""
     }
   ]
 }

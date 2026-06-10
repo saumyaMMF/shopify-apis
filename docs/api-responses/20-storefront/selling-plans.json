@@ -1,0 +1,155 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/products/selling-plans-ski-wax/selling-plans",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Product/10291139903789",
+      "handle": "selling-plans-ski-wax",
+      "title": "Selling Plans Ski Wax",
+      "sellingPlanGroups": {
+        "edges": [
+          {
+            "node": {
+              "appName": null,
+              "name": "Preorder",
+              "options": [
+                {
+                  "name": "preorder",
+                  "values": [
+                    "1 Week(s)"
+                  ]
+                }
+              ],
+              "sellingPlans": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "gid://shopify/SellingPlan/690018517293",
+                      "name": "Preorder ski wax, delivered in a month",
+                      "description": null,
+                      "recurringDeliveries": false,
+                      "priceAdjustments": [
+                        {
+                          "orderCount": null,
+                          "adjustmentValue": {
+                            "__typename": "SellingPlanPercentagePriceAdjustment",
+                            "adjustmentPercentage": 20
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "node": {
+              "appName": null,
+              "name": "Try Before You Buy",
+              "options": [
+                {
+                  "name": "Trial for",
+                  "values": [
+                    "1 Week(s)"
+                  ]
+                }
+              ],
+              "sellingPlans": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "gid://shopify/SellingPlan/690018550061",
+                      "name": "Try our product risk-free for a week before needing to pay",
+                      "description": null,
+                      "recurringDeliveries": false,
+                      "priceAdjustments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "node": {
+              "appName": null,
+              "name": "Prepaid",
+              "options": [
+                {
+                  "name": "Delivery every",
+                  "values": [
+                    "1 Week(s)"
+                  ]
+                }
+              ],
+              "sellingPlans": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "gid://shopify/SellingPlan/690018582829",
+                      "name": "A year supply of prepaid ski wax, delivered monthly",
+                      "description": null,
+                      "recurringDeliveries": true,
+                      "priceAdjustments": [
+                        {
+                          "orderCount": null,
+                          "adjustmentValue": {
+                            "__typename": "SellingPlanPercentagePriceAdjustment",
+                            "adjustmentPercentage": 20
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "node": {
+              "appName": null,
+              "name": "Subscription",
+              "options": [
+                {
+                  "name": "Delivery every",
+                  "values": [
+                    "1 Week(s)"
+                  ]
+                }
+              ],
+              "sellingPlans": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "gid://shopify/SellingPlan/690018615597",
+                      "name": "Ski wax subscription, billed and delivered weekly",
+                      "description": null,
+                      "recurringDeliveries": true,
+                      "priceAdjustments": [
+                        {
+                          "orderCount": null,
+                          "adjustmentValue": {
+                            "__typename": "SellingPlanPercentagePriceAdjustment",
+                            "adjustmentPercentage": 15
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:06Z"
+}

@@ -1,0 +1,45 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/menu/main-menu",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Menu/300293947693",
+      "title": "Main menu",
+      "handle": "main-menu",
+      "items": [
+        {
+          "id": "gid://shopify/MenuItem/753197744429",
+          "title": "Home",
+          "url": "https://test-store-uzhiv0ib.myshopify.com/",
+          "type": "FRONTPAGE",
+          "resourceId": null,
+          "items": []
+        },
+        {
+          "id": "gid://shopify/MenuItem/753197777197",
+          "title": "Catalog",
+          "url": "https://test-store-uzhiv0ib.myshopify.com/collections/all",
+          "type": "CATALOG",
+          "resourceId": null,
+          "items": []
+        },
+        {
+          "id": "gid://shopify/MenuItem/753197809965",
+          "title": "Contact",
+          "url": "https://test-store-uzhiv0ib.myshopify.com/pages/contact",
+          "type": "PAGE",
+          "resourceId": "gid://shopify/Page/154654310701",
+          "items": []
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:06Z"
+}

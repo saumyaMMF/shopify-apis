@@ -1,0 +1,79 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/cart?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=5a0249d5-10ac-4c1f-985f-188590f35f27&_y=85a58a29-97c0-408a-8273-853dd8784738",
+      "totalQuantity": 1,
+      "cost": {
+        "subtotalAmount": {
+          "amount": "949.95",
+          "currencyCode": "INR"
+        },
+        "totalAmount": {
+          "amount": "949.95",
+          "currencyCode": "INR"
+        },
+        "totalTaxAmount": null
+      },
+      "lines": {
+        "edges": [
+          {
+            "node": {
+              "id": "gid://shopify/CartLine/63f382fa-f555-4497-839c-5fb3bf4daf6e?cart=hWNDBCwDUOuhO0TWuG7eG8yy",
+              "quantity": 1,
+              "merchandise": {
+                "id": "gid://shopify/ProductVariant/52130746335533",
+                "title": "Default Title",
+                "sku": "sku-untracked-1",
+                "price": {
+                  "amount": "949.95",
+                  "currencyCode": "INR"
+                },
+                "image": {
+                  "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+                  "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples."
+                },
+                "product": {
+                  "id": "gid://shopify/Product/10291139674413",
+                  "handle": "the-inventory-not-tracked-snowboard",
+                  "title": "The Inventory Not Tracked Snowboard",
+                  "featuredImage": {
+                    "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+                    "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples."
+                  }
+                },
+                "selectedOptions": [
+                  {
+                    "name": "Title",
+                    "value": "Default Title"
+                  }
+                ]
+              },
+              "cost": {
+                "totalAmount": {
+                  "amount": "949.95",
+                  "currencyCode": "INR"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "buyerIdentity": {
+        "email": null,
+        "phone": null,
+        "countryCode": null
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:09Z"
+}

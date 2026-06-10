@@ -1,0 +1,52 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/collections?first=5",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NDA2NTk2NDY3NjUsImxhc3RfdmFsdWUiOjU0MDY1OTY0Njc2NSwib2Zmc2V0IjoyfQ=="
+      },
+      "edges": [
+        {
+          "cursor": "eyJsYXN0X2lkIjo1NDA2NTk1ODEyMjksImxhc3RfdmFsdWUiOjU0MDY1OTU4MTIyOSwib2Zmc2V0IjowfQ==",
+          "node": {
+            "id": "gid://shopify/Collection/540659581229",
+            "handle": "frontpage",
+            "title": "Home page",
+            "description": "",
+            "image": null
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjo1NDA2NTk2MTM5OTcsImxhc3RfdmFsdWUiOjU0MDY1OTYxMzk5Nywib2Zmc2V0IjoxfQ==",
+          "node": {
+            "id": "gid://shopify/Collection/540659613997",
+            "handle": "automated-collection",
+            "title": "Automated Collection",
+            "description": "",
+            "image": null
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjo1NDA2NTk2NDY3NjUsImxhc3RfdmFsdWUiOjU0MDY1OTY0Njc2NSwib2Zmc2V0IjoyfQ==",
+          "node": {
+            "id": "gid://shopify/Collection/540659646765",
+            "handle": "hydrogen",
+            "title": "Hydrogen",
+            "description": "",
+            "image": null
+          }
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:08Z"
+}

@@ -1,0 +1,145 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/storefront/collections/filtered",
+    "headers": {},
+    "body": {
+      "handle": "hydrogen",
+      "first": 5,
+      "sortKey": "PRICE",
+      "filters": [
+        {
+          "price": {
+            "min": 100,
+            "max": 2000
+          }
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Collection/540659646765",
+      "handle": "hydrogen",
+      "title": "Hydrogen",
+      "products": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X3ZhbHVlIjoiMiIsImxhc3RfaWQiOjEwMjkxMTQwMTk4NzAxLCJvZmZzZXQiOjJ9"
+        },
+        "filters": [
+          {
+            "id": "filter.v.availability",
+            "label": "Availability",
+            "type": "LIST",
+            "values": [
+              {
+                "id": "filter.v.availability.1",
+                "label": "In stock",
+                "count": 3,
+                "input": "{\"available\":true}"
+              },
+              {
+                "id": "filter.v.availability.0",
+                "label": "Out of stock",
+                "count": 0,
+                "input": "{\"available\":false}"
+              }
+            ]
+          },
+          {
+            "id": "filter.v.price",
+            "label": "Price",
+            "type": "PRICE_RANGE",
+            "values": [
+              {
+                "id": "filter.v.price",
+                "label": "Price",
+                "count": 0,
+                "input": "{\"price\":{\"min\":100.00,\"max\":1025.0}}"
+              }
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "cursor": "eyJsYXN0X3ZhbHVlIjoiMCIsImxhc3RfaWQiOjEwMjkxMTM5ODM4MjUzLCJvZmZzZXQiOjB9",
+            "node": {
+              "id": "gid://shopify/Product/10291139838253",
+              "handle": "the-collection-snowboard-hydrogen",
+              "title": "The Collection Snowboard: Hydrogen",
+              "vendor": "Hydrogen Vendor",
+              "availableForSale": true,
+              "featuredImage": {
+                "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_0a40b01b-5021-48c1-80d1-aa8ab4876d3d.jpg?v=1781002289",
+                "altText": "Top and bottom view of a snowboard. The top view shows stylized hydrogen bonds and the bottom view shows \"H2\" in a brush script typeface."
+              },
+              "priceRange": {
+                "minVariantPrice": {
+                  "amount": "600.0",
+                  "currencyCode": "INR"
+                },
+                "maxVariantPrice": {
+                  "amount": "600.0",
+                  "currencyCode": "INR"
+                }
+              }
+            }
+          },
+          {
+            "cursor": "eyJsYXN0X3ZhbHVlIjoiMSIsImxhc3RfaWQiOjEwMjkxMTQwMjMxNDY5LCJvZmZzZXQiOjF9",
+            "node": {
+              "id": "gid://shopify/Product/10291140231469",
+              "handle": "the-collection-snowboard-liquid",
+              "title": "The Collection Snowboard: Liquid",
+              "vendor": "Hydrogen Vendor",
+              "availableForSale": true,
+              "featuredImage": {
+                "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_b13ad453-477c-4ed1-9b43-81f3345adfd6.jpg?v=1781002292",
+                "altText": "Top and bottom view of a snowboard. The top view shows a stylized scene of water, trees, mountains, sky and a moon in blue colours. The bottom view has a blue liquid, drippy background with the text \"liquid\" in a stylized script typeface."
+              },
+              "priceRange": {
+                "minVariantPrice": {
+                  "amount": "749.95",
+                  "currencyCode": "INR"
+                },
+                "maxVariantPrice": {
+                  "amount": "749.95",
+                  "currencyCode": "INR"
+                }
+              }
+            }
+          },
+          {
+            "cursor": "eyJsYXN0X3ZhbHVlIjoiMiIsImxhc3RfaWQiOjEwMjkxMTQwMTk4NzAxLCJvZmZzZXQiOjJ9",
+            "node": {
+              "id": "gid://shopify/Product/10291140198701",
+              "handle": "the-collection-snowboard-oxygen",
+              "title": "The Collection Snowboard: Oxygen",
+              "vendor": "Hydrogen Vendor",
+              "availableForSale": true,
+              "featuredImage": {
+                "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1781002290",
+                "altText": "Top and bottom view of a snowboard. The top view shows a stylized scene of trees, mountains, sky and a sun in red colours. The bottom view has blue wavy lines in the background with the text \"Oxygen\" in a stylized script typeface."
+              },
+              "priceRange": {
+                "minVariantPrice": {
+                  "amount": "1025.0",
+                  "currencyCode": "INR"
+                },
+                "maxVariantPrice": {
+                  "amount": "1025.0",
+                  "currencyCode": "INR"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:04Z"
+}

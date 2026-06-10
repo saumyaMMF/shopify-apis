@@ -1,0 +1,52 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/localization",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "country": {
+        "isoCode": "IN",
+        "name": "India",
+        "currency": {
+          "isoCode": "INR",
+          "symbol": "₹"
+        }
+      },
+      "language": {
+        "isoCode": "EN",
+        "name": "English",
+        "endonymName": "English"
+      },
+      "availableCountries": [
+        {
+          "isoCode": "CA",
+          "name": "Canada",
+          "currency": {
+            "isoCode": "CAD"
+          }
+        },
+        {
+          "isoCode": "IN",
+          "name": "India",
+          "currency": {
+            "isoCode": "INR"
+          }
+        }
+      ],
+      "availableLanguages": [
+        {
+          "isoCode": "EN",
+          "name": "English",
+          "endonymName": "English"
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:07Z"
+}

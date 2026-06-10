@@ -1,0 +1,52 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/pages?first=10",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxNTQ2NjUzNTM1MTcsImxhc3RfdmFsdWUiOjE1NDY2NTM1MzUxNywib2Zmc2V0IjoyfQ=="
+      },
+      "edges": [
+        {
+          "cursor": "eyJsYXN0X2lkIjoxNTQ2NTQzMTA3MDEsImxhc3RfdmFsdWUiOjE1NDY1NDMxMDcwMSwib2Zmc2V0IjowfQ==",
+          "node": {
+            "id": "gid://shopify/Page/154654310701",
+            "title": "Contact",
+            "handle": "contact",
+            "bodySummary": "",
+            "onlineStoreUrl": "https://test-store-uzhiv0ib.myshopify.com/pages/contact"
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxNTQ2NjUwNTg2MDUsImxhc3RfdmFsdWUiOjE1NDY2NTA1ODYwNSwib2Zmc2V0IjoxfQ==",
+          "node": {
+            "id": "gid://shopify/Page/154665058605",
+            "title": "About Us",
+            "handle": "about-us",
+            "bodySummary": "We sell snowboards.",
+            "onlineStoreUrl": "https://test-store-uzhiv0ib.myshopify.com/pages/about-us"
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxNTQ2NjUzNTM1MTcsImxhc3RfdmFsdWUiOjE1NDY2NTM1MzUxNywib2Zmc2V0IjoyfQ==",
+          "node": {
+            "id": "gid://shopify/Page/154665353517",
+            "title": "About Us 2",
+            "handle": "about-us-v2",
+            "bodySummary": "v2",
+            "onlineStoreUrl": "https://test-store-uzhiv0ib.myshopify.com/pages/about-us-v2"
+          }
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:06Z"
+}

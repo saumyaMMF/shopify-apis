@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/storefront/cart/buyer-identity?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "headers": {},
+    "body": {
+      "email": "buyer@example.com",
+      "countryCode": "US"
+    }
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=bcdd56a5-3770-408d-9ed5-71708d1697f2&_y=446f7571-bd9c-4f0c-86d1-dedad0c82c03",
+      "totalQuantity": 0,
+      "cost": {
+        "subtotalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalTaxAmount": null
+      },
+      "lines": {
+        "edges": []
+      },
+      "buyerIdentity": {
+        "email": "buyer@example.com",
+        "phone": null,
+        "countryCode": "US"
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:11Z"
+}

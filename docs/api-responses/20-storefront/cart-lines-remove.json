@@ -1,0 +1,42 @@
+{
+  "request": {
+    "method": "DELETE",
+    "url": "/storefront/cart/lines?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "headers": {},
+    "body": {
+      "lineIds": [
+        "gid://shopify/CartLine/63f382fa-f555-4497-839c-5fb3bf4daf6e?cart=hWNDBCwDUOuhO0TWuG7eG8yy"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=59fbd322-282c-45da-892f-b0fe9367fbda&_y=cfd5fd5a-d3d8-4acb-84c7-166e68a67720",
+      "totalQuantity": 0,
+      "cost": {
+        "subtotalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalTaxAmount": null
+      },
+      "lines": {
+        "edges": []
+      },
+      "buyerIdentity": {
+        "email": null,
+        "phone": null,
+        "countryCode": null
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:11Z"
+}

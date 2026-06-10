@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/menu/footer",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Menu/300293980461",
+      "title": "Footer menu",
+      "handle": "footer",
+      "items": [
+        {
+          "id": "gid://shopify/MenuItem/753197842733",
+          "title": "Search",
+          "url": "https://test-store-uzhiv0ib.myshopify.com/search",
+          "type": "SEARCH",
+          "resourceId": null,
+          "items": []
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:03Z"
+}

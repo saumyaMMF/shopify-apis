@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/customer/order/buy-again?id=gid%3A%2F%2Fshopify%2FOrder%2F6914170290477",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 400,
+    "ok": false,
+    "error": null,
+    "body": {
+      "statusCode": 400,
+      "path": "/api/storefront/customer/order/buy-again?id=gid%3A%2F%2Fshopify%2FOrder%2F6914170290477",
+      "timestamp": "2026-06-10T13:24:28.014Z",
+      "message": "[{\"message\":\"Access token is invalid or revoked\"}]",
+      "error": "Bad Request"
+    }
+  },
+  "capturedAt": "2026-06-10T13:24:28Z"
+}

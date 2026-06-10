@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/metaobject?type=banner&handle=homepage-hero",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": ""
+  },
+  "capturedAt": "2026-06-10T13:44:05Z"
+}

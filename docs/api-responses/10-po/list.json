@@ -13,6 +13,314 @@
     "error": null,
     "body": [
       {
+        "id": "e0a90148-ce32-4f4e-b6a0-430d5ee1089c",
+        "poNumber": "PO-2026-00016",
+        "vendorId": "3be3833f-d81a-465e-840f-4f1f07375c53",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T13:23:52.452Z",
+        "updatedAt": "2026-06-10T13:23:52.469Z",
+        "vendor": {
+          "id": "3be3833f-d81a-465e-840f-4f1f07375c53",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "a5aa41ce-b9ed-4d26-bdb5-bac7c6537787",
+            "poId": "e0a90148-ce32-4f4e-b6a0-430d5ee1089c",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "981d040f-3cf2-42df-8eaa-c7d28e1fb550",
+        "poNumber": "PO-2026-00015",
+        "vendorId": "3e72bb3e-545e-4ca0-a931-4d9a2155afec",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T12:39:44.350Z",
+        "updatedAt": "2026-06-10T12:39:44.370Z",
+        "vendor": {
+          "id": "3e72bb3e-545e-4ca0-a931-4d9a2155afec",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "f87c124f-3c34-495c-9d58-ee6d343e3089",
+            "poId": "981d040f-3cf2-42df-8eaa-c7d28e1fb550",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "490adb75-9012-4329-8d9c-34f1dc7ab148",
+        "poNumber": "PO-2026-00014",
+        "vendorId": "184847a4-ac1d-4646-b2ca-9617b8a085e5",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T12:09:57.396Z",
+        "updatedAt": "2026-06-10T12:09:57.407Z",
+        "vendor": {
+          "id": "184847a4-ac1d-4646-b2ca-9617b8a085e5",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "5e9b25e7-4a72-4662-a4c4-4d6bc2ef0f00",
+            "poId": "490adb75-9012-4329-8d9c-34f1dc7ab148",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "dc85e292-45f1-46fb-bf6d-4688c1d4f092",
+        "poNumber": "PO-2026-00013",
+        "vendorId": "370e8e6c-4c9d-4893-8201-8ee1d737cdf8",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T12:08:42.025Z",
+        "updatedAt": "2026-06-10T12:08:42.046Z",
+        "vendor": {
+          "id": "370e8e6c-4c9d-4893-8201-8ee1d737cdf8",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "23aca7d7-40ed-4b3a-af70-39128246bb85",
+            "poId": "dc85e292-45f1-46fb-bf6d-4688c1d4f092",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "7d0df392-21e4-4e36-a30f-531cdbf7d2d5",
+        "poNumber": "PO-2026-00012",
+        "vendorId": "e310d500-45e4-44ff-bf89-69dca981fa27",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T09:28:49.996Z",
+        "updatedAt": "2026-06-10T09:28:50.010Z",
+        "vendor": {
+          "id": "e310d500-45e4-44ff-bf89-69dca981fa27",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "54b6fb95-cc53-4f35-8262-4a0a83152bc3",
+            "poId": "7d0df392-21e4-4e36-a30f-531cdbf7d2d5",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "e7e87f68-2121-4871-b715-e4b58823d45a",
+        "poNumber": "PO-2026-00011",
+        "vendorId": "a3d085e2-c0c6-4ab2-a8b9-ee670d6ed4c5",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T09:27:25.360Z",
+        "updatedAt": "2026-06-10T09:27:25.378Z",
+        "vendor": {
+          "id": "a3d085e2-c0c6-4ab2-a8b9-ee670d6ed4c5",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "c7e4e77e-d29c-40be-985b-ca3920b4c6ae",
+            "poId": "e7e87f68-2121-4871-b715-e4b58823d45a",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "a0f631ea-dc60-4e42-8a9e-c2a73e7840ea",
+        "poNumber": "PO-2026-00010",
+        "vendorId": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T07:02:56.376Z",
+        "updatedAt": "2026-06-10T07:02:56.390Z",
+        "vendor": {
+          "id": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "919ccd0b-099a-49e3-a49b-c81bf992d8c1",
+            "poId": "a0f631ea-dc60-4e42-8a9e-c2a73e7840ea",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
         "id": "1f57c722-5a1a-4fa9-83c7-515a99fb7516",
         "poNumber": "PO-2026-00009",
         "vendorId": "c432b5df-b814-44fc-9544-afc710a9ef71",
@@ -410,5 +718,5 @@
       }
     ]
   },
-  "capturedAt": "2026-06-10T07:02:56Z"
+  "capturedAt": "2026-06-10T13:43:39Z"
 }

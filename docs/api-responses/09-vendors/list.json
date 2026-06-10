@@ -110,8 +110,85 @@
         "taxNumber": null,
         "paymentTerms": "NET-45",
         "isActive": true
+      },
+      {
+        "id": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "a3d085e2-c0c6-4ab2-a8b9-ee670d6ed4c5",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "e310d500-45e4-44ff-bf89-69dca981fa27",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "370e8e6c-4c9d-4893-8201-8ee1d737cdf8",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "184847a4-ac1d-4646-b2ca-9617b8a085e5",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "3e72bb3e-545e-4ca0-a931-4d9a2155afec",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "3be3833f-d81a-465e-840f-4f1f07375c53",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
       }
     ]
   },
-  "capturedAt": "2026-06-10T07:02:56Z"
+  "capturedAt": "2026-06-10T13:43:39Z"
 }

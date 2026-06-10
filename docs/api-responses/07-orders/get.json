@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/orders/6914014183725",
+    "url": "/orders/6914170290477",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,38 +12,36 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Order/6914014183725",
-      "legacyResourceId": "6914014183725",
-      "name": "#1001",
-      "email": "Russel.winfield@example.com",
-      "phone": "+16135550135",
-      "tags": [
-        "Multiple Fulfillments"
-      ],
+      "id": "gid://shopify/Order/6914170290477",
+      "legacyResourceId": "6914170290477",
+      "name": "#1003",
+      "email": "abhipatodidev@gmail.com",
+      "phone": null,
+      "tags": [],
       "note": null,
       "displayFinancialStatus": "PAID",
-      "displayFulfillmentStatus": "UNFULFILLED",
+      "displayFulfillmentStatus": "FULFILLED",
       "totalPriceSet": {
         "shopMoney": {
-          "amount": "3290.22",
+          "amount": "1078.95",
           "currencyCode": "INR"
         }
       },
       "subtotalPriceSet": {
         "shopMoney": {
-          "amount": "3290.22",
+          "amount": "699.95",
           "currencyCode": "INR"
         }
       },
       "totalTaxSet": {
         "shopMoney": {
-          "amount": "0.0",
+          "amount": "106.77",
           "currencyCode": "INR"
         }
       },
       "totalShippingPriceSet": {
         "shopMoney": {
-          "amount": "0.0",
+          "amount": "379.0",
           "currencyCode": "INR"
         }
       },
@@ -53,68 +51,62 @@
           "currencyCode": "INR"
         }
       },
-      "createdAt": "2026-06-10T06:52:13Z",
-      "updatedAt": "2026-06-10T06:52:14Z",
-      "processedAt": "2026-06-10T06:52:12Z",
+      "createdAt": "2026-06-10T10:50:55Z",
+      "updatedAt": "2026-06-10T11:24:49Z",
+      "processedAt": "2026-06-10T10:50:53Z",
       "cancelledAt": null,
       "shippingAddress": {
-        "address1": "105 Victoria St",
-        "address2": null,
-        "city": "Toronto",
-        "province": null,
-        "country": "Canada",
-        "zip": "M5C1N7",
-        "phone": "+14165550135"
+        "address1": "29 Sant nagar palace",
+        "address2": "Khandwa Road",
+        "city": "Indore",
+        "province": "Madhya Pradesh",
+        "country": "India",
+        "zip": "452020",
+        "phone": "9999999999"
       },
       "billingAddress": {
-        "address1": "105 Victoria St",
-        "address2": null,
-        "city": "Toronto",
-        "province": null,
-        "country": "Canada",
-        "zip": "M5C1N7",
-        "phone": "+14165550135"
+        "address1": "29 Sant nagar palace",
+        "address2": "Khandwa Road",
+        "city": "Indore",
+        "province": "Madhya Pradesh",
+        "country": "India",
+        "zip": "452020",
+        "phone": "9999999999"
       },
       "customer": {
-        "id": "gid://shopify/Customer/9683059638573",
-        "firstName": "Russell",
-        "lastName": "Winfield",
-        "email": "Russel.winfield@example.com",
-        "phone": "+16135550135"
+        "id": "gid://shopify/Customer/9687891247405",
+        "firstName": "abhi",
+        "lastName": "Singh",
+        "email": "abhipatodidev@gmail.com",
+        "phone": null
       },
       "lineItems": {
         "edges": [
           {
             "node": {
-              "id": "gid://shopify/LineItem/16733306716461",
+              "id": "gid://shopify/LineItem/16733567975725",
               "title": "The Complete Snowboard",
               "quantity": 1,
               "sku": null,
               "variant": {
-                "id": "gid://shopify/ProductVariant/52130746532141",
-                "title": "Sunset",
+                "id": "gid://shopify/ProductVariant/52130746401069",
+                "title": "Ice",
                 "price": "699.95"
-              }
-            }
-          },
-          {
-            "node": {
-              "id": "gid://shopify/LineItem/16733306749229",
-              "title": "The 3p Fulfilled Snowboard",
-              "quantity": 1,
-              "sku": "sku-hosted-1",
-              "variant": {
-                "id": "gid://shopify/ProductVariant/52130747285805",
-                "title": "Default Title",
-                "price": "2629.95"
               }
             }
           }
         ]
       },
-      "fulfillments": [],
+      "fulfillments": [
+        {
+          "id": "gid://shopify/Fulfillment/6079798018349",
+          "status": "SUCCESS",
+          "trackingInfo": [],
+          "createdAt": "2026-06-10T11:19:29Z"
+        }
+      ],
       "refunds": []
     }
   },
-  "capturedAt": "2026-06-10T07:02:55Z"
+  "capturedAt": "2026-06-10T13:43:38Z"
 }

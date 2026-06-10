@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/customer/orders?first=10",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 400,
+    "ok": false,
+    "error": null,
+    "body": {
+      "statusCode": 400,
+      "path": "/api/storefront/customer/orders?first=10",
+      "timestamp": "2026-06-10T13:24:27.245Z",
+      "message": "[{\"message\":\"Access token is invalid or revoked\"}]",
+      "error": "Bad Request"
+    }
+  },
+  "capturedAt": "2026-06-10T13:24:27Z"
+}

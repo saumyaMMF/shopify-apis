@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/shop",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "name": "test store",
+      "description": null,
+      "primaryDomain": {
+        "url": "https://test-store-uzhiv0ib.myshopify.com",
+        "host": "test-store-uzhiv0ib.myshopify.com"
+      },
+      "brand": {
+        "logo": null,
+        "colors": {
+          "primary": [],
+          "secondary": []
+        }
+      },
+      "paymentSettings": {
+        "currencyCode": "INR",
+        "enabledPresentmentCurrencies": [
+          "CAD",
+          "INR"
+        ],
+        "acceptedCardBrands": [],
+        "supportedDigitalWallets": [],
+        "countryCode": "IN"
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:03Z"
+}

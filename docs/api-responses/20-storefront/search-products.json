@@ -1,0 +1,180 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/search?q=snowboard&sortKey=BEST_SELLING&first=5",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxMDI5MTE0MDE2NTkzMywibGFzdF92YWx1ZSI6MCwib2Zmc2V0Ijo0fQ=="
+      },
+      "edges": [
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTE0MDAzNDg2MSwibGFzdF92YWx1ZSI6Mywib2Zmc2V0IjowfQ==",
+          "node": {
+            "id": "gid://shopify/Product/10291140034861",
+            "handle": "the-complete-snowboard",
+            "title": "The Complete Snowboard",
+            "description": "This PREMIUM snowboard is so SUPERDUPER awesome!",
+            "vendor": "Snowboard Vendor",
+            "productType": "snowboard",
+            "tags": [
+              "Premium",
+              "Snow",
+              "Snowboard",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1781002289",
+              "altText": "Top and bottom view of a snowboard. The top view shows abstract circles and lines in shades of\n          teal. The bottom view shows abstract circles and lines in shades of purple and blue with the text “SHOPIFY”\n          in a sans serif typeface on top.",
+              "width": 1600,
+              "height": 1600
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "699.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "699.95",
+                "currencyCode": "INR"
+              }
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTE1MDU1MzM4OSwibGFzdF92YWx1ZSI6MCwib2Zmc2V0IjoxfQ==",
+          "node": {
+            "id": "gid://shopify/Product/10291150553389",
+            "handle": "green-snowboard",
+            "title": "Green Snowboard",
+            "description": "",
+            "vendor": "test store",
+            "productType": "",
+            "tags": [],
+            "availableForSale": true,
+            "featuredImage": null,
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "100.0",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "100.0",
+                "currencyCode": "INR"
+              }
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTE0MDIzMTQ2OSwibGFzdF92YWx1ZSI6MCwib2Zmc2V0IjoyfQ==",
+          "node": {
+            "id": "gid://shopify/Product/10291140231469",
+            "handle": "the-collection-snowboard-liquid",
+            "title": "The Collection Snowboard: Liquid",
+            "description": "",
+            "vendor": "Hydrogen Vendor",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_b13ad453-477c-4ed1-9b43-81f3345adfd6.jpg?v=1781002292",
+              "altText": "Top and bottom view of a snowboard. The top view shows a stylized scene of water, trees, mountains, sky and a moon in blue colours. The bottom view has a blue liquid, drippy background with the text \"liquid\" in a stylized script typeface.",
+              "width": 1600,
+              "height": 1600
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "749.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "749.95",
+                "currencyCode": "INR"
+              }
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTE0MDE5ODcwMSwibGFzdF92YWx1ZSI6MCwib2Zmc2V0IjozfQ==",
+          "node": {
+            "id": "gid://shopify/Product/10291140198701",
+            "handle": "the-collection-snowboard-oxygen",
+            "title": "The Collection Snowboard: Oxygen",
+            "description": "",
+            "vendor": "Hydrogen Vendor",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1781002290",
+              "altText": "Top and bottom view of a snowboard. The top view shows a stylized scene of trees, mountains, sky and a sun in red colours. The bottom view has blue wavy lines in the background with the text \"Oxygen\" in a stylized script typeface.",
+              "width": 1600,
+              "height": 1600
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "1025.0",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "1025.0",
+                "currencyCode": "INR"
+              }
+            }
+          }
+        },
+        {
+          "cursor": "eyJsYXN0X2lkIjoxMDI5MTE0MDE2NTkzMywibGFzdF92YWx1ZSI6MCwib2Zmc2V0Ijo0fQ==",
+          "node": {
+            "id": "gid://shopify/Product/10291140165933",
+            "handle": "the-3p-fulfilled-snowboard",
+            "title": "The 3p Fulfilled Snowboard",
+            "description": "",
+            "vendor": "test store",
+            "productType": "snowboard",
+            "tags": [
+              "Accessory",
+              "Sport",
+              "Winter"
+            ],
+            "availableForSale": true,
+            "featuredImage": {
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_b9e0da7f-db89-4d41-83f0-7f417b02831d.jpg?v=1781002290",
+              "altText": "Top and bottom view of a snowboard. The top view shows 7 stacked hexagons and the bottom view\n          shows a small, centred hexagonal logo for Hydrogen.",
+              "width": 1600,
+              "height": 1600
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "2629.95",
+                "currencyCode": "INR"
+              },
+              "maxVariantPrice": {
+                "amount": "2629.95",
+                "currencyCode": "INR"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:03Z"
+}

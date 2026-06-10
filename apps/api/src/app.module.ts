@@ -20,6 +20,8 @@ import { SettingsModule } from './settings/settings.module';
 import { AuditModule } from './audit/audit.module';
 import { ThemesModule } from './themes/themes.module';
 import { PagesModule } from './pages/pages.module';
+import { StorefrontModule } from './storefront/storefront.module';
+import { CustomerAccountModule } from './customer-account/customer-account.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { PagesModule } from './pages/pages.module';
     AuditModule,
     ThemesModule,
     PagesModule,
+    StorefrontModule,
+    CustomerAccountModule,
   ],
 })
 export class AppModule {}

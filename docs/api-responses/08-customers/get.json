@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/customers/9683059671341",
+    "url": "/customers/9688741019949",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,17 +12,17 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Customer/9683059671341",
-      "legacyResourceId": "9683059671341",
-      "firstName": "Ayumu",
-      "lastName": "Hirano",
-      "email": "ayumu.hirano@example.com",
-      "phone": "+16135550127",
+      "id": "gid://shopify/Customer/9688741019949",
+      "legacyResourceId": "9688741019949",
+      "firstName": "Sub",
+      "lastName": null,
+      "email": "subscriber-1781097857040@yopmail.com",
+      "phone": null,
       "tags": [],
-      "state": "DISABLED",
+      "state": "ENABLED",
       "note": null,
-      "createdAt": "2026-06-09T10:51:26Z",
-      "updatedAt": "2026-06-09T10:51:26Z",
+      "createdAt": "2026-06-10T13:24:18Z",
+      "updatedAt": "2026-06-10T13:24:18Z",
       "numberOfOrders": "0",
       "amountSpent": {
         "amount": "0.0",
@@ -35,5 +35,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-10T07:02:56Z"
+  "capturedAt": "2026-06-10T13:43:39Z"
 }

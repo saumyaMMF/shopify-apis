@@ -17,8 +17,14 @@
         "value": "autotest",
         "updatedAt": "2026-06-10T06:58:48.090Z",
         "updatedBy": "822d845a-6092-43b6-81c8-906023fa03ef"
+      },
+      {
+        "key": "capture.test",
+        "value": "demo",
+        "updatedAt": "2026-06-10T13:24:15.821Z",
+        "updatedBy": "822d845a-6092-43b6-81c8-906023fa03ef"
       }
     ]
   },
-  "capturedAt": "2026-06-10T07:03:19Z"
+  "capturedAt": "2026-06-10T13:44:02Z"
 }

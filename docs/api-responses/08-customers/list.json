@@ -14,16 +14,16 @@
     "body": {
       "items": [
         {
-          "id": "gid://shopify/Customer/9683059671341",
-          "legacyResourceId": "9683059671341",
-          "firstName": "Ayumu",
-          "lastName": "Hirano",
-          "email": "ayumu.hirano@example.com",
-          "phone": "+16135550127",
+          "id": "gid://shopify/Customer/9688741019949",
+          "legacyResourceId": "9688741019949",
+          "firstName": "Sub",
+          "lastName": null,
+          "email": "subscriber-1781097857040@yopmail.com",
+          "phone": null,
           "tags": [],
-          "state": "DISABLED",
-          "createdAt": "2026-06-09T10:51:26Z",
-          "updatedAt": "2026-06-09T10:51:26Z",
+          "state": "ENABLED",
+          "createdAt": "2026-06-10T13:24:18Z",
+          "updatedAt": "2026-06-10T13:24:18Z",
           "numberOfOrders": "0",
           "amountSpent": {
             "amount": "0.0",
@@ -32,57 +32,47 @@
           "defaultAddress": null
         },
         {
-          "id": "gid://shopify/Customer/9683059638573",
-          "legacyResourceId": "9683059638573",
-          "firstName": "Russell",
-          "lastName": "Winfield",
-          "email": "Russel.winfield@example.com",
-          "phone": "+16135550135",
-          "tags": [
-            "VIP"
-          ],
-          "state": "DISABLED",
-          "createdAt": "2026-06-09T10:51:26Z",
-          "updatedAt": "2026-06-10T06:52:13Z",
-          "numberOfOrders": "1",
-          "amountSpent": {
-            "amount": "3290.22",
-            "currencyCode": "INR"
-          },
-          "defaultAddress": {
-            "city": "Toronto",
-            "province": null,
-            "country": "Canada"
-          }
-        },
-        {
-          "id": "gid://shopify/Customer/9683059605805",
-          "legacyResourceId": "9683059605805",
-          "firstName": "Karine",
-          "lastName": "Ruby",
-          "email": "karine.ruby@example.com",
-          "phone": "+16135550142",
+          "id": "gid://shopify/Customer/9688131698989",
+          "legacyResourceId": "9688131698989",
+          "firstName": "Sub",
+          "lastName": null,
+          "email": "subscriber-1781095208946@yopmail.com",
+          "phone": null,
           "tags": [],
-          "state": "DISABLED",
-          "createdAt": "2026-06-09T10:51:26Z",
-          "updatedAt": "2026-06-09T10:51:26Z",
+          "state": "ENABLED",
+          "createdAt": "2026-06-10T12:40:09Z",
+          "updatedAt": "2026-06-10T12:40:09Z",
           "numberOfOrders": "0",
           "amountSpent": {
             "amount": "0.0",
             "currencyCode": "INR"
           },
-          "defaultAddress": {
-            "city": "Ottawa",
-            "province": null,
-            "country": "Canada"
-          }
+          "defaultAddress": null
+        },
+        {
+          "id": "gid://shopify/Customer/9688090050861",
+          "legacyResourceId": "9688090050861",
+          "firstName": "Sub",
+          "lastName": null,
+          "email": "newsub1781095011@yopmail.com",
+          "phone": null,
+          "tags": [],
+          "state": "ENABLED",
+          "createdAt": "2026-06-10T12:36:52Z",
+          "updatedAt": "2026-06-10T12:36:52Z",
+          "numberOfOrders": "0",
+          "amountSpent": {
+            "amount": "0.0",
+            "currencyCode": "INR"
+          },
+          "defaultAddress": null
         }
       ],
       "pageInfo": {
-        "hasNextPage": false,
-        "endCursor": "eyJsYXN0X2lkIjo5NjgzMDU5NjA1ODA1LCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0wOSAxMDo1MToyNi4wMDAwMDAifQ=="
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo5Njg4MDkwMDUwODYxLCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0xMCAxMjozNjo1Mi4wMDAwMDAifQ=="
       }
     }
   },
-  "capturedAt": "2026-06-10T07:02:55Z"
+  "capturedAt": "2026-06-10T13:43:38Z"
 }

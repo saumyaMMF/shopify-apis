@@ -16,12 +16,12 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Product/10292272595245",
-      "legacyResourceId": "10292272595245",
+      "id": "gid://shopify/Product/10292993294637",
+      "legacyResourceId": "10292993294637",
       "title": "API Capture Test",
       "handle": "api-capture-test",
       "status": "DRAFT"
     }
   },
-  "capturedAt": "2026-06-10T07:02:51Z"
+  "capturedAt": "2026-06-10T13:43:34Z"
 }

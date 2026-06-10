@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/purchase-orders/a0f631ea-dc60-4e42-8a9e-c2a73e7840ea",
+    "url": "/purchase-orders/8601b8b2-3951-4f2b-9453-31ff154193fb",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,9 +12,9 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "a0f631ea-dc60-4e42-8a9e-c2a73e7840ea",
-      "poNumber": "PO-2026-00010",
-      "vendorId": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+      "id": "8601b8b2-3951-4f2b-9453-31ff154193fb",
+      "poNumber": "PO-2026-00017",
+      "vendorId": "2bad9f20-b33f-43ba-a1af-3de477fb4caa",
       "locationId": "loc-capture",
       "status": "DRAFT",
       "subtotal": "50",
@@ -27,10 +27,10 @@
       "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
       "approvedBy": null,
       "approvedAt": null,
-      "createdAt": "2026-06-10T07:02:56.376Z",
-      "updatedAt": "2026-06-10T07:02:56.376Z",
+      "createdAt": "2026-06-10T13:43:39.476Z",
+      "updatedAt": "2026-06-10T13:43:39.476Z",
       "vendor": {
-        "id": "4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7",
+        "id": "2bad9f20-b33f-43ba-a1af-3de477fb4caa",
         "name": "Capture Vendor",
         "contactName": null,
         "email": "capture@v.com",
@@ -42,8 +42,8 @@
       },
       "items": [
         {
-          "id": "919ccd0b-099a-49e3-a49b-c81bf992d8c1",
-          "poId": "a0f631ea-dc60-4e42-8a9e-c2a73e7840ea",
+          "id": "25da8aa1-49c3-4342-9f1c-80a09f06b28a",
+          "poId": "8601b8b2-3951-4f2b-9453-31ff154193fb",
           "variantId": "v-cap",
           "sku": "CAP-1",
           "title": "Capture Item",
@@ -56,5 +56,5 @@
       "receipts": []
     }
   },
-  "capturedAt": "2026-06-10T07:02:56Z"
+  "capturedAt": "2026-06-10T13:43:39Z"
 }

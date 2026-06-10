@@ -1,0 +1,97 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/search/suggest?q=snowboard&limit=5",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "products": [
+        {
+          "id": "gid://shopify/Product/10291140034861",
+          "title": "The Complete Snowboard",
+          "handle": "the-complete-snowboard",
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1781002289",
+            "altText": "Top and bottom view of a snowboard. The top view shows abstract circles and lines in shades of\n          teal. The bottom view shows abstract circles and lines in shades of purple and blue with the text “SHOPIFY”\n          in a sans serif typeface on top."
+          },
+          "priceRange": {
+            "minVariantPrice": {
+              "amount": "699.95",
+              "currencyCode": "INR"
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291140002093",
+          "title": "The Hidden Snowboard",
+          "handle": "the-hidden-snowboard",
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_c8ff0b5d-c712-429a-be00-b29bd55cbc9d.jpg?v=1781002289",
+            "altText": "The top view and bottom view of a snowboard. The top view is black with a singular peach cube.\n        The bottom view has a graphic of a stack of blocks in a gradient from light blue, to pink to peach."
+          },
+          "priceRange": {
+            "minVariantPrice": {
+              "amount": "749.95",
+              "currencyCode": "INR"
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139969325",
+          "title": "The Videographer Snowboard",
+          "handle": "the-videographer-snowboard",
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main.jpg?v=1781002289",
+            "altText": "The top and bottom view of a snowboard. The top has view is turquoise and black with graphics of\n        trees. The bottom view is turquoise with the word hydrogen written in cursive."
+          },
+          "priceRange": {
+            "minVariantPrice": {
+              "amount": "885.95",
+              "currencyCode": "INR"
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139838253",
+          "title": "The Collection Snowboard: Hydrogen",
+          "handle": "the-collection-snowboard-hydrogen",
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_0a40b01b-5021-48c1-80d1-aa8ab4876d3d.jpg?v=1781002289",
+            "altText": "Top and bottom view of a snowboard. The top view shows stylized hydrogen bonds and the bottom view shows \"H2\" in a brush script typeface."
+          },
+          "priceRange": {
+            "minVariantPrice": {
+              "amount": "600.0",
+              "currencyCode": "INR"
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291140198701",
+          "title": "The Collection Snowboard: Oxygen",
+          "handle": "the-collection-snowboard-oxygen",
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1781002290",
+            "altText": "Top and bottom view of a snowboard. The top view shows a stylized scene of trees, mountains, sky and a sun in red colours. The bottom view has blue wavy lines in the background with the text \"Oxygen\" in a stylized script typeface."
+          },
+          "priceRange": {
+            "minVariantPrice": {
+              "amount": "1025.0",
+              "currencyCode": "INR"
+            }
+          }
+        }
+      ],
+      "collections": [],
+      "articles": [],
+      "pages": [],
+      "queries": []
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:07Z"
+}

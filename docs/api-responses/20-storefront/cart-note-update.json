@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/storefront/cart/note?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "headers": {},
+    "body": {
+      "note": "Gift wrap please"
+    }
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=2b2f4f6a-597e-4023-9630-b7e766ddaf72&_y=1dcc342b-37ae-4a9a-bb1f-c6c17ad169e2",
+      "totalQuantity": 0,
+      "cost": {
+        "subtotalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        },
+        "totalTaxAmount": null
+      },
+      "lines": {
+        "edges": []
+      },
+      "buyerIdentity": {
+        "email": "buyer@example.com",
+        "phone": null,
+        "countryCode": "US"
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:13Z"
+}

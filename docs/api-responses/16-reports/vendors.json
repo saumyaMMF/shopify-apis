@@ -26,7 +26,39 @@
           "subtotal": "50"
         },
         "_count": 1,
+        "vendorId": "2bad9f20-b33f-43ba-a1af-3de477fb4caa"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
         "vendorId": "2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
+        "vendorId": "370e8e6c-4c9d-4893-8201-8ee1d737cdf8"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
+        "vendorId": "3e72bb3e-545e-4ca0-a931-4d9a2155afec"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
+        "vendorId": "184847a4-ac1d-4646-b2ca-9617b8a085e5"
       },
       {
         "_sum": {
@@ -74,6 +106,14 @@
           "subtotal": "50"
         },
         "_count": 1,
+        "vendorId": "a3d085e2-c0c6-4ab2-a8b9-ee670d6ed4c5"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
         "vendorId": "8dfca375-2e21-4ea9-a29c-f09ac375af55"
       },
       {
@@ -90,9 +130,25 @@
           "subtotal": "50"
         },
         "_count": 1,
+        "vendorId": "e310d500-45e4-44ff-bf89-69dca981fa27"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
         "vendorId": "6dedebad-cee9-448d-8ac8-f9350b44261d"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
+        "vendorId": "3be3833f-d81a-465e-840f-4f1f07375c53"
       }
     ]
   },
-  "capturedAt": "2026-06-10T07:03:19Z"
+  "capturedAt": "2026-06-10T13:44:02Z"
 }

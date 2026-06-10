@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/storefront/newsletter",
+    "headers": {},
+    "body": {
+      "email": "subscriber-1781099044040@yopmail.com",
+      "firstName": "Sub",
+      "acceptsMarketing": true
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Customer/9689052184877",
+      "email": "subscriber-1781099044040@yopmail.com",
+      "firstName": "Sub",
+      "lastName": null,
+      "acceptsMarketing": true
+    }
+  },
+  "capturedAt": "2026-06-10T13:44:05Z"
+}
