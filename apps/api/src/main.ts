@@ -7,6 +7,10 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
+// Patch BigInt to JSON-serialize as string globally
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(BigInt.prototype as any).toJSON = function () { return this.toString(); };
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
   const cfg = app.get(ConfigService);

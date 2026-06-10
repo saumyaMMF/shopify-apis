@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductsService, CreateProductDto } from './products.service';
+import { SyncService } from '../shopify/sync.service';
 import { JwtAuthGuard } from '../common/guards/jwt.guard';
 import { PermissionsGuard } from '../common/guards/permissions.guard';
 import { RequirePermissions } from '../common/decorators/permissions';
@@ -10,7 +11,14 @@ import { RequirePermissions } from '../common/decorators/permissions';
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('products')
 export class ProductsController {
-  constructor(private products: ProductsService) {}
+  constructor(private products: ProductsService, private sync: SyncService) {}
+
+  @Post('sync')
+  @RequirePermissions('product.read')
+  async syncFromShopify() {
+    await this.sync.fullProductSync();
+    return { ok: true };
+  }
 
   @Get()
   @RequirePermissions('product.read')
