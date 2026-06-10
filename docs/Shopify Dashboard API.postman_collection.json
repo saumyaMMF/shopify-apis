@@ -466,6 +466,56 @@
       ]
     },
     {
+      "name": "11c. Pages & Policies",
+      "item": [
+        {
+          "name": "List pages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/pages?limit=50",
+              "host": ["{{base_url}}"], "path": ["pages"],
+              "query": [
+                { "key": "limit", "value": "50" },
+                { "key": "published_status", "value": "published", "disabled": true }
+              ]
+            }
+          }
+        },
+        { "name": "Get page", "request": { "method": "GET", "url": "{{base_url}}/pages/<page-id>" } },
+        {
+          "name": "Create page (About Us)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/pages",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"About Us\",\n  \"body_html\": \"<h2>Our story</h2><p>We sell premium snowboards since 2020.</p>\",\n  \"handle\": \"about-us\",\n  \"author\": \"Admin\",\n  \"published\": true\n}" }
+          }
+        },
+        {
+          "name": "Update page",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/pages/<page-id>",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"About Us — Updated\",\n  \"body_html\": \"<p>New content</p>\",\n  \"published\": true\n}" }
+          }
+        },
+        { "name": "Delete page", "request": { "method": "DELETE", "url": "{{base_url}}/pages/<page-id>" } },
+        { "name": "List shop policies", "request": { "method": "GET", "url": "{{base_url}}/policies" } },
+        {
+          "name": "Update policy (e.g. REFUND_POLICY)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/policies/REFUND_POLICY",
+            "body": { "mode": "raw", "raw": "{\n  \"body\": \"<h2>Refund Policy</h2><p>30-day money back guarantee on all snowboards.</p>\"\n}" },
+            "description": "Policy types: REFUND_POLICY, PRIVACY_POLICY, TERMS_OF_SERVICE, SHIPPING_POLICY, SUBSCRIPTION_POLICY, LEGAL_NOTICE, TERMS_OF_SALE, CONTACT_INFORMATION"
+          }
+        }
+      ]
+    },
+    {
       "name": "12. Media",
       "item": [
         {

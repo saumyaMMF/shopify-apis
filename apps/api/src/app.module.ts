@@ -19,6 +19,7 @@ import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
 import { AuditModule } from './audit/audit.module';
 import { ThemesModule } from './themes/themes.module';
+import { PagesModule } from './pages/pages.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ThemesModule } from './themes/themes.module';
     SettingsModule,
     AuditModule,
     ThemesModule,
+    PagesModule,
   ],
 })
 export class AppModule {}
