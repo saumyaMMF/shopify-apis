@@ -132,6 +132,7 @@
           }
         },
         { "name": "Get product", "request": { "method": "GET", "url": "{{base_url}}/products/<product-id>" } },
+        { "name": "Sync from Shopify", "request": { "method": "POST", "url": "{{base_url}}/products/sync" } },
         {
           "name": "Create product",
           "request": {
