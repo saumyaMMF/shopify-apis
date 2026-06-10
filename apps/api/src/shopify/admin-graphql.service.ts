@@ -9,10 +9,11 @@ export class AdminGraphQLService {
   constructor(private cfg: ConfigService, private shops: ShopService) {}
 
   async request<T = any>(query: string, variables?: Record<string, unknown>): Promise<T> {
-    const shop = await this.shops.getActive();
-    const url = `https://${shop.domain}/admin/api/${this.cfg.get('SHOPIFY_API_VERSION') ?? '2025-01'}/graphql.json`;
+    let shop = await this.shops.getActive();
+    const url = () => `https://${shop.domain}/admin/api/${this.cfg.get('SHOPIFY_API_VERSION') ?? '2025-01'}/graphql.json`;
+    let refreshedOnce = false;
     const run = async () => {
-      const res = await fetch(url, {
+      const res = await fetch(url(), {
         method: 'POST',
         headers: {
           'X-Shopify-Access-Token': shop.accessToken,
@@ -20,6 +21,13 @@ export class AdminGraphQLService {
         },
         body: JSON.stringify({ query, variables }),
       });
+      if (res.status === 401 && !refreshedOnce && shop.refreshToken) {
+        refreshedOnce = true;
+        this.log.warn(`401 from Shopify — refreshing token for ${shop.domain}`);
+        await this.shops.refreshAccessToken(shop.domain, shop.refreshToken);
+        shop = await this.shops.getActive();
+        throw new Error('TOKEN_REFRESHED_RETRY');
+      }
       if (res.status === 429) throw new Error('THROTTLED');
       const json: any = await res.json();
       if (!res.ok) {

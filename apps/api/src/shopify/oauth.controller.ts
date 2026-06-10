@@ -85,4 +85,8 @@ export class OAuthController {
       refreshToken: body.refreshToken,
     });
   }
+
+  // Force refresh all shops (admin trigger; cron also runs every 5 min)
+  @Post('shops/refresh')
+  refresh() { return this.shops.forceRefreshAll(); }
 }
