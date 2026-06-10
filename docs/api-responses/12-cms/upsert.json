@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/cms",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": {
+      "type": "HERO_BANNER",
+      "handle": "captured-hero",
+      "data": {
+        "title": "Captured",
+        "subtitle": "demo"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "8e011c4b-22f0-400e-89cd-aea2a8f1e112",
+      "type": "HERO_BANNER",
+      "handle": "captured-hero",
+      "shopifyMetaobjectId": null,
+      "data": {
+        "title": "Captured",
+        "subtitle": "demo"
+      },
+      "status": "draft",
+      "publishedAt": null,
+      "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+      "updatedAt": "2026-06-10T07:02:56.405Z"
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

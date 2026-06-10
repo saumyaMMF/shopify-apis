@@ -1,0 +1,97 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/products/10291139674413",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Product/10291139674413",
+      "legacyResourceId": "10291139674413",
+      "title": "The Inventory Not Tracked Snowboard",
+      "handle": "the-inventory-not-tracked-snowboard",
+      "status": "ACTIVE",
+      "descriptionHtml": "",
+      "productType": "snowboard",
+      "vendor": "test store",
+      "tags": [
+        "Accessory",
+        "Sport",
+        "Winter"
+      ],
+      "createdAt": "2026-06-09T10:51:26Z",
+      "updatedAt": "2026-06-09T22:51:34Z",
+      "publishedAt": "2026-06-09T10:51:28Z",
+      "totalInventory": 0,
+      "featuredImage": {
+        "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+        "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples."
+      },
+      "images": {
+        "edges": [
+          {
+            "node": {
+              "id": "gid://shopify/ProductImage/54109540843821",
+              "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+              "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples.",
+              "width": 3097,
+              "height": 3908
+            }
+          }
+        ]
+      },
+      "variants": {
+        "edges": [
+          {
+            "node": {
+              "id": "gid://shopify/ProductVariant/52130746335533",
+              "legacyResourceId": "52130746335533",
+              "sku": "sku-untracked-1",
+              "barcode": null,
+              "title": "Default Title",
+              "price": "949.95",
+              "compareAtPrice": null,
+              "inventoryQuantity": 0,
+              "inventoryItem": {
+                "id": "gid://shopify/InventoryItem/54202384253229",
+                "legacyResourceId": "54202384253229"
+              },
+              "selectedOptions": [
+                {
+                  "name": "Title",
+                  "value": "Default Title"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "gid://shopify/ProductOption/12961731412269",
+          "name": "Title",
+          "values": [
+            "Default Title"
+          ]
+        }
+      ],
+      "priceRangeV2": {
+        "minVariantPrice": {
+          "amount": "949.95",
+          "currencyCode": "INR"
+        },
+        "maxVariantPrice": {
+          "amount": "949.95",
+          "currencyCode": "INR"
+        }
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:50Z"
+}

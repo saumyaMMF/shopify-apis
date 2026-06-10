@@ -1,0 +1,156 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/inventory/levels?take=3",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "items": [
+        {
+          "id": "gid://shopify/InventoryItem/54202383958317",
+          "legacyResourceId": "54202383958317",
+          "sku": null,
+          "variant": {
+            "id": "gid://shopify/ProductVariant/52130746171693",
+            "title": "Default Title",
+            "product": {
+              "id": "gid://shopify/Product/10291139772717",
+              "title": "The Out of Stock Snowboard"
+            }
+          },
+          "inventoryLevels": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202383958317",
+                  "location": {
+                    "id": "gid://shopify/Location/108789989677",
+                    "name": "Shop location"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "committed",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "incoming",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/InventoryItem/54202383991085",
+          "legacyResourceId": "54202383991085",
+          "sku": null,
+          "variant": {
+            "id": "gid://shopify/ProductVariant/52130746040621",
+            "title": "$10",
+            "product": {
+              "id": "gid://shopify/Product/10291139707181",
+              "title": "Gift Card"
+            }
+          },
+          "inventoryLevels": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202383991085",
+                  "location": {
+                    "id": "gid://shopify/Location/108789989677",
+                    "name": "Shop location"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "committed",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "incoming",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/InventoryItem/54202384023853",
+          "legacyResourceId": "54202384023853",
+          "sku": null,
+          "variant": {
+            "id": "gid://shopify/ProductVariant/52130746073389",
+            "title": "$25",
+            "product": {
+              "id": "gid://shopify/Product/10291139707181",
+              "title": "Gift Card"
+            }
+          },
+          "inventoryLevels": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202384023853",
+                  "location": {
+                    "id": "gid://shopify/Location/108789989677",
+                    "name": "Shop location"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "committed",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "incoming",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NDIwMjM4NDAyMzg1MywibGFzdF92YWx1ZSI6IjU0MjAyMzg0MDIzODUzIn0="
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:54Z"
+}

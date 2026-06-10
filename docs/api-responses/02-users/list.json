@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/users",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "6c5cc08f-fce0-4304-ab76-9fdcf267405c",
+        "email": "manager@example.com",
+        "firstName": "Mark",
+        "lastName": "Manager",
+        "isActive": true,
+        "role": {
+          "name": "staff"
+        },
+        "lastLoginAt": null
+      },
+      {
+        "id": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "email": "admin@example.com",
+        "firstName": "System",
+        "lastName": "Admin",
+        "isActive": true,
+        "role": {
+          "name": "admin"
+        },
+        "lastLoginAt": "2026-06-10T07:02:49.541Z"
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:49Z"
+}

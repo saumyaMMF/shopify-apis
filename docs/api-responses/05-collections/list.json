@@ -1,0 +1,68 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/collections",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "gid://shopify/Collection/540659581229",
+        "legacyResourceId": "540659581229",
+        "title": "Home page",
+        "handle": "frontpage",
+        "updatedAt": "2026-06-09T11:09:17Z",
+        "productsCount": {
+          "count": 1
+        },
+        "ruleSet": null,
+        "image": null
+      },
+      {
+        "id": "gid://shopify/Collection/540659613997",
+        "legacyResourceId": "540659613997",
+        "title": "Automated Collection",
+        "handle": "automated-collection",
+        "updatedAt": "2026-06-09T11:09:17Z",
+        "productsCount": {
+          "count": 8
+        },
+        "ruleSet": {
+          "rules": [
+            {
+              "column": "VARIANT_PRICE",
+              "relation": "LESS_THAN",
+              "condition": "800.00"
+            },
+            {
+              "column": "VARIANT_PRICE",
+              "relation": "GREATER_THAN",
+              "condition": "200.00"
+            }
+          ],
+          "appliedDisjunctively": false
+        },
+        "image": null
+      },
+      {
+        "id": "gid://shopify/Collection/540659646765",
+        "legacyResourceId": "540659646765",
+        "title": "Hydrogen",
+        "handle": "hydrogen",
+        "updatedAt": "2026-06-09T11:09:17Z",
+        "productsCount": {
+          "count": 3
+        },
+        "ruleSet": null,
+        "image": null
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:53Z"
+}

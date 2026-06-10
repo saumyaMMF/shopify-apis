@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/cms",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "00f991ce-283d-4b4c-a571-052490aa00f5",
+        "type": "HERO_BANNER",
+        "handle": "autotest-hero",
+        "shopifyMetaobjectId": null,
+        "data": {
+          "title": "Auto",
+          "subtitle": "Test"
+        },
+        "status": "draft",
+        "publishedAt": null,
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "updatedAt": "2026-06-10T06:58:29.585Z"
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/customers/segments/list",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "9cf0fb42-ae7a-4ec5-bf2d-fa082287b520",
+        "name": "VIP",
+        "rules": {
+          "tags": [
+            "vip"
+          ],
+          "totalSpent": {
+            "gt": 1000
+          }
+        },
+        "createdAt": "2026-06-10T06:20:56.561Z"
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/products",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": {
+      "title": "API Capture Test",
+      "status": "DRAFT",
+      "vendor": "Capture"
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Product/10292272595245",
+      "legacyResourceId": "10292272595245",
+      "title": "API Capture Test",
+      "handle": "api-capture-test",
+      "status": "DRAFT"
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:51Z"
+}

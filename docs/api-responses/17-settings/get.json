@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/settings/capture.test",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "key": "capture.test",
+      "value": "demo",
+      "updatedAt": "2026-06-10T07:03:19.562Z",
+      "updatedBy": "822d845a-6092-43b6-81c8-906023fa03ef"
+    }
+  },
+  "capturedAt": "2026-06-10T07:03:19Z"
+}

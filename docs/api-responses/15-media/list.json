@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/media",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "8f5b6ee6-be07-479b-9340-09d61c1494b5",
+        "url": "https://cdn.shopify.com/staged-uploads/...",
+        "cdnKey": "products/hero-abc.png",
+        "mimeType": "image/png",
+        "width": null,
+        "height": null,
+        "sizeBytes": 154233,
+        "folder": "products",
+        "tags": [],
+        "shopifyFileId": "gid://shopify/MediaImage/44688896360749",
+        "uploadedBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "createdAt": "2026-06-10T06:30:39.889Z"
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:03:01Z"
+}

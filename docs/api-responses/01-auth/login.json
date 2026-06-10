@@ -1,0 +1,59 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/auth/login",
+    "headers": {},
+    "body": {
+      "email": "admin@example.com",
+      "password": "Admin@12345"
+    }
+  },
+  "response": {
+    "status": 201,
+    "ok": true,
+    "error": null,
+    "body": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MjJkODQ1YS02MDkyLTQzYjYtODFjOC05MDYwMjNmYTAzZWYiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZUlkIjoiODRlMzYwZWItMmMxNi00YWI1LWFkZDYtZDZjYjQwODg4NmFlIiwicGVybXMiOlsicHJvZHVjdC5yZWFkIiwicHJvZHVjdC5jcmVhdGUiLCJwcm9kdWN0LnVwZGF0ZSIsInByb2R1Y3QuZGVsZXRlIiwicHJvZHVjdC5idWxrSW1wb3J0IiwiY29sbGVjdGlvbi5tYW5hZ2UiLCJpbnZlbnRvcnkucmVhZCIsImludmVudG9yeS5hZGp1c3QiLCJpbnZlbnRvcnkudHJhbnNmZXIiLCJvcmRlci5yZWFkIiwib3JkZXIuZnVsZmlsbCIsIm9yZGVyLnJlZnVuZCIsIm9yZGVyLmRyYWZ0IiwiY3VzdG9tZXIucmVhZCIsImN1c3RvbWVyLnVwZGF0ZSIsInNlZ21lbnQubWFuYWdlIiwicG8ucmVhZCIsInBvLmNyZWF0ZSIsInBvLmFwcHJvdmUiLCJwby5yZWNlaXZlIiwidmVuZG9yLm1hbmFnZSIsImNtcy5yZWFkIiwiY21zLnB1Ymxpc2giLCJtZWRpYS51cGxvYWQiLCJtZWRpYS5kZWxldGUiLCJyZXBvcnRzLnZpZXciLCJzZXR0aW5ncy51cGRhdGUiLCJhdWRpdC52aWV3IiwidXNlci5tYW5hZ2UiLCJyb2xlLm1hbmFnZSJdLCJpYXQiOjE3ODEwNzQ5NjksImV4cCI6MTc4MTA3NTg2OX0.Yh6e35PMdWt1BTuKFIZnKHJo5VqQX5jM94Jaj_GoavM",
+      "user": {
+        "id": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "email": "admin@example.com",
+        "firstName": "System",
+        "lastName": "Admin",
+        "role": "admin",
+        "permissions": [
+          "product.read",
+          "product.create",
+          "product.update",
+          "product.delete",
+          "product.bulkImport",
+          "collection.manage",
+          "inventory.read",
+          "inventory.adjust",
+          "inventory.transfer",
+          "order.read",
+          "order.fulfill",
+          "order.refund",
+          "order.draft",
+          "customer.read",
+          "customer.update",
+          "segment.manage",
+          "po.read",
+          "po.create",
+          "po.approve",
+          "po.receive",
+          "vendor.manage",
+          "cms.read",
+          "cms.publish",
+          "media.upload",
+          "media.delete",
+          "reports.view",
+          "settings.update",
+          "audit.view",
+          "user.manage",
+          "role.manage"
+        ]
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:49Z"
+}

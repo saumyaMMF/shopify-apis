@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/themes/published",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/OnlineStoreTheme/181461156141",
+      "name": "test-data",
+      "role": "MAIN",
+      "processing": false,
+      "createdAt": "2026-06-09T10:51:27Z",
+      "updatedAt": "2026-06-09T10:51:55Z"
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:57Z"
+}

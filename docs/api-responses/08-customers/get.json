@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/customers/9683059671341",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Customer/9683059671341",
+      "legacyResourceId": "9683059671341",
+      "firstName": "Ayumu",
+      "lastName": "Hirano",
+      "email": "ayumu.hirano@example.com",
+      "phone": "+16135550127",
+      "tags": [],
+      "state": "DISABLED",
+      "note": null,
+      "createdAt": "2026-06-09T10:51:26Z",
+      "updatedAt": "2026-06-09T10:51:26Z",
+      "numberOfOrders": "0",
+      "amountSpent": {
+        "amount": "0.0",
+        "currencyCode": "INR"
+      },
+      "addresses": [],
+      "defaultAddress": null,
+      "orders": {
+        "edges": []
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

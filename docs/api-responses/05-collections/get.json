@@ -1,0 +1,42 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/collections/540659581229",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Collection/540659581229",
+      "legacyResourceId": "540659581229",
+      "title": "Home page",
+      "handle": "frontpage",
+      "description": "",
+      "descriptionHtml": "",
+      "updatedAt": "2026-06-09T11:09:17Z",
+      "productsCount": {
+        "count": 1
+      },
+      "image": null,
+      "ruleSet": null,
+      "products": {
+        "edges": [
+          {
+            "node": {
+              "id": "gid://shopify/Product/10291139674413",
+              "title": "The Inventory Not Tracked Snowboard",
+              "handle": "the-inventory-not-tracked-snowboard",
+              "status": "ACTIVE"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:53Z"
+}

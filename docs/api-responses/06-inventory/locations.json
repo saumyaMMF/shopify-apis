@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/inventory/locations",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "gid://shopify/Location/108790022445",
+        "legacyResourceId": "108790022445",
+        "name": "My Custom Location",
+        "isActive": true,
+        "address": {
+          "city": "Toronto",
+          "province": "Ontario",
+          "country": "Canada"
+        }
+      },
+      {
+        "id": "gid://shopify/Location/108789989677",
+        "legacyResourceId": "108789989677",
+        "name": "Shop location",
+        "isActive": true,
+        "address": {
+          "city": null,
+          "province": null,
+          "country": "India"
+        }
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:54Z"
+}

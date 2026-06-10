@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "DELETE",
+    "url": "/products/gid%3A%2F%2Fshopify%2FProduct%2F10292272595245",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "deletedId": "gid://shopify/Product/10292272595245"
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:52Z"
+}

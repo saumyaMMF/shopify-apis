@@ -1,0 +1,287 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/roles",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "84e360eb-2c16-4ab5-add6-d6cb408886ae",
+        "name": "admin",
+        "description": "admin role",
+        "isSystem": true,
+        "permissions": [
+          {
+            "key": "product.read"
+          },
+          {
+            "key": "product.create"
+          },
+          {
+            "key": "product.update"
+          },
+          {
+            "key": "product.delete"
+          },
+          {
+            "key": "product.bulkImport"
+          },
+          {
+            "key": "collection.manage"
+          },
+          {
+            "key": "inventory.read"
+          },
+          {
+            "key": "inventory.adjust"
+          },
+          {
+            "key": "inventory.transfer"
+          },
+          {
+            "key": "order.read"
+          },
+          {
+            "key": "order.fulfill"
+          },
+          {
+            "key": "order.refund"
+          },
+          {
+            "key": "order.draft"
+          },
+          {
+            "key": "customer.read"
+          },
+          {
+            "key": "customer.update"
+          },
+          {
+            "key": "segment.manage"
+          },
+          {
+            "key": "po.read"
+          },
+          {
+            "key": "po.create"
+          },
+          {
+            "key": "po.approve"
+          },
+          {
+            "key": "po.receive"
+          },
+          {
+            "key": "vendor.manage"
+          },
+          {
+            "key": "cms.read"
+          },
+          {
+            "key": "cms.publish"
+          },
+          {
+            "key": "media.upload"
+          },
+          {
+            "key": "media.delete"
+          },
+          {
+            "key": "reports.view"
+          },
+          {
+            "key": "settings.update"
+          },
+          {
+            "key": "audit.view"
+          },
+          {
+            "key": "user.manage"
+          },
+          {
+            "key": "role.manage"
+          }
+        ],
+        "_count": {
+          "users": 1
+        }
+      },
+      {
+        "id": "ad74a6fb-c906-4004-bdde-d0b267a8f710",
+        "name": "manager",
+        "description": "manager role",
+        "isSystem": true,
+        "permissions": [
+          {
+            "key": "product.read"
+          },
+          {
+            "key": "product.create"
+          },
+          {
+            "key": "product.update"
+          },
+          {
+            "key": "product.delete"
+          },
+          {
+            "key": "product.bulkImport"
+          },
+          {
+            "key": "collection.manage"
+          },
+          {
+            "key": "inventory.read"
+          },
+          {
+            "key": "inventory.adjust"
+          },
+          {
+            "key": "inventory.transfer"
+          },
+          {
+            "key": "order.read"
+          },
+          {
+            "key": "order.fulfill"
+          },
+          {
+            "key": "order.refund"
+          },
+          {
+            "key": "order.draft"
+          },
+          {
+            "key": "customer.read"
+          },
+          {
+            "key": "customer.update"
+          },
+          {
+            "key": "segment.manage"
+          },
+          {
+            "key": "po.read"
+          },
+          {
+            "key": "po.create"
+          },
+          {
+            "key": "po.approve"
+          },
+          {
+            "key": "po.receive"
+          },
+          {
+            "key": "vendor.manage"
+          },
+          {
+            "key": "cms.read"
+          },
+          {
+            "key": "cms.publish"
+          },
+          {
+            "key": "media.upload"
+          },
+          {
+            "key": "media.delete"
+          },
+          {
+            "key": "reports.view"
+          },
+          {
+            "key": "settings.update"
+          },
+          {
+            "key": "audit.view"
+          }
+        ],
+        "_count": {
+          "users": 0
+        }
+      },
+      {
+        "id": "c8bb2f00-b14a-4e86-b1d4-046177e2bee4",
+        "name": "staff",
+        "description": "staff role",
+        "isSystem": true,
+        "permissions": [
+          {
+            "key": "product.read"
+          },
+          {
+            "key": "product.update"
+          },
+          {
+            "key": "inventory.read"
+          },
+          {
+            "key": "order.read"
+          },
+          {
+            "key": "order.fulfill"
+          },
+          {
+            "key": "customer.read"
+          },
+          {
+            "key": "po.read"
+          },
+          {
+            "key": "po.receive"
+          },
+          {
+            "key": "cms.read"
+          },
+          {
+            "key": "media.upload"
+          }
+        ],
+        "_count": {
+          "users": 1
+        }
+      },
+      {
+        "id": "bcc26999-f048-4d34-86ab-915a1242b442",
+        "name": "viewer",
+        "description": "viewer role",
+        "isSystem": true,
+        "permissions": [
+          {
+            "key": "product.read"
+          },
+          {
+            "key": "inventory.read"
+          },
+          {
+            "key": "order.read"
+          },
+          {
+            "key": "customer.read"
+          },
+          {
+            "key": "po.read"
+          },
+          {
+            "key": "cms.read"
+          },
+          {
+            "key": "reports.view"
+          }
+        ],
+        "_count": {
+          "users": 0
+        }
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:49Z"
+}

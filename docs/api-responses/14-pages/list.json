@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/pages?limit=10",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": 154665058605,
+        "title": "About Us",
+        "shop_id": 95517901101,
+        "handle": "about-us",
+        "body_html": "<p>We sell snowboards.</p>",
+        "author": "Shopify API",
+        "created_at": "2026-06-10T02:38:38-04:00",
+        "updated_at": "2026-06-10T02:38:38-04:00",
+        "published_at": "2026-06-10T02:38:38-04:00",
+        "template_suffix": null,
+        "admin_graphql_api_id": "gid://shopify/Page/154665058605"
+      },
+      {
+        "id": 154654310701,
+        "title": "Contact",
+        "shop_id": 95517901101,
+        "handle": "contact",
+        "body_html": null,
+        "author": null,
+        "created_at": "2026-06-09T06:51:08-04:00",
+        "updated_at": "2026-06-09T06:51:08-04:00",
+        "published_at": "2026-06-09T06:51:08-04:00",
+        "template_suffix": "contact",
+        "admin_graphql_api_id": "gid://shopify/Page/154654310701"
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:03:00Z"
+}

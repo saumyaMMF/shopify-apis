@@ -1,0 +1,117 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/banners/from-theme?template=index",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "source": "theme",
+      "themeId": "gid://shopify/OnlineStoreTheme/181461156141",
+      "themeName": "test-data",
+      "template": "index",
+      "banners": [
+        {
+          "sectionId": "6a3bb789-ce10-45f5-ae67-e2063ef8c76b",
+          "type": "image-banner",
+          "disabled": false,
+          "settings": {
+            "image": "shopify://shop_images/theme_cover_image.jpg",
+            "image_overlay_opacity": 0,
+            "image_height": "medium",
+            "desktop_content_position": "middle-left",
+            "show_text_box": true,
+            "desktop_content_alignment": "left",
+            "color_scheme": "background-1",
+            "image_behavior": "none",
+            "mobile_content_alignment": "center",
+            "stack_images_on_mobile": true,
+            "show_text_below": true
+          },
+          "blocks": {
+            "template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-0": {
+              "type": "heading",
+              "settings": {
+                "heading": "Generated test data",
+                "heading_size": "h1"
+              }
+            },
+            "template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-1": {
+              "type": "text",
+              "settings": {
+                "text": "A theme and populated test store by Shopify to help you test commerce primitives.",
+                "text_style": "body"
+              }
+            },
+            "template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-2": {
+              "type": "buttons",
+              "settings": {
+                "button_label_1": "Shop products",
+                "button_link_1": "shopify://collections/all",
+                "button_style_secondary_1": false,
+                "button_label_2": "",
+                "button_link_2": "",
+                "button_style_secondary_2": false
+              }
+            }
+          }
+        },
+        {
+          "sectionId": "f1552b18-6017-4231-810d-74e61da22c37",
+          "type": "image-with-text",
+          "disabled": false,
+          "settings": {
+            "image": "shopify://shop_images/theme_cover_image.jpg",
+            "height": "adapt",
+            "desktop_image_width": "medium",
+            "layout": "image_first",
+            "desktop_content_position": "middle",
+            "desktop_content_alignment": "left",
+            "content_layout": "no-overlap",
+            "color_scheme": "accent-1",
+            "image_behavior": "none",
+            "mobile_content_alignment": "left",
+            "padding_top": 60,
+            "padding_bottom": 60
+          },
+          "blocks": {
+            "template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-0": {
+              "type": "heading",
+              "settings": {
+                "heading": "Stay hydrated",
+                "heading_size": "h1"
+              }
+            },
+            "template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-1": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Try our wax subscription so you can fly high, but never dry.</p>",
+                "text_style": "body"
+              }
+            },
+            "template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-2": {
+              "type": "button",
+              "settings": {
+                "button_label": "Get waxy now",
+                "button_link": "shopify://products/selling-plans-ski-wax"
+              }
+            }
+          }
+        }
+      ],
+      "sectionFiles": [
+        "sections/email-signup-banner.liquid",
+        "sections/image-banner.liquid",
+        "sections/main-collection-banner.liquid",
+        "sections/slideshow.liquid"
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:59Z"
+}

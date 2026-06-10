@@ -1,0 +1,414 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/purchase-orders",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "1f57c722-5a1a-4fa9-83c7-515a99fb7516",
+        "poNumber": "PO-2026-00009",
+        "vendorId": "c432b5df-b814-44fc-9544-afc710a9ef71",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T06:58:29.564Z",
+        "updatedAt": "2026-06-10T06:58:29.573Z",
+        "vendor": {
+          "id": "c432b5df-b814-44fc-9544-afc710a9ef71",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "53dc7cf9-8b80-4fce-be84-617f43dec8e9",
+            "poId": "1f57c722-5a1a-4fa9-83c7-515a99fb7516",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "f27bf54f-841d-4d33-81a3-98daf19ddf58",
+        "poNumber": "PO-2026-00008",
+        "vendorId": "c604b99c-1f1c-4331-bf86-1295030e2de5",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T06:57:30.102Z",
+        "updatedAt": "2026-06-10T06:57:30.114Z",
+        "vendor": {
+          "id": "c604b99c-1f1c-4331-bf86-1295030e2de5",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "a304971d-5c38-4abe-9d77-8d29fc0b8327",
+            "poId": "f27bf54f-841d-4d33-81a3-98daf19ddf58",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "814707e8-5ee8-44bd-b4d9-38451f07777e",
+        "poNumber": "PO-2026-00007",
+        "vendorId": "99c7879d-3d7c-49ac-bd4e-a438ae704335",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T06:25:17.963Z",
+        "updatedAt": "2026-06-10T06:25:17.975Z",
+        "vendor": {
+          "id": "99c7879d-3d7c-49ac-bd4e-a438ae704335",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "e108709f-7ade-475a-8da8-1099f2711dad",
+            "poId": "814707e8-5ee8-44bd-b4d9-38451f07777e",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "b4852fc9-07c6-45af-a95c-13bd0ef34344",
+        "poNumber": "PO-2026-00006",
+        "vendorId": "a0b082d4-6133-404c-b94c-3eca976681f2",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T05:44:52.079Z",
+        "updatedAt": "2026-06-10T05:44:52.090Z",
+        "vendor": {
+          "id": "a0b082d4-6133-404c-b94c-3eca976681f2",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "210b1e6a-07f6-4dd4-9393-7f91985f97b4",
+            "poId": "b4852fc9-07c6-45af-a95c-13bd0ef34344",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "11ac7bd5-50fa-431d-a172-5415af63df9b",
+        "poNumber": "PO-2026-00005",
+        "vendorId": "8f737f33-5480-4a4f-9e38-7d014b132b17",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T05:26:44.564Z",
+        "updatedAt": "2026-06-10T05:26:44.577Z",
+        "vendor": {
+          "id": "8f737f33-5480-4a4f-9e38-7d014b132b17",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "d907d7d2-4e03-4ff1-af81-b6a9aa476449",
+            "poId": "11ac7bd5-50fa-431d-a172-5415af63df9b",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "299f1660-bbdb-4e50-b3b6-d4c7fdc7f38d",
+        "poNumber": "PO-2026-00004",
+        "vendorId": "2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T05:01:25.881Z",
+        "updatedAt": "2026-06-10T05:01:25.894Z",
+        "vendor": {
+          "id": "2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "d476c219-d89e-477d-ac06-5c962a9d6767",
+            "poId": "299f1660-bbdb-4e50-b3b6-d4c7fdc7f38d",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "4b875b61-4ee7-491e-9500-14082822aa04",
+        "poNumber": "PO-2026-00003",
+        "vendorId": "8dfca375-2e21-4ea9-a29c-f09ac375af55",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T04:59:57.348Z",
+        "updatedAt": "2026-06-10T04:59:57.363Z",
+        "vendor": {
+          "id": "8dfca375-2e21-4ea9-a29c-f09ac375af55",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "9d0e03f2-3964-48ee-ba9d-0d662a104726",
+            "poId": "4b875b61-4ee7-491e-9500-14082822aa04",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "3706fba6-4d16-4f67-acf9-3a6fa74f8474",
+        "poNumber": "PO-2026-00002",
+        "vendorId": "6dedebad-cee9-448d-8ac8-f9350b44261d",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T04:57:23.997Z",
+        "updatedAt": "2026-06-10T04:57:24.013Z",
+        "vendor": {
+          "id": "6dedebad-cee9-448d-8ac8-f9350b44261d",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "a62a9027-813f-4a0c-833c-fc02300b047a",
+            "poId": "3706fba6-4d16-4f67-acf9-3a6fa74f8474",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
+        "id": "3b04ec92-1ad9-40e0-8968-d0b35aada42c",
+        "poNumber": "PO-2026-00001",
+        "vendorId": "408e846a-3a7f-4935-842c-022b08aee9fa",
+        "locationId": "loc-test",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "auto test",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T04:48:15.584Z",
+        "updatedAt": "2026-06-10T04:48:15.602Z",
+        "vendor": {
+          "id": "408e846a-3a7f-4935-842c-022b08aee9fa",
+          "name": "AutoTest Vendor",
+          "contactName": null,
+          "email": "v@test.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "f020cf23-3b04-43ee-8dd2-218b337b3fe0",
+            "poId": "3b04ec92-1ad9-40e0-8968-d0b35aada42c",
+            "variantId": "v1",
+            "sku": "SKU-AT-1",
+            "title": "Auto Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

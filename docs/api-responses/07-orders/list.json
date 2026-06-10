@@ -1,0 +1,68 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/orders?take=3",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "items": [
+        {
+          "id": "gid://shopify/Order/6914014183725",
+          "legacyResourceId": "6914014183725",
+          "name": "#1001",
+          "email": "Russel.winfield@example.com",
+          "phone": "+16135550135",
+          "displayFinancialStatus": "PAID",
+          "displayFulfillmentStatus": "UNFULFILLED",
+          "totalPriceSet": {
+            "shopMoney": {
+              "amount": "3290.22",
+              "currencyCode": "INR"
+            }
+          },
+          "createdAt": "2026-06-10T06:52:13Z",
+          "updatedAt": "2026-06-10T06:52:14Z",
+          "processedAt": "2026-06-10T06:52:12Z",
+          "customer": {
+            "id": "gid://shopify/Customer/9683059638573",
+            "firstName": "Russell",
+            "lastName": "Winfield",
+            "email": "Russel.winfield@example.com"
+          },
+          "lineItems": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/LineItem/16733306716461",
+                  "title": "The Complete Snowboard",
+                  "quantity": 1,
+                  "sku": null
+                }
+              },
+              {
+                "node": {
+                  "id": "gid://shopify/LineItem/16733306749229",
+                  "title": "The 3p Fulfilled Snowboard",
+                  "quantity": 1,
+                  "sku": "sku-hosted-1"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo2OTE0MDE0MTgzNzI1LCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0xMCAwNjo1MjoxMy4xMTQ0NDcifQ=="
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:54Z"
+}

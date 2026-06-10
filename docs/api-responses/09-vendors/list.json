@@ -1,0 +1,117 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/vendors",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": [
+      {
+        "id": "408e846a-3a7f-4935-842c-022b08aee9fa",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "6dedebad-cee9-448d-8ac8-f9350b44261d",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "8dfca375-2e21-4ea9-a29c-f09ac375af55",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "8f737f33-5480-4a4f-9e38-7d014b132b17",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "a0b082d4-6133-404c-b94c-3eca976681f2",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "99c7879d-3d7c-49ac-bd4e-a438ae704335",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "c604b99c-1f1c-4331-bf86-1295030e2de5",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      },
+      {
+        "id": "c432b5df-b814-44fc-9544-afc710a9ef71",
+        "name": "AutoTest Vendor",
+        "contactName": null,
+        "email": "v@test.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
+      }
+    ]
+  },
+  "capturedAt": "2026-06-10T07:02:56Z"
+}

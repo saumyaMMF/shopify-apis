@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/reports/sales?since=-7d&until=today",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "available": false,
+      "reason": "ShopifyQL not enabled for this shop",
+      "error": "[{\"message\":\"Field 'shopifyqlQuery' doesn't exist on type 'QueryRoot'\",\"locations\":[{\"line\":3,\"column\":5}],\"path\":[\"query\",\"shopifyqlQuery\"],\"extensions\":{\"code\":\"undefinedField\",\"typeName\":\"QueryRoot\",\"fieldName\":\"shopifyqlQuery\"}},{\"message\":\"Variable $q is declared by anonymous query but not used\",\"locations\":[{\"line\":2,\"column\":3}],\"path\":[\"query\"],\"extensions\":{\"code\":\"variableNotUsed\",\"variableName\":\"q\"}}]"
+    }
+  },
+  "capturedAt": "2026-06-10T07:03:19Z"
+}

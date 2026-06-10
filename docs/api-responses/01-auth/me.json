@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/auth/me",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "sub": "822d845a-6092-43b6-81c8-906023fa03ef",
+      "email": "admin@example.com",
+      "roleId": "84e360eb-2c16-4ab5-add6-d6cb408886ae",
+      "perms": [
+        "product.read",
+        "product.create",
+        "product.update",
+        "product.delete",
+        "product.bulkImport",
+        "collection.manage",
+        "inventory.read",
+        "inventory.adjust",
+        "inventory.transfer",
+        "order.read",
+        "order.fulfill",
+        "order.refund",
+        "order.draft",
+        "customer.read",
+        "customer.update",
+        "segment.manage",
+        "po.read",
+        "po.create",
+        "po.approve",
+        "po.receive",
+        "vendor.manage",
+        "cms.read",
+        "cms.publish",
+        "media.upload",
+        "media.delete",
+        "reports.view",
+        "settings.update",
+        "audit.view",
+        "user.manage",
+        "role.manage"
+      ]
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:49Z"
+}

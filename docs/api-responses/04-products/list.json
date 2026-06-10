@@ -1,0 +1,283 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/products?take=5",
+    "headers": {
+      "Authorization": "Bearer <REDACTED>"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "items": [
+        {
+          "id": "gid://shopify/Product/10291139674413",
+          "legacyResourceId": "10291139674413",
+          "title": "The Inventory Not Tracked Snowboard",
+          "handle": "the-inventory-not-tracked-snowboard",
+          "status": "ACTIVE",
+          "productType": "snowboard",
+          "vendor": "test store",
+          "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+          ],
+          "createdAt": "2026-06-09T10:51:26Z",
+          "updatedAt": "2026-06-09T22:51:34Z",
+          "publishedAt": "2026-06-09T10:51:28Z",
+          "totalInventory": 0,
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290",
+            "altText": "Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\n          abstract angular grid in purples."
+          },
+          "priceRangeV2": {
+            "minVariantPrice": {
+              "amount": "949.95",
+              "currencyCode": "INR"
+            },
+            "maxVariantPrice": {
+              "amount": "949.95",
+              "currencyCode": "INR"
+            }
+          },
+          "variants": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746335533",
+                  "legacyResourceId": "52130746335533",
+                  "sku": "sku-untracked-1",
+                  "title": "Default Title",
+                  "price": "949.95",
+                  "inventoryQuantity": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139707181",
+          "legacyResourceId": "10291139707181",
+          "title": "Gift Card",
+          "handle": "gift-card",
+          "status": "ACTIVE",
+          "productType": "giftcard",
+          "vendor": "Snowboard Vendor",
+          "tags": [],
+          "createdAt": "2026-06-09T10:51:26Z",
+          "updatedAt": "2026-06-09T22:51:38Z",
+          "publishedAt": "2026-06-09T10:51:28Z",
+          "totalInventory": 0,
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/gift_card.png?v=1781002289",
+            "altText": "Gift card that shows text: Generated data gift card"
+          },
+          "priceRangeV2": {
+            "minVariantPrice": {
+              "amount": "10.0",
+              "currencyCode": "INR"
+            },
+            "maxVariantPrice": {
+              "amount": "100.0",
+              "currencyCode": "INR"
+            }
+          },
+          "variants": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746040621",
+                  "legacyResourceId": "52130746040621",
+                  "sku": null,
+                  "title": "$10",
+                  "price": "10.00",
+                  "inventoryQuantity": 0
+                }
+              },
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746073389",
+                  "legacyResourceId": "52130746073389",
+                  "sku": null,
+                  "title": "$25",
+                  "price": "25.00",
+                  "inventoryQuantity": 0
+                }
+              },
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746106157",
+                  "legacyResourceId": "52130746106157",
+                  "sku": null,
+                  "title": "$50",
+                  "price": "50.00",
+                  "inventoryQuantity": 0
+                }
+              },
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746138925",
+                  "legacyResourceId": "52130746138925",
+                  "sku": null,
+                  "title": "$100",
+                  "price": "100.00",
+                  "inventoryQuantity": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139739949",
+          "legacyResourceId": "10291139739949",
+          "title": "The Archived Snowboard",
+          "handle": "the-archived-snowboard",
+          "status": "ARCHIVED",
+          "productType": "snowboard",
+          "vendor": "Snowboard Vendor",
+          "tags": [
+            "Archived",
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+          ],
+          "createdAt": "2026-06-09T10:51:27Z",
+          "updatedAt": "2026-06-09T22:51:40Z",
+          "publishedAt": null,
+          "totalInventory": 50,
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_52f8e304-92d9-4a36-82af-50df8fe31c69.jpg?v=1781002289",
+            "altText": "The top and bottom view of a snowboard.The top view is a gradient light purple and dark purple\n        with a cube geometric pattern. The bottom view blue with light blue octagon geometric pattern."
+          },
+          "priceRangeV2": {
+            "minVariantPrice": {
+              "amount": "629.95",
+              "currencyCode": "INR"
+            },
+            "maxVariantPrice": {
+              "amount": "629.95",
+              "currencyCode": "INR"
+            }
+          },
+          "variants": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746269997",
+                  "legacyResourceId": "52130746269997",
+                  "sku": null,
+                  "title": "Default Title",
+                  "price": "629.95",
+                  "inventoryQuantity": 50
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139772717",
+          "legacyResourceId": "10291139772717",
+          "title": "The Out of Stock Snowboard",
+          "handle": "the-out-of-stock-snowboard",
+          "status": "ACTIVE",
+          "productType": "snowboard",
+          "vendor": "test store",
+          "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+          ],
+          "createdAt": "2026-06-09T10:51:27Z",
+          "updatedAt": "2026-06-09T22:51:34Z",
+          "publishedAt": "2026-06-09T10:51:28Z",
+          "totalInventory": 0,
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_f44a9605-cd62-464d-b095-d45cdaa0d0d7.jpg?v=1781002289",
+            "altText": "Top and bottom view of a snowboard. The top view shows a toggle at the top in shades of blue and\n        yellow. The bottom view shows an abstract illustration of toggles in blues and yellows."
+          },
+          "priceRangeV2": {
+            "minVariantPrice": {
+              "amount": "885.95",
+              "currencyCode": "INR"
+            },
+            "maxVariantPrice": {
+              "amount": "885.95",
+              "currencyCode": "INR"
+            }
+          },
+          "variants": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746171693",
+                  "legacyResourceId": "52130746171693",
+                  "sku": null,
+                  "title": "Default Title",
+                  "price": "885.95",
+                  "inventoryQuantity": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Product/10291139805485",
+          "legacyResourceId": "10291139805485",
+          "title": "The Compare at Price Snowboard",
+          "handle": "the-compare-at-price-snowboard",
+          "status": "ACTIVE",
+          "productType": "snowboard",
+          "vendor": "test store",
+          "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+          ],
+          "createdAt": "2026-06-09T10:51:27Z",
+          "updatedAt": "2026-06-09T22:51:34Z",
+          "publishedAt": "2026-06-09T10:51:28Z",
+          "totalInventory": 10,
+          "featuredImage": {
+            "url": "https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_sky.png?v=1781002289",
+            "altText": "Top and bottom view of a snowboard. The top view shows pixelated clouds, with the top-most one being\n        the shape of the Shopify bag logo. The bottom view has a pixelated cloudy sky with blue, pink and purple\n        colours."
+          },
+          "priceRangeV2": {
+            "minVariantPrice": {
+              "amount": "785.95",
+              "currencyCode": "INR"
+            },
+            "maxVariantPrice": {
+              "amount": "785.95",
+              "currencyCode": "INR"
+            }
+          },
+          "variants": {
+            "edges": [
+              {
+                "node": {
+                  "id": "gid://shopify/ProductVariant/52130746302765",
+                  "legacyResourceId": "52130746302765",
+                  "sku": null,
+                  "title": "Default Title",
+                  "price": "785.95",
+                  "inventoryQuantity": 10
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxMDI5MTEzOTgwNTQ4NSwibGFzdF92YWx1ZSI6IjEwMjkxMTM5ODA1NDg1In0="
+      }
+    }
+  },
+  "capturedAt": "2026-06-10T07:02:50Z"
+}
