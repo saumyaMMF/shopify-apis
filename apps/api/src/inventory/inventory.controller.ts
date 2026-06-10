@@ -14,7 +14,12 @@ export class InventoryController {
   constructor(private inv: InventoryService) {}
 
   @Get('levels') @RequirePermissions('inventory.read')
-  levels(@Query('locationId') locationId?: string) { return this.inv.levels(locationId); }
+  levels(@Query() q: any) {
+    return this.inv.levels({ take: q.take ? Number(q.take) : undefined, cursor: q.cursor });
+  }
+
+  @Get('locations') @RequirePermissions('inventory.read')
+  locations() { return this.inv.locations(); }
 
   @Post('adjust') @RequirePermissions('inventory.adjust')
   adjust(

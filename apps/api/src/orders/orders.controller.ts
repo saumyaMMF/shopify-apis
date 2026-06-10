@@ -15,7 +15,7 @@ export class OrdersController {
 
   @Get() @RequirePermissions('order.read')
   list(@Query() q: any) {
-    return this.orders.list({ skip: Number(q.skip ?? 0), take: Number(q.take ?? 25), status: q.status });
+    return this.orders.list({ take: q.take ? Number(q.take) : 25, cursor: q.cursor, status: q.status, q: q.q });
   }
 
   @Get(':id') @RequirePermissions('order.read')

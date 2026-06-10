@@ -2,10 +2,55 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AdminGraphQLService } from '../shopify/admin-graphql.service';
 
+const PRODUCTS_LIST = `
+  query Products($first: Int!, $after: String, $query: String) {
+    products(first: $first, after: $after, query: $query) {
+      pageInfo { hasNextPage endCursor }
+      edges {
+        node {
+          id legacyResourceId title handle status productType vendor tags
+          createdAt updatedAt publishedAt totalInventory
+          featuredImage { url altText }
+          priceRangeV2 {
+            minVariantPrice { amount currencyCode }
+            maxVariantPrice { amount currencyCode }
+          }
+          variants(first: 5) {
+            edges { node { id legacyResourceId sku title price inventoryQuantity } }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const PRODUCT_GET = `
+  query Product($id: ID!) {
+    product(id: $id) {
+      id legacyResourceId title handle status descriptionHtml productType vendor tags
+      createdAt updatedAt publishedAt totalInventory
+      featuredImage { url altText }
+      images(first: 20) { edges { node { id url altText width height } } }
+      variants(first: 50) {
+        edges { node {
+          id legacyResourceId sku barcode title price compareAtPrice
+          inventoryQuantity inventoryItem { id legacyResourceId }
+          selectedOptions { name value }
+        } }
+      }
+      options { id name values }
+      priceRangeV2 {
+        minVariantPrice { amount currencyCode }
+        maxVariantPrice { amount currencyCode }
+      }
+    }
+  }
+`;
+
 const PRODUCT_CREATE = `
   mutation productCreate($input: ProductInput!) {
     productCreate(input: $input) {
-      product { id title handle status }
+      product { id legacyResourceId title handle status }
       userErrors { field message }
     }
   }
@@ -14,7 +59,7 @@ const PRODUCT_CREATE = `
 const PRODUCT_UPDATE = `
   mutation productUpdate($input: ProductInput!) {
     productUpdate(input: $input) {
-      product { id title handle status }
+      product { id legacyResourceId title handle status }
       userErrors { field message }
     }
   }
@@ -42,31 +87,28 @@ export interface CreateProductDto {
 export class ProductsService {
   constructor(private prisma: PrismaService, private gql: AdminGraphQLService) {}
 
-  async list(opts: { skip?: number; take?: number; q?: string; status?: string } = {}) {
-    const where: any = {};
-    if (opts.q) where.OR = [
-      { title: { contains: opts.q, mode: 'insensitive' } },
-      { handle: { contains: opts.q, mode: 'insensitive' } },
-    ];
-    if (opts.status) where.status = opts.status;
-
-    const [total, items] = await Promise.all([
-      this.prisma.product.count({ where }),
-      this.prisma.product.findMany({
-        where, skip: opts.skip ?? 0, take: Math.min(opts.take ?? 25, 100),
-        orderBy: { shopifyUpdatedAt: 'desc' },
-        include: { variants: true, images: true },
-      }),
-    ]);
-    return { total, items };
+  // Live Shopify list — cursor pagination
+  async list(opts: { take?: number; cursor?: string; q?: string; status?: string } = {}) {
+    const filters: string[] = [];
+    if (opts.q) filters.push(opts.q);
+    if (opts.status) filters.push(`status:${opts.status.toLowerCase()}`);
+    const query = filters.join(' ').trim() || undefined;
+    const data: any = await this.gql.request(PRODUCTS_LIST, {
+      first: Math.min(opts.take ?? 25, 100),
+      after: opts.cursor ?? null,
+      query,
+    });
+    return {
+      items: data.products.edges.map((e: any) => e.node),
+      pageInfo: data.products.pageInfo,
+    };
   }
 
-  async findById(id: string) {
-    const product = await this.prisma.product.findUnique({
-      where: { id }, include: { variants: true, images: true, collections: true },
-    });
-    if (!product) throw new NotFoundException();
-    return product;
+  async findById(idOrGid: string) {
+    const gid = idOrGid.startsWith('gid://') ? idOrGid : `gid://shopify/Product/${idOrGid}`;
+    const data: any = await this.gql.request(PRODUCT_GET, { id: gid });
+    if (!data.product) throw new NotFoundException();
+    return data.product;
   }
 
   async create(dto: CreateProductDto) {

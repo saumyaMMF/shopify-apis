@@ -24,7 +24,8 @@ export class ProductsController {
   @RequirePermissions('product.read')
   list(@Query() q: any) {
     return this.products.list({
-      skip: Number(q.skip ?? 0), take: Number(q.take ?? 25),
+      take: q.take ? Number(q.take) : 25,
+      cursor: q.cursor,
       q: q.q, status: q.status,
     });
   }

@@ -14,7 +14,7 @@ export class CustomersController {
 
   @Get() @RequirePermissions('customer.read')
   list(@Query() q: any) {
-    return this.svc.list({ skip: Number(q.skip ?? 0), take: Number(q.take ?? 25), q: q.q });
+    return this.svc.list({ take: q.take ? Number(q.take) : 25, cursor: q.cursor, q: q.q });
   }
 
   @Get(':id') @RequirePermissions('customer.read')

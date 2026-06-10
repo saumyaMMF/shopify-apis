@@ -7,5 +7,6 @@ import { ShopifyModule } from '../shopify/shopify.module';
   imports: [ShopifyModule],
   controllers: [CustomersController],
   providers: [CustomersService],
+  exports: [CustomersService],
 })
 export class CustomersModule {}

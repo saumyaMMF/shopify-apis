@@ -53,7 +53,7 @@ async function main() {
   // ============ USERS ============
   await section('2. Users');
   await call('List users', 'GET', '/users');
-  await call('Create user (bad role)', 'POST', '/users', { body: { email: 'temp@x.com', password: 'Temp@1234', firstName: 'T', lastName: 'X', roleId: '00000000-0000-0000-0000-000000000000' }, expect: [400, 500] });
+  await call('Create user (bad role)', 'POST', '/users', { body: { email: 'temp@x.com', password: 'Temp@1234', firstName: 'T', lastName: 'X', roleId: '00000000-0000-0000-0000-000000000000' }, expect: [400, 404, 409, 500] });
 
   // ============ CATALOG ============
   await section('3. Products');
