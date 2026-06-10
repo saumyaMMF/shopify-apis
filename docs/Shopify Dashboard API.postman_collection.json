@@ -8,6 +8,11 @@
   "variable": [
     { "key": "base_url", "value": "http://localhost:4000/api" },
     { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" },
+    { "key": "user_id", "value": "" },
+    { "key": "user_email", "value": "" },
+    { "key": "user_role", "value": "" },
+    { "key": "user_perms", "value": "" },
     { "key": "admin_email", "value": "admin@example.com" },
     { "key": "admin_password", "value": "Admin@12345" }
   ],
@@ -25,7 +30,36 @@
             "listen": "test",
             "script": { "exec": [
               "const r = pm.response.json();",
-              "if (r.accessToken) { pm.collectionVariables.set('access_token', r.accessToken); }"
+              "if (pm.response.code === 200 || pm.response.code === 201) {",
+              "  if (r.accessToken) {",
+              "    pm.collectionVariables.set('access_token', r.accessToken);",
+              "    pm.environment.set('access_token', r.accessToken);",
+              "    console.log('✓ access_token saved');",
+              "  }",
+              "  if (r.user) {",
+              "    pm.collectionVariables.set('user_id', r.user.id);",
+              "    pm.collectionVariables.set('user_email', r.user.email);",
+              "    pm.collectionVariables.set('user_role', r.user.role);",
+              "    if (Array.isArray(r.user.permissions)) {",
+              "      pm.collectionVariables.set('user_perms', r.user.permissions.join(','));",
+              "    }",
+              "    console.log('✓ user:', r.user.email, '(' + r.user.role + ')');",
+              "  }",
+              "  const setCookie = pm.response.headers.get('Set-Cookie');",
+              "  if (setCookie) {",
+              "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+              "    if (m) {",
+              "      const raw = decodeURIComponent(m[1]);",
+              "      pm.collectionVariables.set('refresh_token', raw);",
+              "      pm.environment.set('refresh_token', raw);",
+              "      console.log('✓ refresh_token saved');",
+              "    }",
+              "  }",
+              "  pm.test('Login 2xx', () => pm.response.to.be.success);",
+              "  pm.test('Has accessToken', () => pm.expect(r.accessToken).to.be.a('string'));",
+              "} else {",
+              "  pm.test('Login failed', () => pm.expect.fail(r.message || 'unknown'));",
+              "}"
             ], "type": "text/javascript" }
           }],
           "request": {
@@ -41,6 +75,30 @@
         },
         {
           "name": "Refresh (uses httpOnly cookie)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "const r = pm.response.json();",
+              "if (pm.response.code === 200 || pm.response.code === 201) {",
+              "  if (r.accessToken) {",
+              "    pm.collectionVariables.set('access_token', r.accessToken);",
+              "    pm.environment.set('access_token', r.accessToken);",
+              "    console.log('✓ access_token rotated');",
+              "  }",
+              "  const setCookie = pm.response.headers.get('Set-Cookie');",
+              "  if (setCookie) {",
+              "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+              "    if (m) {",
+              "      const raw = decodeURIComponent(m[1]);",
+              "      pm.collectionVariables.set('refresh_token', raw);",
+              "      pm.environment.set('refresh_token', raw);",
+              "      console.log('✓ refresh_token rotated');",
+              "    }",
+              "  }",
+              "  pm.test('Refresh ok', () => pm.response.to.be.success);",
+              "}"
+            ], "type": "text/javascript" }
+          }],
           "request": { "method": "POST", "url": "{{base_url}}/auth/refresh" }
         },
         {
