@@ -63,7 +63,7 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "url": "{{base_url}}/users",
-            "body": { "mode": "raw", "raw": "{\n  \"email\": \"manager@example.com\",\n  \"password\": \"Manager@12345\",\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Manager\",\n  \"roleId\": \"<role-uuid>\"\n}" }
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"manager@example.com\",\n  \"password\": \"Manager@12345\",\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Manager\",\n  \"roleId\": \"<get-from-GET /roles>\"\n}" }
           }
         },
         {
@@ -84,6 +84,32 @@
             "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
           }
         }
+      ]
+    },
+    {
+      "name": "2b. Roles & Permissions",
+      "item": [
+        { "name": "List roles", "request": { "method": "GET", "url": "{{base_url}}/roles" } },
+        { "name": "Get role", "request": { "method": "GET", "url": "{{base_url}}/roles/<role-id>" } },
+        {
+          "name": "Create role",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/roles",
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"warehouse\",\n  \"description\": \"Warehouse operator\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"inventory.read\",\n    \"inventory.adjust\",\n    \"po.read\",\n    \"po.receive\"\n  ]\n}" }
+          }
+        },
+        {
+          "name": "Update role",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/roles/<role-id>",
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated description\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"order.read\"\n  ]\n}" }
+          }
+        },
+        { "name": "List permissions", "request": { "method": "GET", "url": "{{base_url}}/permissions" } }
       ]
     },
     {
