@@ -8,6 +8,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ============ SHOPIFY SHOPS (multi-tenant ready) ============
+model Shop {
+  id                  String   @id @default(uuid())
+  domain              String   @unique         // test-store-uzhiv0ib.myshopify.com
+  name                String?
+  accessToken         String                   // shpat_... or session token
+  refreshToken        String?
+  scope               String?
+  expiresAt           DateTime?                // when accessToken expires
+  refreshExpiresAt    DateTime?
+  installedAt         DateTime @default(now())
+  uninstalledAt       DateTime?
+  isActive            Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+}
+
 // ============ AUTH / RBAC ============
 model User {
   id            String         @id @default(uuid())

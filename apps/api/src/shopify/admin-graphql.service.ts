@@ -1,19 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import pRetry from 'p-retry';
+import { ShopService } from './shop.service';
 
 @Injectable()
 export class AdminGraphQLService {
   private log = new Logger('AdminGQL');
-  constructor(private cfg: ConfigService) {}
+  constructor(private cfg: ConfigService, private shops: ShopService) {}
 
   async request<T = any>(query: string, variables?: Record<string, unknown>): Promise<T> {
-    const url = `https://${this.cfg.get('SHOP_DOMAIN')}/admin/api/${this.cfg.get('SHOPIFY_API_VERSION') ?? '2025-01'}/graphql.json`;
+    const shop = await this.shops.getActive();
+    const url = `https://${shop.domain}/admin/api/${this.cfg.get('SHOPIFY_API_VERSION') ?? '2025-01'}/graphql.json`;
     const run = async () => {
       const res = await fetch(url, {
         method: 'POST',
         headers: {
-          'X-Shopify-Access-Token': this.cfg.get('SHOP_TOKEN')!,
+          'X-Shopify-Access-Token': shop.accessToken,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ query, variables }),
