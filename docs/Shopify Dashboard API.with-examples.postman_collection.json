@@ -1,0 +1,2644 @@
+{
+  "info": {
+    "name": "Shopify Dashboard API",
+    "_postman_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+    "description": "All NestJS endpoints exposed by apps/api. Auth via JWT bearer. Login first → token auto-stored in {{access_token}}. Refresh via httpOnly cookie.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000/api"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "user_email",
+      "value": ""
+    },
+    {
+      "key": "user_role",
+      "value": ""
+    },
+    {
+      "key": "user_perms",
+      "value": ""
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "admin_password",
+      "value": "Admin@12345"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "  if (r.accessToken) {",
+                  "    pm.collectionVariables.set('access_token', r.accessToken);",
+                  "    pm.environment.set('access_token', r.accessToken);",
+                  "    console.log('✓ access_token saved');",
+                  "  }",
+                  "  if (r.user) {",
+                  "    pm.collectionVariables.set('user_id', r.user.id);",
+                  "    pm.collectionVariables.set('user_email', r.user.email);",
+                  "    pm.collectionVariables.set('user_role', r.user.role);",
+                  "    if (Array.isArray(r.user.permissions)) {",
+                  "      pm.collectionVariables.set('user_perms', r.user.permissions.join(','));",
+                  "    }",
+                  "    console.log('✓ user:', r.user.email, '(' + r.user.role + ')');",
+                  "  }",
+                  "  const setCookie = pm.response.headers.get('Set-Cookie');",
+                  "  if (setCookie) {",
+                  "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+                  "    if (m) {",
+                  "      const raw = decodeURIComponent(m[1]);",
+                  "      pm.collectionVariables.set('refresh_token', raw);",
+                  "      pm.environment.set('refresh_token', raw);",
+                  "      console.log('✓ refresh_token saved');",
+                  "    }",
+                  "  }",
+                  "  pm.test('Login 2xx', () => pm.response.to.be.success);",
+                  "  pm.test('Has accessToken', () => pm.expect(r.accessToken).to.be.a('string'));",
+                  "} else {",
+                  "  pm.test('Login failed', () => pm.expect.fail(r.message || 'unknown'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Login — captured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin@12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MjJkODQ1YS02MDkyLTQzYjYtODFjOC05MDYwMjNmYTAzZWYiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZUlkIjoiODRlMzYwZWItMmMxNi00YWI1LWFkZDYtZDZjYjQwODg4NmFlIiwicGVybXMiOlsicHJvZHVjdC5yZWFkIiwicHJvZHVjdC5jcmVhdGUiLCJwcm9kdWN0LnVwZGF0ZSIsInByb2R1Y3QuZGVsZXRlIiwicHJvZHVjdC5idWxrSW1wb3J0IiwiY29sbGVjdGlvbi5tYW5hZ2UiLCJpbnZlbnRvcnkucmVhZCIsImludmVudG9yeS5hZGp1c3QiLCJpbnZlbnRvcnkudHJhbnNmZXIiLCJvcmRlci5yZWFkIiwib3JkZXIuZnVsZmlsbCIsIm9yZGVyLnJlZnVuZCIsIm9yZGVyLmRyYWZ0IiwiY3VzdG9tZXIucmVhZCIsImN1c3RvbWVyLnVwZGF0ZSIsInNlZ21lbnQubWFuYWdlIiwicG8ucmVhZCIsInBvLmNyZWF0ZSIsInBvLmFwcHJvdmUiLCJwby5yZWNlaXZlIiwidmVuZG9yLm1hbmFnZSIsImNtcy5yZWFkIiwiY21zLnB1Ymxpc2giLCJtZWRpYS51cGxvYWQiLCJtZWRpYS5kZWxldGUiLCJyZXBvcnRzLnZpZXciLCJzZXR0aW5ncy51cGRhdGUiLCJhdWRpdC52aWV3IiwidXNlci5tYW5hZ2UiLCJyb2xlLm1hbmFnZSJdLCJpYXQiOjE3ODEwNzQ5NjksImV4cCI6MTc4MTA3NTg2OX0.Yh6e35PMdWt1BTuKFIZnKHJo5VqQX5jM94Jaj_GoavM\",\n  \"user\": {\n    \"id\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"email\": \"admin@example.com\",\n    \"firstName\": \"System\",\n    \"lastName\": \"Admin\",\n    \"role\": \"admin\",\n    \"permissions\": [\n      \"product.read\",\n      \"product.create\",\n      \"product.update\",\n      \"product.delete\",\n      \"product.bulkImport\",\n      \"collection.manage\",\n      \"inventory.read\",\n      \"inventory.adjust\",\n      \"inventory.transfer\",\n      \"order.read\",\n      \"order.fulfill\",\n      \"order.refund\",\n      \"order.draft\",\n      \"customer.read\",\n      \"customer.update\",\n      \"segment.manage\",\n      \"po.read\",\n      \"po.create\",\n      \"po.approve\",\n      \"po.receive\",\n      \"vendor.manage\",\n      \"cms.read\",\n      \"cms.publish\",\n      \"media.upload\",\n      \"media.delete\",\n      \"reports.view\",\n      \"settings.update\",\n      \"audit.view\",\n      \"user.manage\",\n      \"role.manage\"\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh (uses httpOnly cookie)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "  if (r.accessToken) {",
+                  "    pm.collectionVariables.set('access_token', r.accessToken);",
+                  "    pm.environment.set('access_token', r.accessToken);",
+                  "    console.log('✓ access_token rotated');",
+                  "  }",
+                  "  const setCookie = pm.response.headers.get('Set-Cookie');",
+                  "  if (setCookie) {",
+                  "    const m = /refresh_token=([^;]+)/.exec(setCookie);",
+                  "    if (m) {",
+                  "      const raw = decodeURIComponent(m[1]);",
+                  "      pm.collectionVariables.set('refresh_token', raw);",
+                  "      pm.environment.set('refresh_token', raw);",
+                  "      console.log('✓ refresh_token rotated');",
+                  "    }",
+                  "  }",
+                  "  pm.test('Refresh ok', () => pm.response.to.be.success);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/refresh"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/logout"
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/auth/me"
+          },
+          "response": [
+            {
+              "name": "Me — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/auth/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"sub\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n  \"email\": \"admin@example.com\",\n  \"roleId\": \"84e360eb-2c16-4ab5-add6-d6cb408886ae\",\n  \"perms\": [\n    \"product.read\",\n    \"product.create\",\n    \"product.update\",\n    \"product.delete\",\n    \"product.bulkImport\",\n    \"collection.manage\",\n    \"inventory.read\",\n    \"inventory.adjust\",\n    \"inventory.transfer\",\n    \"order.read\",\n    \"order.fulfill\",\n    \"order.refund\",\n    \"order.draft\",\n    \"customer.read\",\n    \"customer.update\",\n    \"segment.manage\",\n    \"po.read\",\n    \"po.create\",\n    \"po.approve\",\n    \"po.receive\",\n    \"vendor.manage\",\n    \"cms.read\",\n    \"cms.publish\",\n    \"media.upload\",\n    \"media.delete\",\n    \"reports.view\",\n    \"settings.update\",\n    \"audit.view\",\n    \"user.manage\",\n    \"role.manage\"\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Users",
+      "item": [
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/users"
+          },
+          "response": [
+            {
+              "name": "List users — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"6c5cc08f-fce0-4304-ab76-9fdcf267405c\",\n    \"email\": \"manager@example.com\",\n    \"firstName\": \"Mark\",\n    \"lastName\": \"Manager\",\n    \"isActive\": true,\n    \"role\": {\n      \"name\": \"staff\"\n    },\n    \"lastLoginAt\": null\n  },\n  {\n    \"id\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"email\": \"admin@example.com\",\n    \"firstName\": \"System\",\n    \"lastName\": \"Admin\",\n    \"isActive\": true,\n    \"role\": {\n      \"name\": \"admin\"\n    },\n    \"lastLoginAt\": \"2026-06-10T07:02:49.541Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@example.com\",\n  \"password\": \"Manager@12345\",\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Manager\",\n  \"roleId\": \"<get-from-GET /roles>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Assign role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/<user-id>/role",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"<role-uuid>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Set active",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/<user-id>/active",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2b. Roles & Permissions",
+      "item": [
+        {
+          "name": "List roles",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/roles"
+          },
+          "response": [
+            {
+              "name": "List roles — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/roles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"84e360eb-2c16-4ab5-add6-d6cb408886ae\",\n    \"name\": \"admin\",\n    \"description\": \"admin role\",\n    \"isSystem\": true,\n    \"permissions\": [\n      {\n        \"key\": \"product.read\"\n      },\n      {\n        \"key\": \"product.create\"\n      },\n      {\n        \"key\": \"product.update\"\n      },\n      {\n        \"key\": \"product.delete\"\n      },\n      {\n        \"key\": \"product.bulkImport\"\n      },\n      {\n        \"key\": \"collection.manage\"\n      },\n      {\n        \"key\": \"inventory.read\"\n      },\n      {\n        \"key\": \"inventory.adjust\"\n      },\n      {\n        \"key\": \"inventory.transfer\"\n      },\n      {\n        \"key\": \"order.read\"\n      },\n      {\n        \"key\": \"order.fulfill\"\n      },\n      {\n        \"key\": \"order.refund\"\n      },\n      {\n        \"key\": \"order.draft\"\n      },\n      {\n        \"key\": \"customer.read\"\n      },\n      {\n        \"key\": \"customer.update\"\n      },\n      {\n        \"key\": \"segment.manage\"\n      },\n      {\n        \"key\": \"po.read\"\n      },\n      {\n        \"key\": \"po.create\"\n      },\n      {\n        \"key\": \"po.approve\"\n      },\n      {\n        \"key\": \"po.receive\"\n      },\n      {\n        \"key\": \"vendor.manage\"\n      },\n      {\n        \"key\": \"cms.read\"\n      },\n      {\n        \"key\": \"cms.publish\"\n      },\n      {\n        \"key\": \"media.upload\"\n      },\n      {\n        \"key\": \"media.delete\"\n      },\n      {\n        \"key\": \"reports.view\"\n      },\n      {\n        \"key\": \"settings.update\"\n      },\n      {\n        \"key\": \"audit.view\"\n      },\n      {\n        \"key\": \"user.manage\"\n      },\n      {\n        \"key\": \"role.manage\"\n      }\n    ],\n    \"_count\": {\n      \"users\": 1\n    }\n  },\n  {\n    \"id\": \"ad74a6fb-c906-4004-bdde-d0b267a8f710\",\n    \"name\": \"manager\",\n    \"description\": \"manager role\",\n    \"isSystem\": true,\n    \"permissions\": [\n      {\n        \"key\": \"product.read\"\n      },\n      {\n        \"key\": \"product.create\"\n      },\n      {\n        \"key\": \"product.update\"\n      },\n      {\n        \"key\": \"product.delete\"\n      },\n      {\n        \"key\": \"product.bulkImport\"\n      },\n      {\n        \"key\": \"collection.manage\"\n      },\n      {\n        \"key\": \"inventory.read\"\n      },\n      {\n        \"key\": \"inventory.adjust\"\n      },\n      {\n        \"key\": \"inventory.transfer\"\n      },\n      {\n        \"key\": \"order.read\"\n      },\n      {\n        \"key\": \"order.fulfill\"\n      },\n      {\n        \"key\": \"order.refund\"\n      },\n      {\n        \"key\": \"order.draft\"\n      },\n      {\n        \"key\": \"customer.read\"\n      },\n      {\n        \"key\": \"customer.update\"\n      },\n      {\n        \"key\": \"segment.manage\"\n      },\n      {\n        \"key\": \"po.read\"\n      },\n      {\n        \"key\": \"po.create\"\n      },\n      {\n        \"key\": \"po.approve\"\n      },\n      {\n        \"key\": \"po.receive\"\n      },\n      {\n        \"key\": \"vendor.manage\"\n      },\n      {\n        \"key\": \"cms.read\"\n      },\n      {\n        \"key\": \"cms.publish\"\n      },\n      {\n        \"key\": \"media.upload\"\n      },\n      {\n        \"key\": \"media.delete\"\n      },\n      {\n        \"key\": \"reports.view\"\n      },\n      {\n        \"key\": \"settings.update\"\n      },\n      {\n        \"key\": \"audit.view\"\n      }\n    ],\n    \"_count\": {\n      \"users\": 0\n    }\n  },\n  {\n    \"id\": \"c8bb2f00-b14a-4e86-b1d4-046177e2bee4\",\n    \"name\": \"staff\",\n    \"description\": \"staff role\",\n    \"isSystem\": true,\n    \"permissions\": [\n      {\n        \"key\": \"product.read\"\n      },\n      {\n        \"key\": \"product.update\"\n      },\n      {\n        \"key\": \"inventory.read\"\n      },\n      {\n        \"key\": \"order.read\"\n      },\n      {\n        \"key\": \"order.fulfill\"\n      },\n      {\n        \"key\": \"customer.read\"\n      },\n      {\n        \"key\": \"po.read\"\n      },\n      {\n        \"key\": \"po.receive\"\n      },\n      {\n        \"key\": \"cms.read\"\n      },\n      {\n        \"key\": \"media.upload\"\n      }\n    ],\n    \"_count\": {\n      \"users\": 1\n    }\n  },\n  {\n    \"id\": \"bcc26999-f048-4d34-86ab-915a1242b442\",\n    \"name\": \"viewer\",\n    \"description\": \"viewer role\",\n    \"isSystem\": true,\n    \"permissions\": [\n      {\n        \"key\": \"product.read\"\n      },\n      {\n        \"key\": \"inventory.read\"\n      },\n      {\n        \"key\": \"order.read\"\n      },\n      {\n        \"key\": \"customer.read\"\n      },\n      {\n        \"key\": \"po.read\"\n      },\n      {\n        \"key\": \"cms.read\"\n      },\n      {\n        \"key\": \"reports.view\"\n      }\n    ],\n    \"_count\": {\n      \"users\": 0\n    }\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get role",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/roles/<role-id>"
+          }
+        },
+        {
+          "name": "Create role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/roles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"warehouse\",\n  \"description\": \"Warehouse operator\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"inventory.read\",\n    \"inventory.adjust\",\n    \"po.read\",\n    \"po.receive\"\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/roles/<role-id>",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\",\n  \"permissionKeys\": [\n    \"product.read\",\n    \"order.read\"\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "List permissions",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/permissions"
+          },
+          "response": [
+            {
+              "name": "List permissions — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/permissions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "permissions"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"341d7e7a-fa29-4752-9624-31b34579cf32\",\n    \"key\": \"audit.view\",\n    \"resource\": \"audit\",\n    \"action\": \"view\"\n  },\n  {\n    \"id\": \"e9ae4a16-3d93-45ff-a449-c072f021d15f\",\n    \"key\": \"cms.publish\",\n    \"resource\": \"cms\",\n    \"action\": \"publish\"\n  },\n  {\n    \"id\": \"ae3c71cf-2845-4b34-a464-eaf5510fbf03\",\n    \"key\": \"cms.read\",\n    \"resource\": \"cms\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"622356fb-13c2-49e9-a4ec-d4fdb16ee059\",\n    \"key\": \"collection.manage\",\n    \"resource\": \"collection\",\n    \"action\": \"manage\"\n  },\n  {\n    \"id\": \"249da896-cd46-448d-a9b1-a437bb3b1947\",\n    \"key\": \"customer.read\",\n    \"resource\": \"customer\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"d2745ea5-8b58-4558-9cc7-3eb27b305d8e\",\n    \"key\": \"customer.update\",\n    \"resource\": \"customer\",\n    \"action\": \"update\"\n  },\n  {\n    \"id\": \"e2d49d12-9c5d-4dde-bb7e-dd5ea9757b54\",\n    \"key\": \"inventory.adjust\",\n    \"resource\": \"inventory\",\n    \"action\": \"adjust\"\n  },\n  {\n    \"id\": \"50af4af3-4a8c-484e-aa74-f8ffe834e52b\",\n    \"key\": \"inventory.read\",\n    \"resource\": \"inventory\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"dacb8518-06c0-4c09-a633-e0c004696845\",\n    \"key\": \"inventory.transfer\",\n    \"resource\": \"inventory\",\n    \"action\": \"transfer\"\n  },\n  {\n    \"id\": \"e696936d-dcd5-474d-bb21-108c96b817c5\",\n    \"key\": \"media.delete\",\n    \"resource\": \"media\",\n    \"action\": \"delete\"\n  },\n  {\n    \"id\": \"89589d88-f5c9-463c-baac-2c2064f9d945\",\n    \"key\": \"media.upload\",\n    \"resource\": \"media\",\n    \"action\": \"upload\"\n  },\n  {\n    \"id\": \"dc69a05b-79e4-49d6-ba42-82ad4664807c\",\n    \"key\": \"order.draft\",\n    \"resource\": \"order\",\n    \"action\": \"draft\"\n  },\n  {\n    \"id\": \"85d7c5d6-5dbc-4f9b-b3f9-51099d972d13\",\n    \"key\": \"order.fulfill\",\n    \"resource\": \"order\",\n    \"action\": \"fulfill\"\n  },\n  {\n    \"id\": \"6b403e9b-79e3-415b-a997-6e8dfbec4740\",\n    \"key\": \"order.read\",\n    \"resource\": \"order\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"97b47f41-3cc8-4e67-b833-903861a737b2\",\n    \"key\": \"order.refund\",\n    \"resource\": \"order\",\n    \"action\": \"refund\"\n  },\n  {\n    \"id\": \"64a77493-77d9-4779-a2e4-b6115687503b\",\n    \"key\": \"po.approve\",\n    \"resource\": \"po\",\n    \"action\": \"approve\"\n  },\n  {\n    \"id\": \"60f2a27d-f14c-4894-88df-faff7188053e\",\n    \"key\": \"po.create\",\n    \"resource\": \"po\",\n    \"action\": \"create\"\n  },\n  {\n    \"id\": \"d46adad6-a4c8-4e53-885d-ca145745e2a4\",\n    \"key\": \"po.read\",\n    \"resource\": \"po\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"4fa38989-ecc0-4fcc-ab04-24c0e0b9f6de\",\n    \"key\": \"po.receive\",\n    \"resource\": \"po\",\n    \"action\": \"receive\"\n  },\n  {\n    \"id\": \"c1efe3e3-927f-49a5-a092-5973ea1e09a4\",\n    \"key\": \"product.bulkImport\",\n    \"resource\": \"product\",\n    \"action\": \"bulkImport\"\n  },\n  {\n    \"id\": \"f4d3dba8-7100-4e34-9bf2-86e30b74ad7b\",\n    \"key\": \"product.create\",\n    \"resource\": \"product\",\n    \"action\": \"create\"\n  },\n  {\n    \"id\": \"d4f25f17-f508-4edc-9a88-0d58811cf593\",\n    \"key\": \"product.delete\",\n    \"resource\": \"product\",\n    \"action\": \"delete\"\n  },\n  {\n    \"id\": \"de2d6408-003b-495f-aef9-52c03aebf341\",\n    \"key\": \"product.read\",\n    \"resource\": \"product\",\n    \"action\": \"read\"\n  },\n  {\n    \"id\": \"ad5ac320-1c9b-431a-9455-cffc82279fc1\",\n    \"key\": \"product.update\",\n    \"resource\": \"product\",\n    \"action\": \"update\"\n  },\n  {\n    \"id\": \"80d33b99-be14-4439-bc79-0aad125d2a7d\",\n    \"key\": \"reports.view\",\n    \"resource\": \"reports\",\n    \"action\": \"view\"\n  },\n  {\n    \"id\": \"098035a8-997a-4c84-aa3b-c470dbe334ad\",\n    \"key\": \"role.manage\",\n    \"resource\": \"role\",\n    \"action\": \"manage\"\n  },\n  {\n    \"id\": \"628dba70-bb94-4d7a-999a-9a04f0be81d2\",\n    \"key\": \"segment.manage\",\n    \"resource\": \"segment\",\n    \"action\": \"manage\"\n  },\n  {\n    \"id\": \"0443903e-d68f-4232-a695-44f41bc4b445\",\n    \"key\": \"settings.update\",\n    \"resource\": \"settings\",\n    \"action\": \"update\"\n  },\n  {\n    \"id\": \"0982abb4-56d6-401a-a6c4-e326c96b14e7\",\n    \"key\": \"user.manage\",\n    \"resource\": \"user\",\n    \"action\": \"manage\"\n  },\n  {\n    \"id\": \"c573b629-65ba-42a7-a8f8-b9ebb1b31ec4\",\n    \"key\": \"vendor.manage\",\n    \"resource\": \"vendor\",\n    \"action\": \"manage\"\n  }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Catalog - Products",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products?take=25&skip=0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "take",
+                  "value": "25"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List products — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/products?take=5",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"gid://shopify/Product/10291139674413\",\n      \"legacyResourceId\": \"10291139674413\",\n      \"title\": \"The Inventory Not Tracked Snowboard\",\n      \"handle\": \"the-inventory-not-tracked-snowboard\",\n      \"status\": \"ACTIVE\",\n      \"productType\": \"snowboard\",\n      \"vendor\": \"test store\",\n      \"tags\": [\n        \"Accessory\",\n        \"Sport\",\n        \"Winter\"\n      ],\n      \"createdAt\": \"2026-06-09T10:51:26Z\",\n      \"updatedAt\": \"2026-06-09T22:51:34Z\",\n      \"publishedAt\": \"2026-06-09T10:51:28Z\",\n      \"totalInventory\": 0,\n      \"featuredImage\": {\n        \"url\": \"https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_purple_hydrogen.png?v=1781002290\",\n        \"altText\": \"Top and bottom view of a snowboard. The top view shows a centred hexagonal logo for Hydrogen that\\n          appears to radiate outwards, as well as some overlapping hexagons at the bottom. The bottom view shows an\\n          abstract angular grid in purples.\"\n      },\n      \"priceRangeV2\": {\n        \"minVariantPrice\": {\n          \"amount\": \"949.95\",\n          \"currencyCode\": \"INR\"\n        },\n        \"maxVariantPrice\": {\n          \"amount\": \"949.95\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"variants\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746335533\",\n              \"legacyResourceId\": \"52130746335533\",\n              \"sku\": \"sku-untracked-1\",\n              \"title\": \"Default Title\",\n              \"price\": \"949.95\",\n              \"inventoryQuantity\": 0\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/Product/10291139707181\",\n      \"legacyResourceId\": \"10291139707181\",\n      \"title\": \"Gift Card\",\n      \"handle\": \"gift-card\",\n      \"status\": \"ACTIVE\",\n      \"productType\": \"giftcard\",\n      \"vendor\": \"Snowboard Vendor\",\n      \"tags\": [],\n      \"createdAt\": \"2026-06-09T10:51:26Z\",\n      \"updatedAt\": \"2026-06-09T22:51:38Z\",\n      \"publishedAt\": \"2026-06-09T10:51:28Z\",\n      \"totalInventory\": 0,\n      \"featuredImage\": {\n        \"url\": \"https://cdn.shopify.com/s/files/1/0955/1790/1101/files/gift_card.png?v=1781002289\",\n        \"altText\": \"Gift card that shows text: Generated data gift card\"\n      },\n      \"priceRangeV2\": {\n        \"minVariantPrice\": {\n          \"amount\": \"10.0\",\n          \"currencyCode\": \"INR\"\n        },\n        \"maxVariantPrice\": {\n          \"amount\": \"100.0\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"variants\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746040621\",\n              \"legacyResourceId\": \"52130746040621\",\n              \"sku\": null,\n              \"title\": \"$10\",\n              \"price\": \"10.00\",\n              \"inventoryQuantity\": 0\n            }\n          },\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746073389\",\n              \"legacyResourceId\": \"52130746073389\",\n              \"sku\": null,\n              \"title\": \"$25\",\n              \"price\": \"25.00\",\n              \"inventoryQuantity\": 0\n            }\n          },\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746106157\",\n              \"legacyResourceId\": \"52130746106157\",\n              \"sku\": null,\n              \"title\": \"$50\",\n              \"price\": \"50.00\",\n              \"inventoryQuantity\": 0\n            }\n          },\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746138925\",\n              \"legacyResourceId\": \"52130746138925\",\n              \"sku\": null,\n              \"title\": \"$100\",\n              \"price\": \"100.00\",\n              \"inventoryQuantity\": 0\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/Product/10291139739949\",\n      \"legacyResourceId\": \"10291139739949\",\n      \"title\": \"The Archived Snowboard\",\n      \"handle\": \"the-archived-snowboard\",\n      \"status\": \"ARCHIVED\",\n      \"productType\": \"snowboard\",\n      \"vendor\": \"Snowboard Vendor\",\n      \"tags\": [\n        \"Archived\",\n        \"Premium\",\n        \"Snow\",\n        \"Snowboard\",\n        \"Sport\",\n        \"Winter\"\n      ],\n      \"createdAt\": \"2026-06-09T10:51:27Z\",\n      \"updatedAt\": \"2026-06-09T22:51:40Z\",\n      \"publishedAt\": null,\n      \"totalInventory\": 50,\n      \"featuredImage\": {\n        \"url\": \"https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_52f8e304-92d9-4a36-82af-50df8fe31c69.jpg?v=1781002289\",\n        \"altText\": \"The top and bottom view of a snowboard.The top view is a gradient light purple and dark purple\\n        with a cube geometric pattern. The bottom view blue with light blue octagon geometric pattern.\"\n      },\n      \"priceRangeV2\": {\n        \"minVariantPrice\": {\n          \"amount\": \"629.95\",\n          \"currencyCode\": \"INR\"\n        },\n        \"maxVariantPrice\": {\n          \"amount\": \"629.95\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"variants\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746269997\",\n              \"legacyResourceId\": \"52130746269997\",\n              \"sku\": null,\n              \"title\": \"Default Title\",\n              \"price\": \"629.95\",\n              \"inventoryQuantity\": 50\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/Product/10291139772717\",\n      \"legacyResourceId\": \"10291139772717\",\n      \"title\": \"The Out of Stock Snowboard\",\n      \"handle\": \"the-out-of-stock-snowboard\",\n      \"status\": \"ACTIVE\",\n      \"productType\": \"snowboard\",\n      \"vendor\": \"test store\",\n      \"tags\": [\n        \"Accessory\",\n        \"Sport\",\n        \"Winter\"\n      ],\n      \"createdAt\": \"2026-06-09T10:51:27Z\",\n      \"updatedAt\": \"2026-06-09T22:51:34Z\",\n      \"publishedAt\": \"2026-06-09T10:51:28Z\",\n      \"totalInventory\": 0,\n      \"featuredImage\": {\n        \"url\": \"https://cdn.shopify.com/s/files/1/0955/1790/1101/files/Main_f44a9605-cd62-464d-b095-d45cdaa0d0d7.jpg?v=1781002289\",\n        \"altText\": \"Top and bottom view of a snowboard. The top view shows a toggle at the top in shades of blue and\\n        yellow. The bottom view shows an abstract illustration of toggles in blues and yellows.\"\n      },\n      \"priceRangeV2\": {\n        \"minVariantPrice\": {\n          \"amount\": \"885.95\",\n          \"currencyCode\": \"INR\"\n        },\n        \"maxVariantPrice\": {\n          \"amount\": \"885.95\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"variants\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746171693\",\n              \"legacyResourceId\": \"52130746171693\",\n              \"sku\": null,\n              \"title\": \"Default Title\",\n              \"price\": \"885.95\",\n              \"inventoryQuantity\": 0\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/Product/10291139805485\",\n      \"legacyResourceId\": \"10291139805485\",\n      \"title\": \"The Compare at Price Snowboard\",\n      \"handle\": \"the-compare-at-price-snowboard\",\n      \"status\": \"ACTIVE\",\n      \"productType\": \"snowboard\",\n      \"vendor\": \"test store\",\n      \"tags\": [\n        \"Accessory\",\n        \"Sport\",\n        \"Winter\"\n      ],\n      \"createdAt\": \"2026-06-09T10:51:27Z\",\n      \"updatedAt\": \"2026-06-09T22:51:34Z\",\n      \"publishedAt\": \"2026-06-09T10:51:28Z\",\n      \"totalInventory\": 10,\n      \"featuredImage\": {\n        \"url\": \"https://cdn.shopify.com/s/files/1/0955/1790/1101/files/snowboard_sky.png?v=1781002289\",\n        \"altText\": \"Top and bottom view of a snowboard. The top view shows pixelated clouds, with the top-most one being\\n        the shape of the Shopify bag logo. The bottom view has a pixelated cloudy sky with blue, pink and purple\\n        colours.\"\n      },\n      \"priceRangeV2\": {\n        \"minVariantPrice\": {\n          \"amount\": \"785.95\",\n          \"currencyCode\": \"INR\"\n        },\n        \"maxVariantPrice\": {\n          \"amount\": \"785.95\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"variants\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/ProductVariant/52130746302765\",\n              \"legacyResourceId\": \"52130746302765\",\n              \"sku\": null,\n              \"title\": \"Default Title\",\n              \"price\": \"785.95\",\n              \"inventoryQuantity\": 10\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"pageInfo\": {\n    \"hasNextPage\": true,\n    \"endCursor\": \"eyJsYXN0X2lkIjoxMDI5MTEzOTgwNTQ4NSwibGFzdF92YWx1ZSI6IjEwMjkxMTM5ODA1NDg1In0=\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get product",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products/<product-id>"
+          }
+        },
+        {
+          "name": "Sync from Shopify",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/products/sync"
+          }
+        },
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Sample T-Shirt\",\n  \"description\": \"100% cotton\",\n  \"productType\": \"Apparel\",\n  \"vendor\": \"Acme\",\n  \"tags\": [\"new\", \"summer\"],\n  \"status\": \"DRAFT\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Create product — captured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"API Capture Test\",\n  \"status\": \"DRAFT\",\n  \"vendor\": \"Capture\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/products",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"gid://shopify/Product/10292272595245\",\n  \"legacyResourceId\": \"10292272595245\",\n  \"title\": \"API Capture Test\",\n  \"handle\": \"api-capture-test\",\n  \"status\": \"DRAFT\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/products/gid://shopify/Product/12345",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated title\",\n  \"status\": \"ACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete product",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/products/gid://shopify/Product/12345"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Catalog - Collections",
+      "item": [
+        {
+          "name": "List collections (live)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/collections"
+          },
+          "response": [
+            {
+              "name": "List collections (live) — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "collections"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"gid://shopify/Collection/540659581229\",\n    \"legacyResourceId\": \"540659581229\",\n    \"title\": \"Home page\",\n    \"handle\": \"frontpage\",\n    \"updatedAt\": \"2026-06-09T11:09:17Z\",\n    \"productsCount\": {\n      \"count\": 1\n    },\n    \"ruleSet\": null,\n    \"image\": null\n  },\n  {\n    \"id\": \"gid://shopify/Collection/540659613997\",\n    \"legacyResourceId\": \"540659613997\",\n    \"title\": \"Automated Collection\",\n    \"handle\": \"automated-collection\",\n    \"updatedAt\": \"2026-06-09T11:09:17Z\",\n    \"productsCount\": {\n      \"count\": 8\n    },\n    \"ruleSet\": {\n      \"rules\": [\n        {\n          \"column\": \"VARIANT_PRICE\",\n          \"relation\": \"LESS_THAN\",\n          \"condition\": \"800.00\"\n        },\n        {\n          \"column\": \"VARIANT_PRICE\",\n          \"relation\": \"GREATER_THAN\",\n          \"condition\": \"200.00\"\n        }\n      ],\n      \"appliedDisjunctively\": false\n    },\n    \"image\": null\n  },\n  {\n    \"id\": \"gid://shopify/Collection/540659646765\",\n    \"legacyResourceId\": \"540659646765\",\n    \"title\": \"Hydrogen\",\n    \"handle\": \"hydrogen\",\n    \"updatedAt\": \"2026-06-09T11:09:17Z\",\n    \"productsCount\": {\n      \"count\": 3\n    },\n    \"ruleSet\": null,\n    \"image\": null\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get collection",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/collections/<gid-or-id>"
+          }
+        },
+        {
+          "name": "Create custom collection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/collections",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Snowboards\",\n  \"descriptionHtml\": \"<p>All snowboards.</p>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create smart collection (rule-based)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/collections",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Premium Items\",\n  \"ruleSet\": {\n    \"rules\": [\n      { \"column\": \"VARIANT_PRICE\", \"relation\": \"GREATER_THAN\", \"condition\": \"500\" }\n    ],\n    \"appliedDisjunctively\": false\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Update collection",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/collections/gid://shopify/Collection/123",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated title\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete collection",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/collections/gid://shopify/Collection/123"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Inventory",
+      "item": [
+        {
+          "name": "Levels",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/inventory/levels",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "levels"
+              ],
+              "query": [
+                {
+                  "key": "locationId",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Levels — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/inventory/levels?take=3",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "levels"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"gid://shopify/InventoryItem/54202383958317\",\n      \"legacyResourceId\": \"54202383958317\",\n      \"sku\": null,\n      \"variant\": {\n        \"id\": \"gid://shopify/ProductVariant/52130746171693\",\n        \"title\": \"Default Title\",\n        \"product\": {\n          \"id\": \"gid://shopify/Product/10291139772717\",\n          \"title\": \"The Out of Stock Snowboard\"\n        }\n      },\n      \"inventoryLevels\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202383958317\",\n              \"location\": {\n                \"id\": \"gid://shopify/Location/108789989677\",\n                \"name\": \"Shop location\"\n              },\n              \"quantities\": [\n                {\n                  \"name\": \"available\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"committed\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"incoming\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"on_hand\",\n                  \"quantity\": 0\n                }\n              ]\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/InventoryItem/54202383991085\",\n      \"legacyResourceId\": \"54202383991085\",\n      \"sku\": null,\n      \"variant\": {\n        \"id\": \"gid://shopify/ProductVariant/52130746040621\",\n        \"title\": \"$10\",\n        \"product\": {\n          \"id\": \"gid://shopify/Product/10291139707181\",\n          \"title\": \"Gift Card\"\n        }\n      },\n      \"inventoryLevels\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202383991085\",\n              \"location\": {\n                \"id\": \"gid://shopify/Location/108789989677\",\n                \"name\": \"Shop location\"\n              },\n              \"quantities\": [\n                {\n                  \"name\": \"available\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"committed\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"incoming\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"on_hand\",\n                  \"quantity\": 0\n                }\n              ]\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"gid://shopify/InventoryItem/54202384023853\",\n      \"legacyResourceId\": \"54202384023853\",\n      \"sku\": null,\n      \"variant\": {\n        \"id\": \"gid://shopify/ProductVariant/52130746073389\",\n        \"title\": \"$25\",\n        \"product\": {\n          \"id\": \"gid://shopify/Product/10291139707181\",\n          \"title\": \"Gift Card\"\n        }\n      },\n      \"inventoryLevels\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/InventoryLevel/146216681773?inventory_item_id=54202384023853\",\n              \"location\": {\n                \"id\": \"gid://shopify/Location/108789989677\",\n                \"name\": \"Shop location\"\n              },\n              \"quantities\": [\n                {\n                  \"name\": \"available\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"committed\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"incoming\",\n                  \"quantity\": 0\n                },\n                {\n                  \"name\": \"on_hand\",\n                  \"quantity\": 0\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"pageInfo\": {\n    \"hasNextPage\": true,\n    \"endCursor\": \"eyJsYXN0X2lkIjo1NDIwMjM4NDAyMzg1MywibGFzdF92YWx1ZSI6IjU0MjAyMzg0MDIzODUzIn0=\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Adjust inventory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/inventory/adjust",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inventoryItemId\": \"42424242\",\n  \"locationId\": \"<location-id>\",\n  \"delta\": 50,\n  \"reason\": \"correction\",\n  \"reference\": \"manual-001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Stock alerts",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/inventory/alerts"
+          },
+          "response": [
+            {
+              "name": "Stock alerts — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/inventory/alerts",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "alerts"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Orders",
+      "item": [
+        {
+          "name": "List orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/orders?take=25&skip=0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "take",
+                  "value": "25"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "status",
+                  "value": "paid",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List orders — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/orders?take=3",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"gid://shopify/Order/6914014183725\",\n      \"legacyResourceId\": \"6914014183725\",\n      \"name\": \"#1001\",\n      \"email\": \"Russel.winfield@example.com\",\n      \"phone\": \"+16135550135\",\n      \"displayFinancialStatus\": \"PAID\",\n      \"displayFulfillmentStatus\": \"UNFULFILLED\",\n      \"totalPriceSet\": {\n        \"shopMoney\": {\n          \"amount\": \"3290.22\",\n          \"currencyCode\": \"INR\"\n        }\n      },\n      \"createdAt\": \"2026-06-10T06:52:13Z\",\n      \"updatedAt\": \"2026-06-10T06:52:14Z\",\n      \"processedAt\": \"2026-06-10T06:52:12Z\",\n      \"customer\": {\n        \"id\": \"gid://shopify/Customer/9683059638573\",\n        \"firstName\": \"Russell\",\n        \"lastName\": \"Winfield\",\n        \"email\": \"Russel.winfield@example.com\"\n      },\n      \"lineItems\": {\n        \"edges\": [\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/LineItem/16733306716461\",\n              \"title\": \"The Complete Snowboard\",\n              \"quantity\": 1,\n              \"sku\": null\n            }\n          },\n          {\n            \"node\": {\n              \"id\": \"gid://shopify/LineItem/16733306749229\",\n              \"title\": \"The 3p Fulfilled Snowboard\",\n              \"quantity\": 1,\n              \"sku\": \"sku-hosted-1\"\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"pageInfo\": {\n    \"hasNextPage\": false,\n    \"endCursor\": \"eyJsYXN0X2lkIjo2OTE0MDE0MTgzNzI1LCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0xMCAwNjo1MjoxMy4xMTQ0NDcifQ==\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get order",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/orders/<order-id>"
+          }
+        },
+        {
+          "name": "Fulfill order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/orders/gid://shopify/Order/12345/fulfill",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lineItems\": [{ \"id\": \"gid://shopify/LineItem/1\", \"quantity\": 1 }],\n  \"tracking\": { \"company\": \"DHL\", \"number\": \"TR123\", \"url\": \"https://track.dhl/TR123\" }\n}"
+            }
+          }
+        },
+        {
+          "name": "Refund order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/orders/gid://shopify/Order/12345/refund",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 10.0,\n  \"currencyCode\": \"USD\",\n  \"note\": \"Customer request\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Customers",
+      "item": [
+        {
+          "name": "List customers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/customers?take=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "take",
+                  "value": "25"
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List customers — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/customers?take=3",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"gid://shopify/Customer/9683059671341\",\n      \"legacyResourceId\": \"9683059671341\",\n      \"firstName\": \"Ayumu\",\n      \"lastName\": \"Hirano\",\n      \"email\": \"ayumu.hirano@example.com\",\n      \"phone\": \"+16135550127\",\n      \"tags\": [],\n      \"state\": \"DISABLED\",\n      \"createdAt\": \"2026-06-09T10:51:26Z\",\n      \"updatedAt\": \"2026-06-09T10:51:26Z\",\n      \"numberOfOrders\": \"0\",\n      \"amountSpent\": {\n        \"amount\": \"0.0\",\n        \"currencyCode\": \"INR\"\n      },\n      \"defaultAddress\": null\n    },\n    {\n      \"id\": \"gid://shopify/Customer/9683059638573\",\n      \"legacyResourceId\": \"9683059638573\",\n      \"firstName\": \"Russell\",\n      \"lastName\": \"Winfield\",\n      \"email\": \"Russel.winfield@example.com\",\n      \"phone\": \"+16135550135\",\n      \"tags\": [\n        \"VIP\"\n      ],\n      \"state\": \"DISABLED\",\n      \"createdAt\": \"2026-06-09T10:51:26Z\",\n      \"updatedAt\": \"2026-06-10T06:52:13Z\",\n      \"numberOfOrders\": \"1\",\n      \"amountSpent\": {\n        \"amount\": \"3290.22\",\n        \"currencyCode\": \"INR\"\n      },\n      \"defaultAddress\": {\n        \"city\": \"Toronto\",\n        \"province\": null,\n        \"country\": \"Canada\"\n      }\n    },\n    {\n      \"id\": \"gid://shopify/Customer/9683059605805\",\n      \"legacyResourceId\": \"9683059605805\",\n      \"firstName\": \"Karine\",\n      \"lastName\": \"Ruby\",\n      \"email\": \"karine.ruby@example.com\",\n      \"phone\": \"+16135550142\",\n      \"tags\": [],\n      \"state\": \"DISABLED\",\n      \"createdAt\": \"2026-06-09T10:51:26Z\",\n      \"updatedAt\": \"2026-06-09T10:51:26Z\",\n      \"numberOfOrders\": \"0\",\n      \"amountSpent\": {\n        \"amount\": \"0.0\",\n        \"currencyCode\": \"INR\"\n      },\n      \"defaultAddress\": {\n        \"city\": \"Ottawa\",\n        \"province\": null,\n        \"country\": \"Canada\"\n      }\n    }\n  ],\n  \"pageInfo\": {\n    \"hasNextPage\": false,\n    \"endCursor\": \"eyJsYXN0X2lkIjo5NjgzMDU5NjA1ODA1LCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0wOSAxMDo1MToyNi4wMDAwMDAifQ==\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get customer",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/customers/<customer-id>"
+          }
+        },
+        {
+          "name": "Set tags",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/customers/<customer-id>/tags",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": [\"vip\", \"newsletter\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "List segments",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/customers/segments/list"
+          },
+          "response": [
+            {
+              "name": "List segments — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/customers/segments/list",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    "segments",
+                    "list"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"9cf0fb42-ae7a-4ec5-bf2d-fa082287b520\",\n    \"name\": \"VIP\",\n    \"rules\": {\n      \"tags\": [\n        \"vip\"\n      ],\n      \"totalSpent\": {\n        \"gt\": 1000\n      }\n    },\n    \"createdAt\": \"2026-06-10T06:20:56.561Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create segment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/customers/segments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"VIP\",\n  \"rules\": { \"totalSpent\": { \"gt\": 1000 }, \"tags\": [\"vip\"] }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Purchase Orders",
+      "item": [
+        {
+          "name": "List POs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/purchase-orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-orders"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "APPROVED",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List POs — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"1f57c722-5a1a-4fa9-83c7-515a99fb7516\",\n    \"poNumber\": \"PO-2026-00009\",\n    \"vendorId\": \"c432b5df-b814-44fc-9544-afc710a9ef71\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T06:58:29.564Z\",\n    \"updatedAt\": \"2026-06-10T06:58:29.573Z\",\n    \"vendor\": {\n      \"id\": \"c432b5df-b814-44fc-9544-afc710a9ef71\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"53dc7cf9-8b80-4fce-be84-617f43dec8e9\",\n        \"poId\": \"1f57c722-5a1a-4fa9-83c7-515a99fb7516\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"f27bf54f-841d-4d33-81a3-98daf19ddf58\",\n    \"poNumber\": \"PO-2026-00008\",\n    \"vendorId\": \"c604b99c-1f1c-4331-bf86-1295030e2de5\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T06:57:30.102Z\",\n    \"updatedAt\": \"2026-06-10T06:57:30.114Z\",\n    \"vendor\": {\n      \"id\": \"c604b99c-1f1c-4331-bf86-1295030e2de5\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"a304971d-5c38-4abe-9d77-8d29fc0b8327\",\n        \"poId\": \"f27bf54f-841d-4d33-81a3-98daf19ddf58\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"814707e8-5ee8-44bd-b4d9-38451f07777e\",\n    \"poNumber\": \"PO-2026-00007\",\n    \"vendorId\": \"99c7879d-3d7c-49ac-bd4e-a438ae704335\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T06:25:17.963Z\",\n    \"updatedAt\": \"2026-06-10T06:25:17.975Z\",\n    \"vendor\": {\n      \"id\": \"99c7879d-3d7c-49ac-bd4e-a438ae704335\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"e108709f-7ade-475a-8da8-1099f2711dad\",\n        \"poId\": \"814707e8-5ee8-44bd-b4d9-38451f07777e\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"b4852fc9-07c6-45af-a95c-13bd0ef34344\",\n    \"poNumber\": \"PO-2026-00006\",\n    \"vendorId\": \"a0b082d4-6133-404c-b94c-3eca976681f2\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T05:44:52.079Z\",\n    \"updatedAt\": \"2026-06-10T05:44:52.090Z\",\n    \"vendor\": {\n      \"id\": \"a0b082d4-6133-404c-b94c-3eca976681f2\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"210b1e6a-07f6-4dd4-9393-7f91985f97b4\",\n        \"poId\": \"b4852fc9-07c6-45af-a95c-13bd0ef34344\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"11ac7bd5-50fa-431d-a172-5415af63df9b\",\n    \"poNumber\": \"PO-2026-00005\",\n    \"vendorId\": \"8f737f33-5480-4a4f-9e38-7d014b132b17\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T05:26:44.564Z\",\n    \"updatedAt\": \"2026-06-10T05:26:44.577Z\",\n    \"vendor\": {\n      \"id\": \"8f737f33-5480-4a4f-9e38-7d014b132b17\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"d907d7d2-4e03-4ff1-af81-b6a9aa476449\",\n        \"poId\": \"11ac7bd5-50fa-431d-a172-5415af63df9b\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"299f1660-bbdb-4e50-b3b6-d4c7fdc7f38d\",\n    \"poNumber\": \"PO-2026-00004\",\n    \"vendorId\": \"2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T05:01:25.881Z\",\n    \"updatedAt\": \"2026-06-10T05:01:25.894Z\",\n    \"vendor\": {\n      \"id\": \"2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"d476c219-d89e-477d-ac06-5c962a9d6767\",\n        \"poId\": \"299f1660-bbdb-4e50-b3b6-d4c7fdc7f38d\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"4b875b61-4ee7-491e-9500-14082822aa04\",\n    \"poNumber\": \"PO-2026-00003\",\n    \"vendorId\": \"8dfca375-2e21-4ea9-a29c-f09ac375af55\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T04:59:57.348Z\",\n    \"updatedAt\": \"2026-06-10T04:59:57.363Z\",\n    \"vendor\": {\n      \"id\": \"8dfca375-2e21-4ea9-a29c-f09ac375af55\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"9d0e03f2-3964-48ee-ba9d-0d662a104726\",\n        \"poId\": \"4b875b61-4ee7-491e-9500-14082822aa04\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"3706fba6-4d16-4f67-acf9-3a6fa74f8474\",\n    \"poNumber\": \"PO-2026-00002\",\n    \"vendorId\": \"6dedebad-cee9-448d-8ac8-f9350b44261d\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T04:57:23.997Z\",\n    \"updatedAt\": \"2026-06-10T04:57:24.013Z\",\n    \"vendor\": {\n      \"id\": \"6dedebad-cee9-448d-8ac8-f9350b44261d\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"a62a9027-813f-4a0c-833c-fc02300b047a\",\n        \"poId\": \"3706fba6-4d16-4f67-acf9-3a6fa74f8474\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  },\n  {\n    \"id\": \"3b04ec92-1ad9-40e0-8968-d0b35aada42c\",\n    \"poNumber\": \"PO-2026-00001\",\n    \"vendorId\": \"408e846a-3a7f-4935-842c-022b08aee9fa\",\n    \"locationId\": \"loc-test\",\n    \"status\": \"PENDING_APPROVAL\",\n    \"subtotal\": \"50\",\n    \"tax\": \"0\",\n    \"shipping\": \"0\",\n    \"total\": \"50\",\n    \"currency\": \"USD\",\n    \"expectedAt\": null,\n    \"notes\": \"auto test\",\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"approvedBy\": null,\n    \"approvedAt\": null,\n    \"createdAt\": \"2026-06-10T04:48:15.584Z\",\n    \"updatedAt\": \"2026-06-10T04:48:15.602Z\",\n    \"vendor\": {\n      \"id\": \"408e846a-3a7f-4935-842c-022b08aee9fa\",\n      \"name\": \"AutoTest Vendor\",\n      \"contactName\": null,\n      \"email\": \"v@test.com\",\n      \"phone\": null,\n      \"address\": null,\n      \"taxNumber\": null,\n      \"paymentTerms\": \"NET-45\",\n      \"isActive\": true\n    },\n    \"items\": [\n      {\n        \"id\": \"f020cf23-3b04-43ee-8dd2-218b337b3fe0\",\n        \"poId\": \"3b04ec92-1ad9-40e0-8968-d0b35aada42c\",\n        \"variantId\": \"v1\",\n        \"sku\": \"SKU-AT-1\",\n        \"title\": \"Auto Item\",\n        \"orderedQty\": 10,\n        \"receivedQty\": 0,\n        \"unitCost\": \"5\",\n        \"lineTotal\": \"50\"\n      }\n    ],\n    \"receipts\": []\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get PO",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/purchase-orders/<po-id>"
+          }
+        },
+        {
+          "name": "Create PO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/purchase-orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vendorId\": \"<vendor-id>\",\n  \"locationId\": \"<location-id>\",\n  \"expectedAt\": \"2026-07-15\",\n  \"notes\": \"Q3 restock\",\n  \"tax\": 0,\n  \"shipping\": 25,\n  \"items\": [\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-001\", \"title\": \"Widget A\", \"qty\": 100, \"unitCost\": 5.00 },\n    { \"variantId\": \"<variant-id>\", \"sku\": \"SKU-002\", \"title\": \"Widget B\", \"qty\": 50, \"unitCost\": 8.00 }\n  ]\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Create PO — captured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7\",\n  \"locationId\": \"loc-capture\",\n  \"notes\": \"Captured PO\",\n  \"items\": [\n    {\n      \"variantId\": \"v-cap\",\n      \"sku\": \"CAP-1\",\n      \"title\": \"Capture Item\",\n      \"qty\": 10,\n      \"unitCost\": 5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/purchase-orders",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-orders"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"a0f631ea-dc60-4e42-8a9e-c2a73e7840ea\",\n  \"poNumber\": \"PO-2026-00010\",\n  \"vendorId\": \"4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7\",\n  \"locationId\": \"loc-capture\",\n  \"status\": \"DRAFT\",\n  \"subtotal\": \"50\",\n  \"tax\": \"0\",\n  \"shipping\": \"0\",\n  \"total\": \"50\",\n  \"currency\": \"USD\",\n  \"expectedAt\": null,\n  \"notes\": \"Captured PO\",\n  \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n  \"approvedBy\": null,\n  \"approvedAt\": null,\n  \"createdAt\": \"2026-06-10T07:02:56.376Z\",\n  \"updatedAt\": \"2026-06-10T07:02:56.376Z\",\n  \"items\": [\n    {\n      \"id\": \"919ccd0b-099a-49e3-a49b-c81bf992d8c1\",\n      \"poId\": \"a0f631ea-dc60-4e42-8a9e-c2a73e7840ea\",\n      \"variantId\": \"v-cap\",\n      \"sku\": \"CAP-1\",\n      \"title\": \"Capture Item\",\n      \"orderedQty\": 10,\n      \"receivedQty\": 0,\n      \"unitCost\": \"5\",\n      \"lineTotal\": \"50\"\n    }\n  ],\n  \"vendor\": {\n    \"id\": \"4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7\",\n    \"name\": \"Capture Vendor\",\n    \"contactName\": null,\n    \"email\": \"capture@v.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit PO",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/purchase-orders/<po-id>/submit"
+          }
+        },
+        {
+          "name": "Approve PO",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/purchase-orders/<po-id>/approve"
+          }
+        },
+        {
+          "name": "Cancel PO",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/purchase-orders/<po-id>/cancel"
+          }
+        },
+        {
+          "name": "Receive PO (full or partial)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/purchase-orders/<po-id>/receive",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Partial shipment 1 of 2\",\n  \"items\": [\n    { \"poItemId\": \"<po-item-id>\", \"quantity\": 50, \"condition\": \"good\" },\n    { \"poItemId\": \"<po-item-id-2>\", \"quantity\": 25, \"condition\": \"good\" }\n  ]\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Vendors",
+      "item": [
+        {
+          "name": "List vendors",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/vendors"
+          },
+          "response": [
+            {
+              "name": "List vendors — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"408e846a-3a7f-4935-842c-022b08aee9fa\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"6dedebad-cee9-448d-8ac8-f9350b44261d\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"8dfca375-2e21-4ea9-a29c-f09ac375af55\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"8f737f33-5480-4a4f-9e38-7d014b132b17\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"a0b082d4-6133-404c-b94c-3eca976681f2\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"99c7879d-3d7c-49ac-bd4e-a438ae704335\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"c604b99c-1f1c-4331-bf86-1295030e2de5\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  },\n  {\n    \"id\": \"c432b5df-b814-44fc-9544-afc710a9ef71\",\n    \"name\": \"AutoTest Vendor\",\n    \"contactName\": null,\n    \"email\": \"v@test.com\",\n    \"phone\": null,\n    \"address\": null,\n    \"taxNumber\": null,\n    \"paymentTerms\": \"NET-45\",\n    \"isActive\": true\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get vendor",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/vendors/<vendor-id>"
+          }
+        },
+        {
+          "name": "Create vendor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/vendors",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Distributors\",\n  \"contactName\": \"John Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+1-555-0100\",\n  \"address\": { \"line1\": \"1 Main St\", \"city\": \"NYC\", \"country\": \"US\" },\n  \"taxNumber\": \"VAT-12345\",\n  \"paymentTerms\": \"NET-30\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Create vendor — captured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Capture Vendor\",\n  \"email\": \"capture@v.com\",\n  \"paymentTerms\": \"NET-30\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "vendors"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7\",\n  \"name\": \"Capture Vendor\",\n  \"contactName\": null,\n  \"email\": \"capture@v.com\",\n  \"phone\": null,\n  \"address\": null,\n  \"taxNumber\": null,\n  \"paymentTerms\": \"NET-30\",\n  \"isActive\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update vendor",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/vendors/<vendor-id>",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentTerms\": \"NET-45\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deactivate vendor",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/vendors/<vendor-id>"
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Goods Receipts",
+      "item": [
+        {
+          "name": "List receipts",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/goods-receipts"
+          },
+          "response": [
+            {
+              "name": "List receipts — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/goods-receipts",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "goods-receipts"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[]"
+            }
+          ]
+        },
+        {
+          "name": "Get receipt",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/goods-receipts/<gr-id>"
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. CMS",
+      "item": [
+        {
+          "name": "List blocks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/cms",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cms"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "HERO_BANNER",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List blocks — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/cms",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"00f991ce-283d-4b4c-a571-052490aa00f5\",\n    \"type\": \"HERO_BANNER\",\n    \"handle\": \"autotest-hero\",\n    \"shopifyMetaobjectId\": null,\n    \"data\": {\n      \"title\": \"Auto\",\n      \"subtitle\": \"Test\"\n    },\n    \"status\": \"draft\",\n    \"publishedAt\": null,\n    \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"updatedAt\": \"2026-06-10T06:58:29.585Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get block",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/cms/<block-id>"
+          }
+        },
+        {
+          "name": "Upsert block",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/cms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"HERO_BANNER\",\n  \"handle\": \"home-hero\",\n  \"data\": {\n    \"title\": \"Summer Sale\",\n    \"subtitle\": \"Up to 50% off\",\n    \"imageUrl\": \"https://cdn.shopify.com/...\",\n    \"ctaText\": \"Shop now\",\n    \"ctaUrl\": \"/collections/sale\"\n  }\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Upsert block — captured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"HERO_BANNER\",\n  \"handle\": \"captured-hero\",\n  \"data\": {\n    \"title\": \"Captured\",\n    \"subtitle\": \"demo\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/cms",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "cms"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"8e011c4b-22f0-400e-89cd-aea2a8f1e112\",\n  \"type\": \"HERO_BANNER\",\n  \"handle\": \"captured-hero\",\n  \"shopifyMetaobjectId\": null,\n  \"data\": {\n    \"title\": \"Captured\",\n    \"subtitle\": \"demo\"\n  },\n  \"status\": \"draft\",\n  \"publishedAt\": null,\n  \"createdBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n  \"updatedAt\": \"2026-06-10T07:02:56.405Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Publish block",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/cms/<block-id>/publish"
+          }
+        }
+      ]
+    },
+    {
+      "name": "11b. Themes & Banners",
+      "item": [
+        {
+          "name": "List themes",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/themes"
+          },
+          "response": [
+            {
+              "name": "List themes — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/themes",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"gid://shopify/OnlineStoreTheme/181461090605\",\n    \"name\": \"Horizon\",\n    \"role\": \"UNPUBLISHED\",\n    \"processing\": false,\n    \"createdAt\": \"2026-06-09T10:51:10Z\",\n    \"updatedAt\": \"2026-06-09T10:51:55Z\"\n  },\n  {\n    \"id\": \"gid://shopify/OnlineStoreTheme/181461123373\",\n    \"name\": \"debut-vintage-theme\",\n    \"role\": \"UNPUBLISHED\",\n    \"processing\": false,\n    \"createdAt\": \"2026-06-09T10:51:27Z\",\n    \"updatedAt\": \"2026-06-09T10:51:44Z\"\n  },\n  {\n    \"id\": \"gid://shopify/OnlineStoreTheme/181461156141\",\n    \"name\": \"test-data\",\n    \"role\": \"MAIN\",\n    \"processing\": false,\n    \"createdAt\": \"2026-06-09T10:51:27Z\",\n    \"updatedAt\": \"2026-06-09T10:51:55Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Published theme",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/themes/published"
+          },
+          "response": [
+            {
+              "name": "Published theme — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/themes/published",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "themes",
+                    "published"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"gid://shopify/OnlineStoreTheme/181461156141\",\n  \"name\": \"test-data\",\n  \"role\": \"MAIN\",\n  \"processing\": false,\n  \"createdAt\": \"2026-06-09T10:51:27Z\",\n  \"updatedAt\": \"2026-06-09T10:51:55Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Theme assets",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/themes/<theme-id>/assets"
+          }
+        },
+        {
+          "name": "Theme asset (settings_data.json)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/themes/<theme-id>/asset?key=config/settings_data.json",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "themes",
+                "<theme-id>",
+                "asset"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "config/settings_data.json"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Banners from theme (index template)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/banners/from-theme?template=index",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "banners",
+                "from-theme"
+              ],
+              "query": [
+                {
+                  "key": "template",
+                  "value": "index"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Banners from theme (index template) — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/banners/from-theme?template=index",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "banners",
+                    "from-theme"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"source\": \"theme\",\n  \"themeId\": \"gid://shopify/OnlineStoreTheme/181461156141\",\n  \"themeName\": \"test-data\",\n  \"template\": \"index\",\n  \"banners\": [\n    {\n      \"sectionId\": \"6a3bb789-ce10-45f5-ae67-e2063ef8c76b\",\n      \"type\": \"image-banner\",\n      \"disabled\": false,\n      \"settings\": {\n        \"image\": \"shopify://shop_images/theme_cover_image.jpg\",\n        \"image_overlay_opacity\": 0,\n        \"image_height\": \"medium\",\n        \"desktop_content_position\": \"middle-left\",\n        \"show_text_box\": true,\n        \"desktop_content_alignment\": \"left\",\n        \"color_scheme\": \"background-1\",\n        \"image_behavior\": \"none\",\n        \"mobile_content_alignment\": \"center\",\n        \"stack_images_on_mobile\": true,\n        \"show_text_below\": true\n      },\n      \"blocks\": {\n        \"template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-0\": {\n          \"type\": \"heading\",\n          \"settings\": {\n            \"heading\": \"Generated test data\",\n            \"heading_size\": \"h1\"\n          }\n        },\n        \"template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-1\": {\n          \"type\": \"text\",\n          \"settings\": {\n            \"text\": \"A theme and populated test store by Shopify to help you test commerce primitives.\",\n            \"text_style\": \"body\"\n          }\n        },\n        \"template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-2\": {\n          \"type\": \"buttons\",\n          \"settings\": {\n            \"button_label_1\": \"Shop products\",\n            \"button_link_1\": \"shopify://collections/all\",\n            \"button_style_secondary_1\": false,\n            \"button_label_2\": \"\",\n            \"button_link_2\": \"\",\n            \"button_style_secondary_2\": false\n          }\n        }\n      }\n    },\n    {\n      \"sectionId\": \"f1552b18-6017-4231-810d-74e61da22c37\",\n      \"type\": \"image-with-text\",\n      \"disabled\": false,\n      \"settings\": {\n        \"image\": \"shopify://shop_images/theme_cover_image.jpg\",\n        \"height\": \"adapt\",\n        \"desktop_image_width\": \"medium\",\n        \"layout\": \"image_first\",\n        \"desktop_content_position\": \"middle\",\n        \"desktop_content_alignment\": \"left\",\n        \"content_layout\": \"no-overlap\",\n        \"color_scheme\": \"accent-1\",\n        \"image_behavior\": \"none\",\n        \"mobile_content_alignment\": \"left\",\n        \"padding_top\": 60,\n        \"padding_bottom\": 60\n      },\n      \"blocks\": {\n        \"template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-0\": {\n          \"type\": \"heading\",\n          \"settings\": {\n            \"heading\": \"Stay hydrated\",\n            \"heading_size\": \"h1\"\n          }\n        },\n        \"template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-1\": {\n          \"type\": \"text\",\n          \"settings\": {\n            \"text\": \"<p>Try our wax subscription so you can fly high, but never dry.</p>\",\n            \"text_style\": \"body\"\n          }\n        },\n        \"template--18309637636369__f1552b18-6017-4231-810d-74e61da22c37-1680164422d7fb2efc-2\": {\n          \"type\": \"button\",\n          \"settings\": {\n            \"button_label\": \"Get waxy now\",\n            \"button_link\": \"shopify://products/selling-plans-ski-wax\"\n          }\n        }\n      }\n    }\n  ],\n  \"sectionFiles\": [\n    \"sections/email-signup-banner.liquid\",\n    \"sections/image-banner.liquid\",\n    \"sections/main-collection-banner.liquid\",\n    \"sections/slideshow.liquid\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Banners from metaobjects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/banners/from-metaobjects?type=banner",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "banners",
+                "from-metaobjects"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "banner"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Banners from metaobjects — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/banners/from-metaobjects?type=banner",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "banners",
+                    "from-metaobjects"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"source\": \"metaobjects\",\n  \"type\": \"banner\",\n  \"banners\": []\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "11c. Pages & Policies",
+      "item": [
+        {
+          "name": "List pages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/pages?limit=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pages"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "published_status",
+                  "value": "published",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List pages — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/pages?limit=10",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "pages"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 154665058605,\n    \"title\": \"About Us\",\n    \"shop_id\": 95517901101,\n    \"handle\": \"about-us\",\n    \"body_html\": \"<p>We sell snowboards.</p>\",\n    \"author\": \"Shopify API\",\n    \"created_at\": \"2026-06-10T02:38:38-04:00\",\n    \"updated_at\": \"2026-06-10T02:38:38-04:00\",\n    \"published_at\": \"2026-06-10T02:38:38-04:00\",\n    \"template_suffix\": null,\n    \"admin_graphql_api_id\": \"gid://shopify/Page/154665058605\"\n  },\n  {\n    \"id\": 154654310701,\n    \"title\": \"Contact\",\n    \"shop_id\": 95517901101,\n    \"handle\": \"contact\",\n    \"body_html\": null,\n    \"author\": null,\n    \"created_at\": \"2026-06-09T06:51:08-04:00\",\n    \"updated_at\": \"2026-06-09T06:51:08-04:00\",\n    \"published_at\": \"2026-06-09T06:51:08-04:00\",\n    \"template_suffix\": \"contact\",\n    \"admin_graphql_api_id\": \"gid://shopify/Page/154654310701\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get page",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/pages/<page-id>"
+          }
+        },
+        {
+          "name": "Create page (About Us)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/pages",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"About Us\",\n  \"body_html\": \"<h2>Our story</h2><p>We sell premium snowboards since 2020.</p>\",\n  \"handle\": \"about-us\",\n  \"author\": \"Admin\",\n  \"published\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Update page",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/pages/<page-id>",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"About Us — Updated\",\n  \"body_html\": \"<p>New content</p>\",\n  \"published\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete page",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/pages/<page-id>"
+          }
+        },
+        {
+          "name": "List shop policies",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/policies"
+          },
+          "response": [
+            {
+              "name": "List shop policies — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/policies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "policies"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"gid://shopify/ShopPolicy/47698575661\",\n    \"type\": \"PRIVACY_POLICY\",\n    \"title\": \"Privacy policy\",\n    \"body\": \"<div>\\n  <p>Last updated: {{ last_updated }}</p>\\n  <p>{{ shop_name }} operates this store and website, including all related information, content, features, tools, products and services, in order to provide you, the customer, with a curated shopping experience (the  \\\"Services\\\"). {{ shop_name }} is powered by Shopify, which enables us to provide the Services to you. This Privacy Policy describes how we collect, use, and disclose your personal information when you visit, use, or make a purchase or other transaction using the Services or otherwise communicate with us. If there is a conflict between our Terms of Service and this Privacy Policy, this Privacy Policy controls with respect to the collection, processing, and disclosure of your personal information. </p>\\n  <p>Please read this Privacy Policy carefully. By using and accessing any of the Services, you acknowledge that you have read this Privacy Policy and understand the collection, use, and disclosure of your information as described in this Privacy Policy.</p>\\n  <h2>Personal Information We Collect or Process</h2>\\n  <p>When we use the term  \\\"personal information,\\\" we are referring to information that identifies or can reasonably be linked to you or another person. Personal information does not include information that is collected anonymously or that has been de-identified, so that it cannot identify or be reasonably linked to you. We may collect or process the following categories of personal information, including inferences drawn from this personal information, depending on how you interact with the Services, where you live, and as permitted or required by applicable law:</p>\\n  <ul>\\n      <li><strong>Contact details</strong> including your name, address, billing address, shipping address, phone number, and email address.</li>\\n      <li><strong>Financial information</strong> including credit card, debit card, and financial account numbers, payment card information, financial account information, transaction details, form of payment, payment confirmation and other payment details.</li>\\n      <li><strong>Account information</strong> including your username, password, security questions, preferences and settings.</li>\\n      <li><strong>Transaction information</strong> including the items you view, put in your cart, add to your wishlist, or purchase, return, exchange or cancel and your past transactions.</li>\\n      <li><strong>Communications with us</strong> including the information you include in communications with us, for example, when sending a customer support inquiry.</li>\\n      <li><strong>Device information</strong> including information about your device, browser, or network connection, your IP address, and other unique identifiers.</li>\\n      <li><strong>Usage information</strong> including information regarding your interaction with the Services, including how and when you interact with or navigate the Services. </li>\\n  </ul>\\n  <h2>Personal Information Sources</h2>\\n  <p>We may collect personal information from the following sources:</p>\\n  <ul>\\n      <li><strong>Directly from you</strong> including when you create an account, visit or use the Services, communicate with us, or otherwise provide us with your personal information;</li>\\n      <li><strong>Automatically through the Services</strong> including from your device when you use our products or services or visit our websites, and through the use of cookies and similar technologies;</li>\\n      <li><strong>From our service providers</strong> including when we engage them to enable certain technology and when they collect or process your personal information on our behalf; </li>\\n      <li><strong>From our partners or other third parties.</strong></li>\\n  </ul>\\n  <h2>How We Use Your Personal Information</h2>\\n  <p>Depending on how you interact with us or which of the Services you use, we may use personal information for the following purposes:</p>\\n  <ul>\\n      <li><strong>Provide, Tailor, and Improve the Services.</strong> We use your personal information to provide you with the Services, including to perform our contract with you, to process your payments, to fulfill your orders, to remember your preferences and items you are interested in, to send notifications to you related to your account, to process purchases, returns, exchanges or other transactions, to create, maintain and otherwise manage your account, to arrange for shipping, to facilitate any returns and exchanges, to enable you to post reviews, and to create a customized shopping experience for you, such as recommending products related to your purchases. This may include using your personal information to better tailor and improve the Services.</li>\\n      <li><strong>Marketing and Advertising.</strong> We use your personal information for marketing and promotional purposes, such as to send marketing, advertising and promotional communications by email, text message or postal mail, and to show you online advertisements for products or services on the Services or other websites, including based on items you previously have purchased or added to your cart and other activity on the Services. </li>\\n      <li><strong>Security and Fraud Prevention.</strong> We use your personal information to authenticate your account, to provide a secure payment and shopping experience, detect, investigate or take action regarding possible fraudulent, illegal, unsafe, or malicious activity, protect public safety, and to secure our services. If you choose to use the Services and register an account, you are responsible for keeping your account credentials safe. We highly recommend that you do not share your username, password or other access details with anyone else.</li>\\n      <li><strong>Communicating with You.</strong> We use your personal information to provide you with customer support, to be responsive to you, to provide effective services to you and to maintain our business relationship with you. </li>\\n      <li><strong>Legal Reasons.</strong> We use your personal information to comply with applicable law or respond to valid legal process, including requests from law enforcement or government agencies, to investigate or participate in civil discovery, potential or actual litigation, or other adversarial legal proceedings, and to enforce or investigate potential violations of our terms or policies.</li>\\n  </ul>\\n  <h2>How We Disclose Personal Information</h2>\\n  <p>In certain circumstances, we may disclose your personal information to third parties for legitimate purposes subject to this Privacy Policy. Such circumstances may include:</p>\\n  <ul>\\n      <li>With Shopify, vendors and other third parties who perform services on our behalf (e.g. IT management, payment processing, data analytics, customer support, cloud storage, fulfillment and shipping).</li>\\n      <li>With business and marketing partners to provide marketing services and advertise to you. {% if shopify_network_intelligence_enabled %} For example, we use Shopify to support personalized advertising with third-party services based on your online activity with different merchants and websites.{% endif %}  Our business and marketing partners will use your information in accordance with their own privacy notices. Depending on where you reside, you may have a right to direct us not to share information about you to show you targeted advertisements and marketing based on your online activity with different merchants and websites. {% if data_sale_opt_out_enabled %}You can exercise your rights to opt-out of those uses <a href=\\\"{{ data_sale_opt_out_page_url }}\\\"> here</a> {% endif %}.</li>\\n      <li>When you direct, request us or otherwise consent to our disclosure of certain information to third parties, such as to ship you products or through your use of social media widgets or login integrations.</li>\\n      <li>With our affiliates or otherwise within our corporate group.</li>\\n      <li>\\n      In connection with a business transaction such as a merger or bankruptcy, to comply with any applicable legal obligations (including to respond to subpoenas, search warrants and similar requests), to enforce any applicable terms of service or policies, and to protect or defend the Services, our rights, and the rights of our users or others.\\n      </li>\\n  </ul>\\n  <h2>Relationship with Shopify</h2>\\n  <p>The Services are hosted by Shopify, which collects and processes personal information about your access to and use of the Services in order to provide and improve the Services for you. Information you submit to the Services will be transmitted to and shared with Shopify as well as third parties that may be located in countries other than where you reside, in order to provide and improve the Services for you. {% if shopify_network_intelligence_enabled %}In addition, to help protect, grow, and improve our business, we use certain Shopify enhanced features that incorporate data and information obtained from your interactions with our Store, along with other merchants and with Shopify. To provide these enhanced features, Shopify may make use of personal information collected about your interactions with our store, along with other merchants, and with Shopify. In these circumstances, Shopify is responsible for the processing of your personal information, including for responding to your requests to exercise your rights over use of your personal information for these purposes.{% endif %} To learn more about how Shopify uses your personal information and any rights you may have, you can visit the <a href=\\\"https://www.shopify.com/legal/privacy/app-users\\\">Shopify Consumer Privacy Policy</a> . Depending on where you live, you may exercise certain rights with respect to your personal information here <a href=\\\"https://privacy.shopify.com/en\\\">Shopify Privacy Portal Link</a>. </p>\\n  <h2>Third Party Websites and Links</h2>\\n  <p>The Services may provide links to websites or other online platforms operated by third parties. If you follow links to sites not affiliated or controlled by us, you should review their privacy and security policies and other terms and conditions. We do not guarantee and are not responsible for the privacy or security of such sites, including the accuracy, completeness, or reliability of information found on these sites. Information you provide on public or semi-public venues, including information you share on third-party social networking platforms may also be viewable by other users of the Services and/or users of those third-party platforms without limitation as to its use by us or by a third party. Our inclusion of such links does not, by itself, imply any endorsement of the content on such platforms or of their owners or operators, except as disclosed on the Services.</p>\\n  <h2>Children's Data</h2>\\n  <p>The Services are not intended to be used by children, and we do not knowingly collect any personal information about children under the age of majority in your jurisdiction. If you are the parent or guardian of a child who has provided us with their personal information, you may contact us using the contact details set out below to request that it be deleted.As of the Effective Date of this Privacy Policy, we do not have actual knowledge that we  \\\"share\\\" or  \\\"sell\\\" (as those terms are defined in applicable law) personal information of individuals under 16 years of age.</p>\\n  <h2>Security and Retention of Your Information</h2>\\n  <p>Please be aware that no security measures are perfect or impenetrable, and we cannot guarantee \\\"perfect security.\\\" In addition, any information you send to us may not be secure while in transit. We recommend that you do not use unsecure channels to communicate sensitive or confidential information to us.</p>\\n  <p>How long we retain your personal information depends on different factors, such as whether we need the information to maintain your account, to provide you with Services, comply with legal obligations, resolve disputes or enforce other applicable contracts and policies.</p>\\n  <h2>Your Rights and Choices</h2>\\n  <p>Depending on where you live, you may have some or all of the rights listed below in relation to your personal information. However, these rights are not absolute, may apply only in certain circumstances and, in certain cases, we may decline your request as permitted by law.</p>\\n  <ul>\\n      <li><strong>Right to Access / Know.</strong> You may have a right to request access to personal information that we hold about you.</li>\\n      <li><strong>Right to Delete.</strong> You may have a right to request that we delete personal information we maintain about you.</li>\\n      <li><strong>Right to Correct.</strong> You may have a right to request that we correct inaccurate personal information we maintain about you.</li>\\n      <li><strong>Right of Portability.</strong> You may have a right to receive a copy of the personal information we hold about you and to request that we transfer it to a third party, in certain circumstances and with certain exceptions.</li>\\n      {% if selling_to_united_states %}<li><strong>Right to Opt out of Sale or Sharing for Targeted Advertising.</strong> Depending on where you reside, you may have a right to opt out of the \\\"sale\\\" or \\\"share\\\" of your personal information or to opt out of the processing of your personal information for purposes considered to be \\\"targeted advertising\\\", as defined in applicable privacy laws. {% if data_sale_opt_out_enabled  %}You can exercise your rights to opt-out of those uses <a href=\\\"{{ data_sale_opt_out_page_url }}\\\">here</a>. Please note that if you visit our website with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will automatically treat this as a request to opt-out for the device and browser that you use to visit the website. If we are able to associate the device sending the signal to a Shopify account, we will apply the opt out request to the account as well. To learn more about Global Privacy Control, you can visit https://globalprivacycontrol.org/. Other than the Global Privacy Control, we do not recognize other \\\"Do Not Track\\\" signals that may be sent from your web browser or device.{% endif %}</li>{% endif %}\\n      <li>\\n      <strong>Managing Communication Preferences.</strong> We may send you promotional emails, and you may opt out of receiving these at any time by using the unsubscribe option displayed in our emails to you. If you opt out, we may still send you non-promotional emails, such as those about your account or orders that you have made.\\n      </li>\\n  </ul>\\n  <div>\\n      {% if selling_to_europe %}\\n      <p><strong>If you reside in the UK or European Economic Area,</strong> and subject to exceptions and limitations provided by local law, you may exercise the following rights in addition to the rights outlined above:</p>\\n      <ul>\\n      <li><strong>Objection to Processing and Restriction of Processing:</strong> You may have the right to ask us to stop or restrict our processing of personal information for certain purposes. </li>\\n      <li><strong>Withdrawal of Consent:</strong> Where we rely on consent to process your personal information, you have the right to withdraw this consent. If you withdraw your consent, this will not affect the lawfulness of any processing based on your consent before its withdrawal.</li>\\n      </ul>\\n      {% endif %}\\n  </div>\\n  <p>You may exercise any of these rights where indicated on the Services or by contacting us using the contact details provided below. To learn more about how Shopify uses your personal information and any rights you may have, including rights related to data processed by Shopify, you can visit https://privacy.shopify.com/en. </p>\\n  <p>We will not discriminate against you for exercising any of these rights. We may need to verify your identity before we can process your requests, as permitted or required under applicable law. In accordance with applicable laws, you may designate an authorized agent to make requests on your behalf to exercise your rights. Before accepting such a request from an agent, we will require that the agent provide proof you have authorized them to act on your behalf, and we may need you to verify your identity directly with us. We will respond to your request in a timely manner as required under applicable law.</p>\\n  <h2>Complaints</h2>\\n  <p>If you have complaints about how we process your personal information, please contact us using the contact details provided below. Depending on where you live, you may have the right to appeal our decision by contacting us using the contact details set out below, or lodge your complaint with your local data protection authority.{% if selling_to_europe %} For the EEA, you can find a list of the responsible data protection supervisory authorities <a href=\\\"https://edpb.europa.eu/about-edpb/about-edpb/members\\\">here</a>.{% endif %}</p>\\n  <h2>International Transfers</h2>\\n  <p>Please note that we may transfer, store and process your personal information outside the country you live in. </p>\\n  <p>If we transfer your personal information out of the European Economic Area or the United Kingdom, we will rely on recognized transfer mechanisms like the European Commission's Standard Contractual Clauses, or any equivalent contracts issued by the relevant competent authority of the UK, as relevant, unless the data transfer is to a country that has been determined to provide an adequate level of protection.</p>\\n  <h2>Changes to This Privacy Policy</h2>\\n  <p>We may update this Privacy Policy from time to time, including to reflect changes to our practices or for other operational, legal, or regulatory reasons. We will post the revised Privacy Policy on this website, update the  \\\"Last updated\\\" date and provide notice as required by applicable law.</p>\\n  <h2>Contact</h2>\\n  <p>Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please call {{ phone }} or email us at {{ email }}{% if address != blank %} or contact us at {{ address }}{% endif %} {% if selling_to_europe %}For the purpose of applicable data protection laws, we are the data controller of your personal information. {% endif %}</p>\\n</div>\",\n    \"url\": \"https://checkout.shopify.com/95517901101/policies/47698575661.html?locale=en\",\n    \"createdAt\": \"2026-06-09T06:51:08-04:00\",\n    \"updatedAt\": \"2026-06-09T06:51:08-04:00\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Update policy (e.g. REFUND_POLICY)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/policies/REFUND_POLICY",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"<h2>Refund Policy</h2><p>30-day money back guarantee on all snowboards.</p>\"\n}"
+            },
+            "description": "Policy types: REFUND_POLICY, PRIVACY_POLICY, TERMS_OF_SERVICE, SHIPPING_POLICY, SUBSCRIPTION_POLICY, LEGAL_NOTICE, TERMS_OF_SALE, CONTACT_INFORMATION"
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Media",
+      "item": [
+        {
+          "name": "List media",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/media",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "media"
+              ],
+              "query": [
+                {
+                  "key": "folder",
+                  "value": "products",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List media — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/media",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "media"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"8f5b6ee6-be07-479b-9340-09d61c1494b5\",\n    \"url\": \"https://cdn.shopify.com/staged-uploads/...\",\n    \"cdnKey\": \"products/hero-abc.png\",\n    \"mimeType\": \"image/png\",\n    \"width\": null,\n    \"height\": null,\n    \"sizeBytes\": 154233,\n    \"folder\": \"products\",\n    \"tags\": [],\n    \"shopifyFileId\": \"gid://shopify/MediaImage/44688896360749\",\n    \"uploadedBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\",\n    \"createdAt\": \"2026-06-10T06:30:39.889Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Staged upload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media/staged-upload",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filename\": \"hero.png\",\n  \"mimeType\": \"image/png\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register file (after upload to staged URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://cdn.shopify.com/staged-uploads/...\",\n  \"cdnKey\": \"products/hero-abc.png\",\n  \"mimeType\": \"image/png\",\n  \"sizeBytes\": 154233,\n  \"folder\": \"products\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "13. Reports",
+      "item": [
+        {
+          "name": "Sales (ShopifyQL)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/sales?since=-30d&until=today",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "sales"
+              ],
+              "query": [
+                {
+                  "key": "since",
+                  "value": "-30d"
+                },
+                {
+                  "key": "until",
+                  "value": "today"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sales (ShopifyQL) — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/reports/sales?since=-7d&until=today",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "sales"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"available\": false,\n  \"reason\": \"ShopifyQL not enabled for this shop\",\n  \"error\": \"[{\\\"message\\\":\\\"Field 'shopifyqlQuery' doesn't exist on type 'QueryRoot'\\\",\\\"locations\\\":[{\\\"line\\\":3,\\\"column\\\":5}],\\\"path\\\":[\\\"query\\\",\\\"shopifyqlQuery\\\"],\\\"extensions\\\":{\\\"code\\\":\\\"undefinedField\\\",\\\"typeName\\\":\\\"QueryRoot\\\",\\\"fieldName\\\":\\\"shopifyqlQuery\\\"}},{\\\"message\\\":\\\"Variable $q is declared by anonymous query but not used\\\",\\\"locations\\\":[{\\\"line\\\":2,\\\"column\\\":3}],\\\"path\\\":[\\\"query\\\"],\\\"extensions\\\":{\\\"code\\\":\\\"variableNotUsed\\\",\\\"variableName\\\":\\\"q\\\"}}]\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Inventory by location",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/reports/inventory"
+          },
+          "response": [
+            {
+              "name": "Inventory by location — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/reports/inventory",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "inventory"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[]"
+            }
+          ]
+        },
+        {
+          "name": "Vendor spend",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/reports/vendors"
+          },
+          "response": [
+            {
+              "name": "Vendor spend — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/reports/vendors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "vendors"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"c604b99c-1f1c-4331-bf86-1295030e2de5\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"2f7ed9d3-73ca-4c3a-8f65-95aa14ebba5d\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"c432b5df-b814-44fc-9544-afc710a9ef71\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"a0b082d4-6133-404c-b94c-3eca976681f2\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"408e846a-3a7f-4935-842c-022b08aee9fa\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"4141dd3b-1b94-4b0c-b265-7e5f3f58a6e7\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"8f737f33-5480-4a4f-9e38-7d014b132b17\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"8dfca375-2e21-4ea9-a29c-f09ac375af55\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"99c7879d-3d7c-49ac-bd4e-a438ae704335\"\n  },\n  {\n    \"_sum\": {\n      \"total\": \"50\",\n      \"subtotal\": \"50\"\n    },\n    \"_count\": 1,\n    \"vendorId\": \"6dedebad-cee9-448d-8ac8-f9350b44261d\"\n  }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "14. Settings",
+      "item": [
+        {
+          "name": "List all settings",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/settings"
+          },
+          "response": [
+            {
+              "name": "List all settings — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/settings",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "settings"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"key\": \"test.key\",\n    \"value\": \"autotest\",\n    \"updatedAt\": \"2026-06-10T06:58:48.090Z\",\n    \"updatedBy\": \"822d845a-6092-43b6-81c8-906023fa03ef\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get setting",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/settings/tax.default_rate"
+          }
+        },
+        {
+          "name": "Set setting",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/settings/tax.default_rate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": 0.18\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "15. Audit Logs",
+      "item": [
+        {
+          "name": "List audit logs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/audit-logs?take=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit-logs"
+              ],
+              "query": [
+                {
+                  "key": "take",
+                  "value": "50"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "resource",
+                  "value": "PurchaseOrder",
+                  "disabled": true
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List audit logs — captured",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/audit-logs?take=10",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "audit-logs"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "16. Webhooks (Shopify → API)",
+      "description": "Shopify POSTs here. HMAC verified with SHOPIFY_API_SECRET. Topic in URL uses dash instead of slash (orders/create → orders-create).",
+      "item": [
+        {
+          "name": "orders/create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Shopify-Hmac-Sha256",
+                "value": "<computed>"
+              },
+              {
+                "key": "X-Shopify-Topic",
+                "value": "orders/create"
+              },
+              {
+                "key": "X-Shopify-Shop-Domain",
+                "value": "test-store-uzhiv0ib.myshopify.com"
+              }
+            ],
+            "url": "{{base_url}}/webhooks/shopify/orders-create",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"id\": 1001, \"name\": \"#1001\", \"financial_status\": \"paid\" }"
+            }
+          }
+        },
+        {
+          "name": "products/update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Shopify-Hmac-Sha256",
+                "value": "<computed>"
+              },
+              {
+                "key": "X-Shopify-Topic",
+                "value": "products/update"
+              }
+            ],
+            "url": "{{base_url}}/webhooks/shopify/products-update",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"id\": 555, \"title\": \"Updated\", \"status\": \"active\" }"
+            }
+          }
+        },
+        {
+          "name": "customers/redact (GDPR)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Shopify-Hmac-Sha256",
+                "value": "<computed>"
+              },
+              {
+                "key": "X-Shopify-Topic",
+                "value": "customers/redact"
+              }
+            ],
+            "url": "{{base_url}}/webhooks/shopify/customers-redact",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"shop_id\": 1, \"customer\": { \"id\": 999, \"email\": \"x@y.com\" } }"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
