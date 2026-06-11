@@ -117,6 +117,11 @@ export default function Account() {
         </section>
       )}
 
+      <div className="flex gap-4 border-b text-sm">
+        <span className="pb-2 border-b-2 border-black font-medium">Orders</span>
+        <Link href="/shop/account/profile" className="pb-2 text-gray-500">Profile</Link>
+      </div>
+
       <section>
         <h2 className="font-semibold mb-2">Orders</h2>
         {orders.length === 0 ? (
