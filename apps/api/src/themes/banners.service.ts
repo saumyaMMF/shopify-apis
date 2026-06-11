@@ -18,6 +18,20 @@ const METAOBJECTS_QUERY = `
   }
 `;
 
+// Resolve "shopify://shop_images/<filename>" → real CDN URL via admin Files API.
+const FILES_BY_NAME_QUERY = `
+  query FilesByName($query: String!) {
+    files(first: 5, query: $query) {
+      edges {
+        node {
+          alt
+          ... on MediaImage { image { url width height } }
+        }
+      }
+    }
+  }
+`;
+
 @Injectable()
 export class BannersService {
   constructor(private themes: ThemesService, private gql: AdminGraphQLService) {}
@@ -73,14 +87,81 @@ export class BannersService {
       return k.startsWith('sections/') && (k.includes('banner') || k.includes('slideshow') || k.includes('hero'));
     }).map((a: any) => a.key);
 
+    // Normalize each banner: flatten blocks → simple fields, resolve image URLs
+    const normalized = await Promise.all(banners.map((b) => this.normalizeBanner(b)));
+
     return {
       source: 'theme',
       themeId,
       themeName: theme.name,
       template: templateName,
-      banners,
+      banners: normalized,
+      raw: banners, // keep raw if frontend wants details
       sectionFiles,
     };
+  }
+
+  private async normalizeBanner(b: any) {
+    const blocks = b.blocks ?? {};
+    const blockArr = Object.values(blocks) as any[];
+    const heading = blockArr.find((x) => x?.type === 'heading')?.settings?.heading ?? null;
+    const text = blockArr.find((x) => x?.type === 'text')?.settings?.text ?? null;
+    const btnBlock = blockArr.find((x) => x?.type === 'buttons');
+    const button = btnBlock?.settings
+      ? {
+          label: btnBlock.settings.button_label_1 ?? null,
+          link: this.resolveLink(btnBlock.settings.button_link_1),
+        }
+      : null;
+
+    const imageRef: string | undefined = b.settings?.image;
+    const imageUrl = await this.resolveImage(imageRef);
+
+    return {
+      sectionId: b.sectionId,
+      type: b.type,
+      disabled: b.disabled,
+      heading,
+      text,
+      button,
+      image: imageUrl ? { url: imageUrl, ref: imageRef } : null,
+      colorScheme: b.settings?.color_scheme ?? null,
+      height: b.settings?.image_height ?? b.settings?.height ?? 'medium',
+    };
+  }
+
+  private resolveLink(link?: string): string | null {
+    if (!link) return null;
+    // shopify://collections/all → /shop/collections/all-products  (approx)
+    if (link.startsWith('shopify://collections/all')) return '/shop/products';
+    if (link.startsWith('shopify://collections/')) return `/shop/collections/${link.split('/').pop()}`;
+    if (link.startsWith('shopify://products/')) return `/shop/products/${link.split('/').pop()}`;
+    if (link.startsWith('shopify://pages/')) return `/shop/pages/${link.split('/').pop()}`;
+    return link;
+  }
+
+  private fileCache = new Map<string, string | null>();
+  private async resolveImage(ref?: string): Promise<string | null> {
+    if (!ref) return null;
+    if (ref.startsWith('http://') || ref.startsWith('https://')) return ref;
+    if (this.fileCache.has(ref)) return this.fileCache.get(ref) ?? null;
+
+    // shopify://shop_images/theme_cover_image.jpg → filename
+    const m = ref.match(/shopify:\/\/(?:shop_images|files)\/(.+)$/);
+    if (!m) {
+      this.fileCache.set(ref, null);
+      return null;
+    }
+    const filename = m[1];
+    try {
+      const data: any = await this.gql.request(FILES_BY_NAME_QUERY, { query: `filename:${filename}` });
+      const url = data?.files?.edges?.[0]?.node?.image?.url ?? null;
+      this.fileCache.set(ref, url);
+      return url;
+    } catch {
+      this.fileCache.set(ref, null);
+      return null;
+    }
   }
 
   // Source 2: metaobjects of type "banner" or app-namespaced types

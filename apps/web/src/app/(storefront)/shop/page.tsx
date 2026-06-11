@@ -29,18 +29,26 @@ export default function ShopHome() {
     <div className="pb-8">
       {/* Banner carousel */}
       {banners.length > 0 && (
-        <section className="overflow-x-auto flex snap-x snap-mandatory">
-          {banners.map((b, i) => (
-            <div key={i} className="min-w-full snap-start aspect-[3/2] bg-gray-100 flex items-center justify-center">
-              {b.settings?.image_url ? (
+        <section className="overflow-x-auto flex snap-x snap-mandatory scrollbar-hide">
+          {banners.filter((b) => !b.disabled).map((b, i) => (
+            <div key={i} className="min-w-full snap-start aspect-[4/5] relative bg-gray-100">
+              {b.image?.url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={b.settings.image_url} alt={b.settings?.heading ?? ''} className="w-full h-full object-cover" />
-              ) : (
-                <div className="text-center p-6">
-                  <h2 className="text-xl font-bold">{b.settings?.heading ?? b.type}</h2>
-                  {b.settings?.subheading && <p className="text-sm">{b.settings.subheading}</p>}
-                </div>
-              )}
+                <img src={b.image.url} alt={b.heading ?? ''} className="absolute inset-0 w-full h-full object-cover" />
+              ) : null}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                {b.heading && <h2 className="text-2xl font-bold drop-shadow">{b.heading}</h2>}
+                {b.text && <p className="text-sm mt-1 drop-shadow">{b.text}</p>}
+                {b.button?.label && (
+                  <Link
+                    href={b.button.link || '/shop/products'}
+                    className="inline-block mt-3 bg-white text-black px-5 py-2 rounded text-sm font-medium"
+                  >
+                    {b.button.label}
+                  </Link>
+                )}
+              </div>
             </div>
           ))}
         </section>
@@ -50,17 +58,30 @@ export default function ShopHome() {
       <section className="p-4">
         <h2 className="text-lg font-bold mb-3">Shop by Collection</h2>
         <div className="grid grid-cols-2 gap-3">
-          {collections.map((c) => (
-            <Link key={c.id} href={`/shop/collections/${c.handle}`} className="block">
-              <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                {c.image?.url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={c.image.url} alt={c.title} className="w-full h-full object-cover" />
-                )}
-              </div>
-              <div className="mt-1 text-sm font-medium truncate">{c.title}</div>
-            </Link>
-          ))}
+          {collections.map((c, i) => {
+            const grads = [
+              'from-purple-400 to-pink-500',
+              'from-cyan-400 to-blue-500',
+              'from-amber-400 to-orange-500',
+              'from-emerald-400 to-teal-500',
+              'from-rose-400 to-red-500',
+              'from-indigo-400 to-violet-500',
+            ];
+            const grad = grads[i % grads.length];
+            return (
+              <Link key={c.id} href={`/shop/collections/${c.handle}`} className="block">
+                <div className={`aspect-square rounded-lg overflow-hidden relative bg-gradient-to-br ${grad} flex items-center justify-center`}>
+                  {c.image?.url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={c.image.url} alt={c.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-white font-bold text-sm text-center px-2">{c.title}</span>
+                  )}
+                </div>
+                <div className="mt-1 text-sm font-medium truncate">{c.title}</div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

@@ -7,7 +7,9 @@ import type { Request, Response } from 'express';
 const COOKIE_VERIFIER = 'sf_pkce_verifier';
 const COOKIE_STATE = 'sf_pkce_state';
 const COOKIE_REFRESH = 'sf_customer_refresh';
-const COOKIE_OPTS = { httpOnly: true, sameSite: 'lax' as const, secure: false, path: '/' };
+// sameSite=none + secure required so cookies survive the cross-site OAuth bounce
+// (browser → tunnel → shopify.com → tunnel/callback).
+const COOKIE_OPTS = { httpOnly: true, sameSite: 'none' as const, secure: true, path: '/' };
 
 function base64url(buf: Buffer) {
   return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
