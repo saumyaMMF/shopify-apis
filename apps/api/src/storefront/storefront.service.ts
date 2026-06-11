@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { StorefrontService as StorefrontClient } from '../shopify/storefront.service';
+import { AdminGraphQLService } from '../shopify/admin-graphql.service';
 import {
   PRODUCTS_QUERY,
   PRODUCT_BY_HANDLE_QUERY,
@@ -27,6 +28,7 @@ import {
   PRODUCT_RECOMMENDATIONS,
   LOCALIZATION,
   VARIANT_BY_SELECTED_OPTIONS,
+  PRODUCT_REVIEWS,
   PRODUCTS_SEARCH,
   COLLECTION_FILTERED,
   CART_DELIVERY,
@@ -62,7 +64,7 @@ export interface BuyerIdentityInput {
 
 @Injectable()
 export class StorefrontApiService {
-  constructor(private client: StorefrontClient) {}
+  constructor(private client: StorefrontClient, private admin: AdminGraphQLService) {}
 
   async listProducts(opts: { first?: number; after?: string; query?: string }) {
     const data = await this.client.request<any>(PRODUCTS_QUERY, {
@@ -198,6 +200,47 @@ export class StorefrontApiService {
   async recommendations(productId: string, intent: string = 'RELATED') {
     const data = await this.client.request<any>(PRODUCT_RECOMMENDATIONS, { productId, intent });
     return data.productRecommendations;
+  }
+
+  // ---------- New: Product reviews aggregate (Shopify standard metafields) ----------
+  // Reviews metafields aren't publicly exposed via Storefront API by default
+  // (need metafield definition w/ storefront access: PUBLIC_READ). Use admin API
+  // so reviews always work for our app — single source of truth.
+  async productReviews(handle: string) {
+    const ADMIN_REVIEWS = `
+      query AdminProductReviews($handle: String!) {
+        productByHandle(handle: $handle) {
+          id handle title
+          rating: metafield(namespace: "reviews", key: "rating") { value type }
+          ratingCount: metafield(namespace: "reviews", key: "rating_count") { value type }
+        }
+      }
+    `;
+    const data = await this.admin.request(ADMIN_REVIEWS, { handle });
+    const p = (data as any).productByHandle;
+
+    if (!p) return null;
+    let rating: number | null = null;
+    let scaleMin: number | null = null;
+    let scaleMax: number | null = null;
+    if (p.rating?.value) {
+      try {
+        const j = JSON.parse(p.rating.value);
+        rating = j.value != null ? Number(j.value) : null;
+        scaleMin = j.scale_min != null ? Number(j.scale_min) : null;
+        scaleMax = j.scale_max != null ? Number(j.scale_max) : null;
+      } catch {}
+    }
+    const count = p.ratingCount?.value != null ? Number(p.ratingCount.value) : 0;
+    return {
+      productId: p.id,
+      handle: p.handle,
+      title: p.title,
+      rating,
+      count,
+      scaleMin: scaleMin ?? 1,
+      scaleMax: scaleMax ?? 5,
+    };
   }
 
   // ---------- New: Variant by selected options ----------

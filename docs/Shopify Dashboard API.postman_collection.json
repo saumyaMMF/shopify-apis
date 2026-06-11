@@ -3907,6 +3907,24 @@
               }
             },
             {
+              "name": "Product reviews",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/products/{{product_handle}}/reviews",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "products",
+                    "{{product_handle}}",
+                    "reviews"
+                  ]
+                }
+              }
+            },
+            {
               "name": "Banners from theme",
               "request": {
                 "method": "GET",

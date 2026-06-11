@@ -153,6 +153,12 @@ export class StorefrontController {
   @Get('localization')
   localization() { return this.sf.getLocalization(); }
 
+  // ---------- New: Product reviews aggregate ----------
+  @Get('products/:handle/reviews')
+  productReviews(@Param('handle') handle: string) {
+    return this.sf.productReviews(handle);
+  }
+
   // ---------- New: Variant by selected options ----------
   // POST body: { handle: "the-complete-snowboard", selectedOptions: [{ name: "Color", value: "Ice" }] }
   @Post('products/variant')

@@ -344,6 +344,17 @@ export const PRODUCT_RECOMMENDATIONS = /* GraphQL */ `
   }
 `;
 
+// ---------------- New: Product reviews (Shopify standard metafields) ----------------
+export const PRODUCT_REVIEWS = /* GraphQL */ `
+  query ProductReviews($handle: String!) {
+    product(handle: $handle) {
+      id handle title
+      rating: metafield(namespace: "reviews", key: "rating") { value type }
+      ratingCount: metafield(namespace: "reviews", key: "rating_count") { value type }
+    }
+  }
+`;
+
 // ---------------- New: Variant lookup by selected options ----------------
 export const VARIANT_BY_SELECTED_OPTIONS = /* GraphQL */ `
   query VariantBySelectedOptions($handle: String!, $selectedOptions: [SelectedOptionInput!]!) {

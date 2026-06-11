@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { StorefrontAPI, type ProductCard } from '@/lib/storefront';
+import { RatingStars } from '@/components/rating-stars';
 
 export default function ShopHome() {
   const [products, setProducts] = useState<ProductCard[]>([]);
@@ -102,6 +103,10 @@ export default function ShopHome() {
 }
 
 function ProductTile({ p }: { p: ProductCard }) {
+  const [reviews, setReviews] = useState<{ rating: number | null; count: number } | null>(null);
+  useEffect(() => {
+    StorefrontAPI.productReviews(p.handle).then(setReviews).catch(() => {});
+  }, [p.handle]);
   return (
     <Link href={`/shop/products/${p.handle}`} className="block">
       <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
@@ -116,6 +121,7 @@ function ProductTile({ p }: { p: ProductCard }) {
           {p.priceRange.minVariantPrice.currencyCode === 'INR' ? '₹' : ''}
           {Number(p.priceRange.minVariantPrice.amount).toFixed(2)}
         </div>
+        {reviews && reviews.count > 0 && <RatingStars rating={reviews.rating} count={reviews.count} size="sm" />}
         {!p.availableForSale && <div className="text-xs text-red-600">Out of stock</div>}
       </div>
     </Link>

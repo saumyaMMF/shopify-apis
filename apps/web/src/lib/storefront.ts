@@ -104,6 +104,10 @@ export const StorefrontAPI = {
 
   // Pages
   page: (handle: string) => sf.get(`/pages/${handle}`).then((r) => r.data),
+
+  // Reviews
+  productReviews: (handle: string) =>
+    sf.get<{ rating: number | null; count: number; scaleMin: number; scaleMax: number }>(`/products/${handle}/reviews`).then((r) => r.data),
 };
 
 // ---------- Ensure cart exists ----------

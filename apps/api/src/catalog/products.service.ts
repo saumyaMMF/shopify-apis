@@ -65,6 +65,15 @@ const PRODUCT_UPDATE = `
   }
 `;
 
+const METAFIELDS_SET = `
+  mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+    metafieldsSet(metafields: $metafields) {
+      metafields { id namespace key value type }
+      userErrors { field message }
+    }
+  }
+`;
+
 const PRODUCT_DELETE = `
   mutation productDelete($input: ProductDeleteInput!) {
     productDelete(input: $input) {
@@ -149,5 +158,25 @@ export class ProductsService {
     const ue = data.productDelete.userErrors;
     if (ue?.length) throw new Error(JSON.stringify(ue));
     return { deletedId: data.productDelete.deletedProductId };
+  }
+
+  async setReviews(shopifyGid: string, rating: number, count: number, scaleMin = 1, scaleMax = 5) {
+    if (rating < scaleMin || rating > scaleMax) {
+      throw new Error(`rating ${rating} out of bounds [${scaleMin}, ${scaleMax}]`);
+    }
+    const ratingJson = JSON.stringify({
+      scale_min: String(scaleMin.toFixed(1)),
+      scale_max: String(scaleMax.toFixed(1)),
+      value: String(rating.toFixed(1)),
+    });
+    const data: any = await this.gql.request(METAFIELDS_SET, {
+      metafields: [
+        { ownerId: shopifyGid, namespace: 'reviews', key: 'rating', type: 'json', value: ratingJson },
+        { ownerId: shopifyGid, namespace: 'reviews', key: 'rating_count', type: 'number_integer', value: String(Math.round(count)) },
+      ],
+    });
+    const ue = data.metafieldsSet.userErrors;
+    if (ue?.length) throw new Error(JSON.stringify(ue));
+    return { rating, count, scaleMin, scaleMax, metafields: data.metafieldsSet.metafields };
   }
 }

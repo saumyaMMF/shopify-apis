@@ -47,4 +47,13 @@ export class ProductsController {
   @Delete(':shopifyGid')
   @RequirePermissions('product.delete')
   remove(@Param('shopifyGid') gid: string) { return this.products.delete(gid); }
+
+  @Post(':shopifyGid/reviews')
+  @RequirePermissions('product.update')
+  setReviews(
+    @Param('shopifyGid') gid: string,
+    @Body() body: { rating: number; count: number; scaleMin?: number; scaleMax?: number },
+  ) {
+    return this.products.setReviews(gid, body.rating, body.count, body.scaleMin, body.scaleMax);
+  }
 }

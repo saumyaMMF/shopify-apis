@@ -145,6 +145,7 @@ const folder = {
     ]),
     req('Payment settings (accepted methods)', 'GET', '/storefront/payment-settings'),
     req('Cart payment info (B2B)', 'GET', '/storefront/cart/payment-info', null, [{ key: 'id', value: '{{cart_id}}' }]),
+    req('Product reviews', 'GET', '/storefront/products/{{product_handle}}/reviews'),
     req('Banners from theme', 'GET', '/storefront/banners/theme', null, [{ key: 'template', value: 'index' }]),
     req('Banners from metaobjects', 'GET', '/storefront/banners/metaobjects', null, [{ key: 'type', value: 'banner' }]),
   ],

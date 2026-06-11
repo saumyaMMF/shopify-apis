@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { StorefrontAPI, ensureCart, cartStore, type Variant } from '@/lib/storefront';
+import { RatingStars } from '@/components/rating-stars';
 
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -10,6 +11,7 @@ export default function ProductDetail() {
   const [p, setP] = useState<any>(null);
   const [variant, setVariant] = useState<Variant | null>(null);
   const [busy, setBusy] = useState(false);
+  const [reviews, setReviews] = useState<{ rating: number | null; count: number } | null>(null);
 
   useEffect(() => {
     StorefrontAPI.product(handle).then((data) => {
@@ -17,6 +19,7 @@ export default function ProductDetail() {
       const firstVariant = data.variants?.edges?.[0]?.node;
       setVariant(firstVariant ?? null);
     });
+    StorefrontAPI.productReviews(handle).then(setReviews).catch(() => setReviews({ rating: null, count: 0 }));
   }, [handle]);
 
   if (!p) return <div className="p-4">Loading…</div>;
@@ -61,6 +64,7 @@ export default function ProductDetail() {
       <div className="p-4 space-y-3">
         {p.vendor && <div className="text-xs uppercase tracking-wide text-gray-500">{p.vendor}</div>}
         <h1 className="text-xl font-bold">{p.title}</h1>
+        {reviews && <RatingStars rating={reviews.rating} count={reviews.count} />}
         <div className="text-lg">
           {price?.currencyCode === 'INR' ? '₹' : ''}
           {price && Number(price.amount).toFixed(2)}
