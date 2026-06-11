@@ -159,4 +159,105 @@ Living record of work done, decisions made, and what remains. Update at end of e
 
 ---
 
-_Last updated: 2026-06-09_
+_Last updated: 2026-06-11_
+
+---
+
+### 2026-06-10 / 2026-06-11 — Days 2-3: Storefront API + Mobile-First UI + Customer Account OAuth
+
+**Goal:** Mirror Shopify-hosted storefront/account pages into a mobile-first web app, using our NestJS API to wrap Storefront + Customer Account + Admin APIs.
+
+**Backend additions (NestJS modules):**
+
+1. **`storefront`** — public, no JWT. 42 routes.
+   - Products, collections, search (sort/filters), predictive search, recommendations
+   - Cart: create/get/lines add+update+remove, buyer-identity, discount, gift-cards, note, attributes, delivery, payment-info
+   - CMS: shop, policies, menus, pages, blogs+articles
+   - Custom: metaobjects + metaobject, product/collection/shop metafields
+   - Selling plans on product, variant store availability (pickup)
+   - Variant by selected options
+   - Newsletter signup (customerCreate via Storefront API)
+   - Localization, payment-settings
+   - **Banners** wrapped from admin themes service → public for mobile (resolves `shopify://shop_images/*.jpg` → real CDN URLs via Files API, flattens block tree to `{heading, text, button, image}`)
+
+2. **`customer-account`** — `X-Customer-Token` header auth. 23 routes.
+   - Profile read/update, addresses CRUD (+ set default)
+   - Orders list/get, buy-again, digital-assets (statusPageUrl), cancel, edit-shipping
+   - Returns list, request return (after fetching `returnable` helper), subscriptions, store credit, gift cards, marketing prefs, payment methods
+   - Mutations that Customer Account API doesn't expose (`orderCancel`, `orderUpdate`, `returnRequest`) **bridged via admin GraphQL** with ownership check (token's customer email vs order's customer email)
+   - JWT decode auto-extracts `shopId` from token payload — no `SHOPIFY_SHOP_ID` env needed if not set
+   - Customer Account API uses `Authorization: <raw_token>` (no `Bearer` prefix) — common gotcha
+
+3. **`customer-account-auth`** — Customer Account OAuth (PKCE) flow.
+   - `GET /storefront/customer/auth/login` → generates PKCE pair + state, sets cookies, redirects to `https://shopify.com/authentication/{shop_id}/oauth/authorize`
+   - `GET /storefront/customer/auth/callback` → verifies state cookie, exchanges code for tokens, sets `sf_customer_refresh` httpOnly cookie, redirects to web app with `#access_token=...` in URL fragment
+   - `POST /storefront/customer/auth/refresh` → uses refresh cookie → new access token
+   - `POST /storefront/customer/auth/logout` → revokes + clears
+   - **Cookie config:** `sameSite: 'none', secure: true` required so cookies survive cross-site OAuth bounce (browser → tunnel → shopify.com → tunnel/callback). `Lax` won't work.
+
+**Web app (Next.js 15 — `(storefront)` route group):**
+
+- Mobile-first: `max-w-md mx-auto` container, sticky header w/ cart badge, sticky checkout button
+- `apps/web/src/lib/storefront.ts` — typed API client + `cartStore` + `customerStore` (localStorage)
+- Routes:
+  - `/shop` — home (banner carousel w/ resolved CDN images + overlay heading/text/button, collection tiles w/ gradient fallbacks, featured products)
+  - `/shop/products`, `/shop/products/[handle]`, `/shop/collections/[handle]`, `/shop/search`
+  - `/shop/cart` — lines + qty +/- + remove + checkout button; renders "cart is empty" UI when `totalQuantity === 0` (no checkout button shown)
+  - `/shop/thank-you` — clears cart, polls customer orders API for fresh order (5min window), shows confirmation
+  - `/shop/account` — Orders | Profile tabs, orders list (clickable to detail)
+  - `/shop/account/profile` — name edit + addresses CRUD (add/edit/delete/set-default)
+  - `/shop/account/orders/[id]` — line items + totals + shipping address + tracking + Buy-again + Cancel order
+- OAuth login button → direct redirect to API origin (tunnel URL, NOT `/api/backend/*` proxy) so PKCE cookies share origin with callback
+- `typedRoutes: false` in next.config.mjs (dynamic `[handle]` segments conflict at tsc time)
+
+**Postman/docs:**
+
+- Folder structure: top-level **Admin API** (19 folders) + **Storefront API** (2 folders: 20 Public, 21 Customer Account)
+- 145 requests total
+- Scripts: `add-storefront-postman.mjs`, `add-customer-account-postman.mjs`, `split-postman-sections.mjs`, `merge-postman.mjs`
+- `merge-postman.mjs` grafts saved examples from user's hand-edited Copy collection onto regenerated base (preserves work across script regens)
+- `Shopify Dashboard API.postman_environment.json` — env file w/ pre-filled local vars (base_url, customer_token, shop_id, order_id, etc.)
+- `docs/STOREFRONT_USER_FLOW.md` — 14-step user journey doc (home → browse → cart → checkout → account → orders → returns) with API calls per step
+
+**Setup config / env:**
+
+- `SHOPIFY_SHOP_ID=95517901101`, `CUSTOMER_ACCOUNT_CLIENT_ID=43e3ceb1-09bf-420b-a73e-27068a8009e2`
+- Customer Account API config in admin: Sales channels → Headless → Customer Account API → Callback URI (HTTPS required, not plain localhost)
+- Solved HTTPS callback via **cloudflared tunnel** (`cloudflared tunnel --url http://localhost:4000`) — gives `https://*.trycloudflare.com` URL. URL changes on every restart — must update Shopify callback + `.env` again.
+- For production: real domain + cert needed.
+
+**Decisions:**
+
+- Cart id stored in localStorage (no cookie — anonymous, opaque gid contains `?key=` already)
+- Customer token in localStorage (refresh token in httpOnly cookie)
+- Cart routes use `?id=` query param (cart gid contains `/` and `?` — breaks Express path routing)
+- Admin GraphQL bridges customer mutations Customer Account API doesn't expose (with ownership check)
+- Banner image URLs resolved on backend (frontend gets real CDN URLs, not `shopify://` refs)
+- Mobile-first single-column UI; same routes serve desktop via responsive Tailwind
+- Mobile native (React Native) app NOT built — web app on mobile viewport is sufficient for now
+- Shopify checkout always hosted (cart.checkoutUrl redirect) — no direct payment API
+
+**Commits this session:**
+- `7ec589d` feat(storefront): expose banners as public storefront endpoints
+- `48b509b` feat(storefront): add Storefront + Customer Account API modules
+- `a028a0d` feat(storefront): add payment-related read routes
+- `139456e` docs: storefront API user flow walkthrough (14 steps)
+- `9518077` feat(web): mobile-first storefront UI (Next.js route group)
+- `ec48cdd` feat(customer-auth): Customer Account API OAuth flow (PKCE)
+- `6ed7a3d` feat(web): thank-you page + return-to-app after Shopify checkout
+- `2e47335` fix(web): empty cart state + order detail page
+- `4d9b109` fix(banners): resolve shopify:// image refs to CDN URLs + flatten blocks
+- `a5a6528` feat(web): profile page with name edit + address book CRUD
+
+**Outstanding for storefront (deferred):**
+
+- Server-side "Sign out of all devices" (revoke all customer tokens) — currently just clears localStorage
+- Country/locale selector in footer
+- React Native mobile app (using same API)
+- Push notifications (FCM/APNs) for order updates
+- Production HTTPS deploy + real OAuth domain (not tunnel)
+- Webhook → cache invalidation
+- Redis cache for shop info/policies/menus/pages (rarely change)
+- Wishlist (custom — not Shopify-native)
+- Reviews / loyalty (3rd-party)
+- Customer signup screen (currently OAuth only — newsletter signup creates customer w/ random password)
