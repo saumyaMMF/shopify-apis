@@ -3,7 +3,14 @@
 import { useEffect, useState } from 'react';
 import { StorefrontAPI, customerStore } from '@/lib/storefront';
 
-const AUTH_BASE = '/api/backend/storefront/customer/auth';
+// For OAuth, browser must go DIRECTLY to the API origin (tunnel) so PKCE cookies
+// stay on the same domain as the Shopify callback redirect.
+const API_ORIGIN =
+  process.env.NEXT_PUBLIC_API_ORIGIN ||
+  'https://dealt-occupations-money-zshops.trycloudflare.com';
+const AUTH_LOGIN = `${API_ORIGIN}/api/storefront/customer/auth/login`;
+const AUTH_REFRESH = `${API_ORIGIN}/api/storefront/customer/auth/refresh`;
+const AUTH_LOGOUT = `${API_ORIGIN}/api/storefront/customer/auth/logout`;
 
 export default function Account() {
   const [token, setToken] = useState<string | null>(null);
@@ -54,7 +61,7 @@ export default function Account() {
 
   async function tryRefresh(): Promise<boolean> {
     try {
-      const r = await fetch(`${AUTH_BASE}/refresh`, { method: 'POST', credentials: 'include' });
+      const r = await fetch(AUTH_REFRESH, { method: 'POST', credentials: 'include' });
       if (!r.ok) return false;
       const j = await r.json();
       if (j.accessToken) {
@@ -69,13 +76,13 @@ export default function Account() {
   }
 
   function login() {
-    window.location.href = `${AUTH_BASE}/login`;
+    window.location.href = AUTH_LOGIN;
   }
 
   async function logout() {
     setBusy(true);
     try {
-      await fetch(`${AUTH_BASE}/logout`, { method: 'POST', credentials: 'include' });
+      await fetch(AUTH_LOGOUT, { method: 'POST', credentials: 'include' });
     } finally {
       customerStore.clear();
       setToken(null);

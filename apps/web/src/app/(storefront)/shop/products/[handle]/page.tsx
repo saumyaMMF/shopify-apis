@@ -32,6 +32,15 @@ export default function ProductDetail() {
       if (!id) {
         const cart = await StorefrontAPI.cartCreate([{ merchandiseId: variant.id, quantity: 1 }]);
         cartStore.set(cart.id);
+        // Mark cart with return target — useful for mobile WebView listeners + analytics
+        try {
+          const returnUrl = `${window.location.origin}/shop/thank-you`;
+          await fetch(`/api/backend/storefront/cart/attributes?id=${encodeURIComponent(cart.id)}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ attributes: [{ key: 'return_url', value: returnUrl }] }),
+          });
+        } catch {}
         window.dispatchEvent(new CustomEvent('cart:update', { detail: cart }));
       } else {
         const cart = await StorefrontAPI.cartLinesAdd(id, [{ merchandiseId: variant.id, quantity: 1 }]);

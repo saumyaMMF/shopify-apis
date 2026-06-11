@@ -94,12 +94,18 @@ export default function CartPage() {
             <span>Subtotal</span>
             <span>{fmt(cart.cost.subtotalAmount)}</span>
           </div>
-          <a
-            href={cart.checkoutUrl}
+          <button
+            onClick={() => {
+              // Open Shopify-hosted checkout. Pass thank-you as return target via
+              // a hidden query param so mobile WebView code can detect completion.
+              const url = new URL(cart.checkoutUrl);
+              url.searchParams.set('return_to', `${window.location.origin}/shop/thank-you`);
+              window.location.href = url.toString();
+            }}
             className="block w-full bg-black text-white text-center py-3 rounded font-medium"
           >
             Checkout {fmt(cart.cost.totalAmount)}
-          </a>
+          </button>
         </div>
       </div>
     </div>
