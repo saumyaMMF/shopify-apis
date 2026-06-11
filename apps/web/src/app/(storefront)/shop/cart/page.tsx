@@ -38,16 +38,24 @@ export default function CartPage() {
     }
   }
 
-  if (!cart) {
+  const lines = cart?.lines?.edges?.map((e) => e.node) ?? [];
+
+  if (!cart || cart.totalQuantity === 0 || lines.length === 0) {
     return (
-      <div className="p-6 text-center">
-        <p className="text-sm">Your cart is empty.</p>
-        <Link href="/shop" className="inline-block mt-4 underline text-sm">Continue shopping</Link>
+      <div className="p-6 text-center space-y-4">
+        <div className="text-5xl">🛒</div>
+        <h1 className="text-xl font-bold">Your cart is empty</h1>
+        <p className="text-sm text-gray-600">Browse products and add something you love.</p>
+        <Link href="/shop" className="block w-full bg-black text-white py-3 rounded font-medium">
+          Continue shopping
+        </Link>
+        <Link href="/shop/account" className="block text-sm underline">
+          View past orders
+        </Link>
       </div>
     );
   }
 
-  const lines = cart.lines.edges.map((e) => e.node);
   const fmt = (m: { amount: string; currencyCode: string }) =>
     (m.currencyCode === 'INR' ? '₹' : '') + Number(m.amount).toFixed(2);
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { StorefrontAPI, customerStore } from '@/lib/storefront';
 
 // For OAuth, browser must go DIRECTLY to the API origin (tunnel) so PKCE cookies
@@ -123,7 +124,11 @@ export default function Account() {
         ) : (
           <div className="space-y-2">
             {orders.map((o) => (
-              <div key={o.id} className="border rounded p-3 text-sm">
+              <Link
+                key={o.id}
+                href={`/shop/account/orders/${encodeURIComponent(o.id)}`}
+                className="block border rounded p-3 text-sm hover:bg-gray-50"
+              >
                 <div className="flex justify-between">
                   <span className="font-medium">{o.name}</span>
                   <span className="text-gray-500 text-xs">{new Date(o.processedAt).toLocaleDateString()}</span>
@@ -135,7 +140,7 @@ export default function Account() {
                     {Number(o.totalPrice.amount).toFixed(2)}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
