@@ -151,6 +151,11 @@ export class CustomerAccountController {
     return this.svc.marketingPrefs(this.req(token));
   }
 
+  @Get('payment-methods')
+  paymentMethods(@Headers('x-customer-token') token: string) {
+    return this.svc.paymentMethods(this.req(token));
+  }
+
   private req(token: string) {
     if (!token) throw new BadRequestException('Missing X-Customer-Token header');
     return token;

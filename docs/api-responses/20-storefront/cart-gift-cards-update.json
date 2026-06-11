@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/storefront/cart/gift-cards?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "url": "/storefront/cart/gift-cards?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
     "headers": {},
     "body": {
       "giftCardCodes": [
@@ -14,8 +14,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
-      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=a12378c1-c491-4ed2-a27e-b9689f39dab4&_y=ad3b7b40-e4b9-43bd-8cf4-384cf9982a75",
+      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4&_s=0114988c-10c5-4dff-ba92-6cee9118d514&_y=7a2dbf64-09f8-49c1-822a-15bdfc589cff",
       "totalQuantity": 0,
       "cost": {
         "subtotalAmount": {
@@ -38,5 +38,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-10T13:44:14Z"
+  "capturedAt": "2026-06-11T05:54:19Z"
 }

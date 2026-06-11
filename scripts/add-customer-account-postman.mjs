@@ -95,6 +95,7 @@ const folder = {
     req('Store credit balance', 'GET', '/storefront/customer/store-credit'),
     req('Gift cards (owned by customer)', 'GET', '/storefront/customer/gift-cards', null, [{ key: 'first', value: '20' }]),
     req('Marketing preferences', 'GET', '/storefront/customer/marketing-prefs'),
+    req('Payment methods (saved cards/wallets)', 'GET', '/storefront/customer/payment-methods'),
   ],
 };
 

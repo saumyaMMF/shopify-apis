@@ -16,17 +16,17 @@
         "id": "c90e5334-567f-41c2-b74b-5db00a988d17",
         "domain": "test-store-uzhiv0ib.myshopify.com",
         "name": null,
-        "accessToken": "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",
-        "refreshToken": "shprt_43e5c8284f35dc789eea900f62754632",
+        "accessToken": "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",
+        "refreshToken": "shprt_6c92de5e7d111a10f85a55f325061792",
         "scope": "read_collection_listings,read_customer_payment_methods,read_legal_policies,read_locales,read_locations,read_product_listings,read_shopify_payments_disputes,read_shopify_payments_payouts,write_assigned_fulfillment_orders,write_checkouts,write_companies,write_content,write_customers,write_discounts,write_draft_orders,write_files,write_fulfillments,write_gift_cards,write_inventory,write_marketing_events,write_markets,write_merchant_managed_fulfillment_orders,write_metaobject_definitions,write_metaobjects,write_orders,write_price_rules,write_products,write_publications,write_purchase_options,write_reports,write_resource_feedbacks,write_returns,write_script_tags,write_shipping,write_themes,write_translations",
-        "expiresAt": "2026-06-10T14:14:58.805Z",
-        "refreshExpiresAt": "2026-09-08T13:14:59.805Z",
+        "expiresAt": "2026-06-11T06:52:28.540Z",
+        "refreshExpiresAt": "2026-09-09T05:52:28.540Z",
         "installedAt": "2026-06-10T05:26:32.775Z",
         "uninstalledAt": null,
         "isActive": true,
-        "updatedAt": "2026-06-10T13:15:00.805Z"
+        "updatedAt": "2026-06-11T05:52:29.543Z"
       }
     ]
   },
-  "capturedAt": "2026-06-10T13:44:02Z"
+  "capturedAt": "2026-06-11T05:54:07Z"
 }

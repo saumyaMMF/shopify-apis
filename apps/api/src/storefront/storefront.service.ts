@@ -38,6 +38,7 @@ import {
   SHOP_METAFIELDS,
   PRODUCT_SELLING_PLANS,
   VARIANT_STORE_AVAILABILITY,
+  CART_PAYMENT_INFO,
 } from './storefront.queries';
 
 export interface CartLineInput {
@@ -287,6 +288,12 @@ export class StorefrontApiService {
   async productSellingPlans(handle: string) {
     const data = await this.client.request<any>(PRODUCT_SELLING_PLANS, { handle });
     return data.product;
+  }
+
+  // ---------- New: Cart payment info (B2B) ----------
+  async cartPaymentInfo(id: string) {
+    const data = await this.client.request<any>(CART_PAYMENT_INFO, { id });
+    return data.cart;
   }
 
   // ---------- New: Pickup availability ----------

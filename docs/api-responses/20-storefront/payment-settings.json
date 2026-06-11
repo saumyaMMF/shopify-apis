@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/payment-settings",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "currencyCode": "INR",
+      "enabledPresentmentCurrencies": [
+        "CAD",
+        "INR"
+      ],
+      "acceptedCardBrands": [],
+      "supportedDigitalWallets": [],
+      "countryCode": "IN"
+    }
+  },
+  "capturedAt": "2026-06-11T05:54:10Z"
+}

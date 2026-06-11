@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/storefront/cart/payment-info?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
+    "headers": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "ok": true,
+    "error": null,
+    "body": {
+      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
+      "cost": {
+        "totalAmount": {
+          "amount": "0.0",
+          "currencyCode": "INR"
+        }
+      },
+      "buyerIdentity": {
+        "email": "buyer@example.com",
+        "phone": null,
+        "countryCode": "US",
+        "purchasingCompany": null
+      }
+    }
+  },
+  "capturedAt": "2026-06-11T05:54:19Z"
+}

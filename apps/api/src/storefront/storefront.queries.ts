@@ -555,6 +555,25 @@ export const PRODUCT_SELLING_PLANS = /* GraphQL */ `
 `;
 
 // ---------------- New: Variant store availability (pickup) ----------------
+// ---------------- New: Cart payment terms (B2B) ----------------
+export const CART_PAYMENT_INFO = /* GraphQL */ `
+  query CartPaymentInfo($id: ID!) {
+    cart(id: $id) {
+      id
+      cost {
+        totalAmount { amount currencyCode }
+      }
+      buyerIdentity {
+        email phone countryCode
+        purchasingCompany {
+          company { id name }
+          location { id name }
+        }
+      }
+    }
+  }
+`;
+
 export const VARIANT_STORE_AVAILABILITY = /* GraphQL */ `
   query VariantStoreAvailability($id: ID!, $first: Int!) {
     node(id: $id) {

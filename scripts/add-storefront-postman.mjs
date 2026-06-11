@@ -143,6 +143,8 @@ const folder = {
       { key: 'variantId', value: '{{variant_id}}' },
       { key: 'first', value: '5' },
     ]),
+    req('Payment settings (accepted methods)', 'GET', '/storefront/payment-settings'),
+    req('Cart payment info (B2B)', 'GET', '/storefront/cart/payment-info', null, [{ key: 'id', value: '{{cart_id}}' }]),
   ],
 };
 

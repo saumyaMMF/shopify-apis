@@ -304,6 +304,38 @@ export const CUSTOMER_GIFT_CARDS = /* GraphQL */ `
   }
 `;
 
+export const CUSTOMER_PAYMENT_METHODS = /* GraphQL */ `
+  query CustomerPaymentMethods {
+    customer {
+      paymentMethods(first: 20) {
+        edges {
+          node {
+            id
+            instrument {
+              __typename
+              ... on CustomerCreditCard {
+                brand
+                lastDigits
+                expiryMonth
+                expiryYear
+                billingAddress { city zip countryCode }
+              }
+              ... on CustomerPaypalBillingAgreement {
+                paypalAccountEmail
+              }
+              ... on CustomerShopPayAgreement {
+                lastDigits
+                expiryMonth
+                expiryYear
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CUSTOMER_MARKETING_PREFS = /* GraphQL */ `
   query CustomerMarketingPrefs {
     customer {

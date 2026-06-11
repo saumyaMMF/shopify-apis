@@ -226,6 +226,19 @@ export class StorefrontController {
     return this.sf.productSellingPlans(handle);
   }
 
+  // ---------- New: Shop payment settings (already in /shop, exposed standalone) ----------
+  @Get('payment-settings')
+  async paymentSettings() {
+    const shop: any = await this.sf.getShopInfo();
+    return shop?.paymentSettings ?? null;
+  }
+
+  // ---------- New: Cart payment info (B2B) ----------
+  @Get('cart/payment-info')
+  cartPaymentInfo(@Query('id') id: string) {
+    return this.sf.cartPaymentInfo(this.requireId(id));
+  }
+
   // ---------- New: Pickup availability ----------
   @Get('variant/store-availability')
   storeAvailability(@Query() q: any) {

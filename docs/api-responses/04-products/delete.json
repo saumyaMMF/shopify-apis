@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "DELETE",
-    "url": "/products/gid%3A%2F%2Fshopify%2FProduct%2F10292993294637",
+    "url": "/products/gid%3A%2F%2Fshopify%2FProduct%2F10293327233325",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,8 +12,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "deletedId": "gid://shopify/Product/10292993294637"
+      "deletedId": "gid://shopify/Product/10293327233325"
     }
   },
-  "capturedAt": "2026-06-10T13:43:35Z"
+  "capturedAt": "2026-06-11T05:53:40Z"
 }

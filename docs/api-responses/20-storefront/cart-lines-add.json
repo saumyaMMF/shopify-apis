@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "url": "/storefront/cart/lines?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "url": "/storefront/cart/lines?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
     "headers": {},
     "body": {
       "lines": [
@@ -17,8 +17,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
-      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=3f15e3d5-6e4b-4f23-afff-7ddc6942d341&_y=ed242676-1c8f-4deb-b192-f7a8125ab7dd",
+      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4&_s=30602f6b-5a96-4da5-85be-3b3351960665&_y=c54925c1-2f62-45ec-bff0-f4e7f77f17bb",
       "totalQuantity": 2,
       "cost": {
         "subtotalAmount": {
@@ -35,7 +35,7 @@
         "edges": [
           {
             "node": {
-              "id": "gid://shopify/CartLine/63f382fa-f555-4497-839c-5fb3bf4daf6e?cart=hWNDBCwDUOuhO0TWuG7eG8yy",
+              "id": "gid://shopify/CartLine/de3d9c18-cf6b-49c9-9af9-1f9712f676e3?cart=hWNDCnEnoKY0SZplXjuFCoGC",
               "quantity": 2,
               "merchandise": {
                 "id": "gid://shopify/ProductVariant/52130746335533",
@@ -82,5 +82,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-10T13:44:10Z"
+  "capturedAt": "2026-06-11T05:54:15Z"
 }

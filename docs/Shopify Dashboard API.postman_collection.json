@@ -3126,6 +3126,45 @@
                   ]
                 }
               }
+            },
+            {
+              "name": "Payment settings (accepted methods)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/payment-settings",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "payment-settings"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cart payment info (B2B)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/storefront/cart/payment-info?id={{cart_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "cart",
+                    "payment-info"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{cart_id}}"
+                    }
+                  ]
+                }
+              }
             }
           ]
         },
@@ -3840,6 +3879,29 @@
                     "storefront",
                     "customer",
                     "marketing-prefs"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Payment methods (saved cards/wallets)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/payment-methods",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "payment-methods"
                   ]
                 }
               }

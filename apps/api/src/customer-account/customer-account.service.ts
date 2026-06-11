@@ -7,6 +7,7 @@ import {
   CUSTOMER_ORDER_DETAIL,
   CUSTOMER_RETURNS,
   CUSTOMER_GIFT_CARDS,
+  CUSTOMER_PAYMENT_METHODS,
   CUSTOMER_MARKETING_PREFS,
   CUSTOMER_UPDATE,
   CUSTOMER_ADDRESSES,
@@ -284,6 +285,11 @@ export class CustomerAccountService {
   // ---------- Marketing preferences ----------
   marketingPrefs(token: string) {
     return this.client.request(token, CUSTOMER_MARKETING_PREFS).then((d: any) => d.customer);
+  }
+
+  // ---------- Payment methods (saved cards/wallets) ----------
+  paymentMethods(token: string) {
+    return this.client.request(token, CUSTOMER_PAYMENT_METHODS).then((d: any) => d.customer.paymentMethods);
   }
 
   // ---------- Digital assets ----------

@@ -66,6 +66,14 @@
           "subtotal": "50"
         },
         "_count": 1,
+        "vendorId": "4ad14932-ba0e-465c-a73c-89246f8f28e1"
+      },
+      {
+        "_sum": {
+          "total": "50",
+          "subtotal": "50"
+        },
+        "_count": 1,
         "vendorId": "c432b5df-b814-44fc-9544-afc710a9ef71"
       },
       {
@@ -150,5 +158,5 @@
       }
     ]
   },
-  "capturedAt": "2026-06-10T13:44:02Z"
+  "capturedAt": "2026-06-11T05:54:07Z"
 }

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/storefront/cart/note?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDBCwDUOuhO0TWuG7eG8yy%3Fkey%3Dde8cdbcbe99fe12347b66a7b2908d231",
+    "url": "/storefront/cart/note?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
     "headers": {},
     "body": {
       "note": "Gift wrap please"
@@ -12,8 +12,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231",
-      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDBCwDUOuhO0TWuG7eG8yy?key=de8cdbcbe99fe12347b66a7b2908d231&_s=2b2f4f6a-597e-4023-9630-b7e766ddaf72&_y=1dcc342b-37ae-4a9a-bb1f-c6c17ad169e2",
+      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4&_s=e864c9bd-3a12-4c15-9a3e-e16ab4d93cab&_y=feb599ee-fc94-4620-a394-d2cb683659f9",
       "totalQuantity": 0,
       "cost": {
         "subtotalAmount": {
@@ -36,5 +36,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-10T13:44:13Z"
+  "capturedAt": "2026-06-11T05:54:18Z"
 }

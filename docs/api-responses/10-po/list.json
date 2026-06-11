@@ -13,6 +13,50 @@
     "error": null,
     "body": [
       {
+        "id": "8601b8b2-3951-4f2b-9453-31ff154193fb",
+        "poNumber": "PO-2026-00017",
+        "vendorId": "2bad9f20-b33f-43ba-a1af-3de477fb4caa",
+        "locationId": "loc-capture",
+        "status": "PENDING_APPROVAL",
+        "subtotal": "50",
+        "tax": "0",
+        "shipping": "0",
+        "total": "50",
+        "currency": "USD",
+        "expectedAt": null,
+        "notes": "Captured PO",
+        "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
+        "approvedBy": null,
+        "approvedAt": null,
+        "createdAt": "2026-06-10T13:43:39.476Z",
+        "updatedAt": "2026-06-10T13:43:39.489Z",
+        "vendor": {
+          "id": "2bad9f20-b33f-43ba-a1af-3de477fb4caa",
+          "name": "Capture Vendor",
+          "contactName": null,
+          "email": "capture@v.com",
+          "phone": null,
+          "address": null,
+          "taxNumber": null,
+          "paymentTerms": "NET-45",
+          "isActive": true
+        },
+        "items": [
+          {
+            "id": "25da8aa1-49c3-4342-9f1c-80a09f06b28a",
+            "poId": "8601b8b2-3951-4f2b-9453-31ff154193fb",
+            "variantId": "v-cap",
+            "sku": "CAP-1",
+            "title": "Capture Item",
+            "orderedQty": 10,
+            "receivedQty": 0,
+            "unitCost": "5",
+            "lineTotal": "50"
+          }
+        ],
+        "receipts": []
+      },
+      {
         "id": "e0a90148-ce32-4f4e-b6a0-430d5ee1089c",
         "poNumber": "PO-2026-00016",
         "vendorId": "3be3833f-d81a-465e-840f-4f1f07375c53",
@@ -718,5 +762,5 @@
       }
     ]
   },
-  "capturedAt": "2026-06-10T13:43:39Z"
+  "capturedAt": "2026-06-11T05:53:43Z"
 }

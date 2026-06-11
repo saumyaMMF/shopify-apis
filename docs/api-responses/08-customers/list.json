@@ -14,6 +14,24 @@
     "body": {
       "items": [
         {
+          "id": "gid://shopify/Customer/9689052184877",
+          "legacyResourceId": "9689052184877",
+          "firstName": "Sub",
+          "lastName": null,
+          "email": "subscriber-1781099044040@yopmail.com",
+          "phone": null,
+          "tags": [],
+          "state": "ENABLED",
+          "createdAt": "2026-06-10T13:44:05Z",
+          "updatedAt": "2026-06-10T13:44:05Z",
+          "numberOfOrders": "0",
+          "amountSpent": {
+            "amount": "0.0",
+            "currencyCode": "INR"
+          },
+          "defaultAddress": null
+        },
+        {
           "id": "gid://shopify/Customer/9688741019949",
           "legacyResourceId": "9688741019949",
           "firstName": "Sub",
@@ -48,31 +66,13 @@
             "currencyCode": "INR"
           },
           "defaultAddress": null
-        },
-        {
-          "id": "gid://shopify/Customer/9688090050861",
-          "legacyResourceId": "9688090050861",
-          "firstName": "Sub",
-          "lastName": null,
-          "email": "newsub1781095011@yopmail.com",
-          "phone": null,
-          "tags": [],
-          "state": "ENABLED",
-          "createdAt": "2026-06-10T12:36:52Z",
-          "updatedAt": "2026-06-10T12:36:52Z",
-          "numberOfOrders": "0",
-          "amountSpent": {
-            "amount": "0.0",
-            "currencyCode": "INR"
-          },
-          "defaultAddress": null
         }
       ],
       "pageInfo": {
         "hasNextPage": true,
-        "endCursor": "eyJsYXN0X2lkIjo5Njg4MDkwMDUwODYxLCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0xMCAxMjozNjo1Mi4wMDAwMDAifQ=="
+        "endCursor": "eyJsYXN0X2lkIjo5Njg4MTMxNjk4OTg5LCJsYXN0X3ZhbHVlIjoiMjAyNi0wNi0xMCAxMjo0MDowOS4wMDAwMDAifQ=="
       }
     }
   },
-  "capturedAt": "2026-06-10T13:43:38Z"
+  "capturedAt": "2026-06-11T05:53:43Z"
 }
