@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/storefront/cart/discount-codes?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
+    "url": "/storefront/cart/discount-codes?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCpqYChUnqGMjZrWjGV64%3Fkey%3D69ac2cc5dc508e8124679301db979cb7",
     "headers": {},
     "body": {
       "discountCodes": [
@@ -14,8 +14,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
-      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4&_s=2b0ed3b7-27ae-4255-81b3-947a87ddc103&_y=d0f9a59f-4d92-4d18-9f4b-441e525ad5ac",
+      "id": "gid://shopify/Cart/hWNDCpqYChUnqGMjZrWjGV64?key=69ac2cc5dc508e8124679301db979cb7",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCpqYChUnqGMjZrWjGV64?key=69ac2cc5dc508e8124679301db979cb7&_s=ee37ee7a-ef28-487f-91d1-a42f5c0a4bb0&_y=7ca38bc9-e633-444b-a3cc-b05045e5b424",
       "totalQuantity": 0,
       "cost": {
         "subtotalAmount": {
@@ -38,5 +38,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-11T05:54:17Z"
+  "capturedAt": "2026-06-11T06:20:02Z"
 }

@@ -6,11 +6,25 @@ import {
   CartLineUpdateInput,
   BuyerIdentityInput,
 } from './storefront.service';
+import { BannersService } from '../themes/banners.service';
 
 @ApiTags('storefront')
 @Controller('storefront')
 export class StorefrontController {
-  constructor(private sf: StorefrontApiService) {}
+  constructor(private sf: StorefrontApiService, private banners: BannersService) {}
+
+  // ---------- Banners (public — backend uses admin token internally) ----------
+  // Returns slideshow/hero blocks parsed from published theme's settings_data.json
+  @Get('banners/theme')
+  bannersFromTheme(@Query('template') template?: string) {
+    return this.banners.fromTheme(template ?? 'index');
+  }
+
+  // Returns banner metaobjects (merchant-defined custom content type)
+  @Get('banners/metaobjects')
+  bannersFromMetaobjects(@Query('type') type?: string) {
+    return this.banners.fromMetaobjects(type ?? 'banner');
+  }
 
   @Get('products')
   listProducts(@Query() q: any) {

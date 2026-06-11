@@ -1,10 +1,8 @@
 {
   "request": {
     "method": "GET",
-    "url": "/banners/from-theme?template=index",
-    "headers": {
-      "Authorization": "Bearer <REDACTED>"
-    },
+    "url": "/storefront/banners/theme?template=index",
+    "headers": {},
     "body": null
   },
   "response": {
@@ -113,5 +111,5 @@
       ]
     }
   },
-  "capturedAt": "2026-06-11T06:19:29Z"
+  "capturedAt": "2026-06-11T06:19:55Z"
 }

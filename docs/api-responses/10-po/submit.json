@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/purchase-orders/47f9dbf9-1b63-43fc-90a2-0ed21d2e5f8c/submit",
+    "url": "/purchase-orders/01f02562-edae-48e5-963f-4f156842fe35/submit",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,9 +12,9 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "47f9dbf9-1b63-43fc-90a2-0ed21d2e5f8c",
-      "poNumber": "PO-2026-00018",
-      "vendorId": "4ad14932-ba0e-465c-a73c-89246f8f28e1",
+      "id": "01f02562-edae-48e5-963f-4f156842fe35",
+      "poNumber": "PO-2026-00019",
+      "vendorId": "d4f425d3-fc98-495f-a210-3b7afb2536ac",
       "locationId": "loc-capture",
       "status": "PENDING_APPROVAL",
       "subtotal": "50",
@@ -27,9 +27,9 @@
       "createdBy": "822d845a-6092-43b6-81c8-906023fa03ef",
       "approvedBy": null,
       "approvedAt": null,
-      "createdAt": "2026-06-11T05:53:43.762Z",
-      "updatedAt": "2026-06-11T05:53:43.780Z"
+      "createdAt": "2026-06-11T06:19:26.062Z",
+      "updatedAt": "2026-06-11T06:19:26.078Z"
     }
   },
-  "capturedAt": "2026-06-11T05:53:43Z"
+  "capturedAt": "2026-06-11T06:19:26Z"
 }

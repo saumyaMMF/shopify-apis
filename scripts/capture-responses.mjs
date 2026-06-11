@@ -238,6 +238,8 @@ async function main() {
   await save('20-storefront', 'selling-plans', 'GET', '/storefront/products/selling-plans-ski-wax/selling-plans', { noAuth: true });
   await save('20-storefront', 'variant-store-availability', 'GET', `/storefront/variant/store-availability?variantId=${encodeURIComponent('gid://shopify/ProductVariant/52130746401069')}&first=5`, { noAuth: true });
   await save('20-storefront', 'payment-settings', 'GET', '/storefront/payment-settings', { noAuth: true });
+  await save('20-storefront', 'banners-theme', 'GET', '/storefront/banners/theme?template=index', { noAuth: true });
+  await save('20-storefront', 'banners-metaobjects', 'GET', '/storefront/banners/metaobjects?type=banner', { noAuth: true });
   await save('20-storefront', 'policies', 'GET', '/storefront/policies', { noAuth: true });
   await save('20-storefront', 'menu', 'GET', '/storefront/menu/main-menu', { noAuth: true });
   await save('20-storefront', 'pages-list', 'GET', '/storefront/pages?first=10', { noAuth: true });

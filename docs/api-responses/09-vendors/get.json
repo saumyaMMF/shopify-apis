@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/vendors/4ad14932-ba0e-465c-a73c-89246f8f28e1",
+    "url": "/vendors/d4f425d3-fc98-495f-a210-3b7afb2536ac",
     "headers": {
       "Authorization": "Bearer <REDACTED>"
     },
@@ -12,7 +12,7 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "4ad14932-ba0e-465c-a73c-89246f8f28e1",
+      "id": "d4f425d3-fc98-495f-a210-3b7afb2536ac",
       "name": "Capture Vendor",
       "contactName": null,
       "email": "capture@v.com",
@@ -23,5 +23,5 @@
       "isActive": true
     }
   },
-  "capturedAt": "2026-06-11T05:53:43Z"
+  "capturedAt": "2026-06-11T06:19:26Z"
 }

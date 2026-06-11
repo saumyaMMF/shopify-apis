@@ -2083,6 +2083,746 @@
       "description": "Public customer-facing Storefront API (no auth). Products, collections, cart, checkout.",
       "item": [
         {
+          "name": "21. Storefront — Customer Account",
+          "description": "Customer-facing self-service: profile, orders, returns, subscriptions, store credit. Auth via X-Customer-Token header (OAuth access token from Customer Account API login flow).",
+          "item": [
+            {
+              "name": "Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Profile update",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"Baljeet\",\n  \"lastName\": \"Singh\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List addresses",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/addresses?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create address",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/addresses",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "addresses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"address1\": \"42 Test Lane\",\n    \"city\": \"Pune\",\n    \"zip\": \"411001\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\",\n    \"phoneNumber\": \"+919999988877\"\n  },\n  \"defaultAddress\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Update address",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/address?id={{address_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "address"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{address_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"address1\": \"99 Updated Rd\",\n    \"city\": \"Pune\",\n    \"zip\": \"411002\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Delete address",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/address/delete?id={{address_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "address",
+                    "delete"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{address_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List orders",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/orders?first=20&after=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get order",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Order digital assets",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/digital-assets?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "digital-assets"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buy again (returns line items)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/buy-again?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "buy-again"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cancel order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/cancel?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "cancel"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"CUSTOMER\",\n  \"refund\": true,\n  \"restock\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Edit shipping address",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/shipping-address?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "shipping-address"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address1\": \"123 New St\",\n  \"city\": \"Mumbai\",\n  \"zip\": \"400001\",\n  \"territoryCode\": \"IN\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/returns?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "returns"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get returnable line items",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/returnable?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "returnable"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Request return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/order/return?id={{order_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "order",
+                    "return"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{order_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lineItems\": [\n    {\n      \"fulfillmentLineItemId\": \"gid://shopify/FulfillmentLineItem/000\",\n      \"quantity\": 1,\n      \"returnReason\": \"DEFECTIVE\",\n      \"returnReasonNote\": \"Stitching loose\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "List subscriptions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscriptions?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscriptions"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update subscription",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nextBillingDate\": \"2026-08-01\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Pause subscription",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription/pause?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription",
+                    "pause"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cancel subscription",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/subscription/cancel?id={{subscription_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "subscription",
+                    "cancel"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{subscription_id}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Store credit balance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/store-credit",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "store-credit"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Gift cards (owned by customer)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/gift-cards?first=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "gift-cards"
+                  ],
+                  "query": [
+                    {
+                      "key": "first",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Marketing preferences",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/marketing-prefs",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "marketing-prefs"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Payment methods (saved cards/wallets)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Customer-Token",
+                    "value": "{{customer_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/storefront/customer/payment-methods",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "storefront",
+                    "customer",
+                    "payment-methods"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
           "name": "20. Storefront (Public)",
           "description": "Public Storefront API — no auth. Customer-facing browse + cart + checkout via Shopify Storefront GraphQL.",
           "item": [
@@ -3165,743 +3905,49 @@
                   ]
                 }
               }
-            }
-          ]
-        },
-        {
-          "name": "21. Storefront — Customer Account",
-          "description": "Customer-facing self-service: profile, orders, returns, subscriptions, store credit. Auth via X-Customer-Token header (OAuth access token from Customer Account API login flow).",
-          "item": [
+            },
             {
-              "name": "Profile",
+              "name": "Banners from theme",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
                 "url": {
-                  "raw": "{{base_url}}/storefront/customer",
+                  "raw": "{{base_url}}/storefront/banners/theme?template=index",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "storefront",
-                    "customer"
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Profile update",
-              "request": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer",
-                  "host": [
-                    "{{base_url}}"
+                    "banners",
+                    "theme"
                   ],
-                  "path": [
-                    "storefront",
-                    "customer"
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"firstName\": \"Baljeet\",\n  \"lastName\": \"Singh\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                  "query": [
+                    {
+                      "key": "template",
+                      "value": "index"
                     }
-                  }
+                  ]
                 }
               }
             },
             {
-              "name": "List addresses",
+              "name": "Banners from metaobjects",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
                 "url": {
-                  "raw": "{{base_url}}/storefront/customer/addresses?first=20",
+                  "raw": "{{base_url}}/storefront/banners/metaobjects?type=banner",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "storefront",
-                    "customer",
-                    "addresses"
+                    "banners",
+                    "metaobjects"
                   ],
                   "query": [
                     {
-                      "key": "first",
-                      "value": "20"
+                      "key": "type",
+                      "value": "banner"
                     }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Create address",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/addresses",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "addresses"
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"address\": {\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"address1\": \"42 Test Lane\",\n    \"city\": \"Pune\",\n    \"zip\": \"411001\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\",\n    \"phoneNumber\": \"+919999988877\"\n  },\n  \"defaultAddress\": false\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Update address",
-              "request": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/address?id={{address_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "address"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{address_id}}"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"address\": {\n    \"address1\": \"99 Updated Rd\",\n    \"city\": \"Pune\",\n    \"zip\": \"411002\",\n    \"territoryCode\": \"IN\",\n    \"zoneCode\": \"MH\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Delete address",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/address/delete?id={{address_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "address",
-                    "delete"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{address_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "List orders",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/orders?first=20&after=",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "orders"
-                  ],
-                  "query": [
-                    {
-                      "key": "first",
-                      "value": "20"
-                    },
-                    {
-                      "key": "after",
-                      "value": "",
-                      "disabled": true
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Get order",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Order digital assets",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/digital-assets?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "digital-assets"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Buy again (returns line items)",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/buy-again?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "buy-again"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Cancel order",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/cancel?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "cancel"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"reason\": \"CUSTOMER\",\n  \"refund\": true,\n  \"restock\": true\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Edit shipping address",
-              "request": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/shipping-address?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "shipping-address"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"address1\": \"123 New St\",\n  \"city\": \"Mumbai\",\n  \"zip\": \"400001\",\n  \"territoryCode\": \"IN\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "List returns",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/returns?first=20",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "returns"
-                  ],
-                  "query": [
-                    {
-                      "key": "first",
-                      "value": "20"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Get returnable line items",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/returnable?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "returnable"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Request return",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/order/return?id={{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "order",
-                    "return"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{order_id}}"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"lineItems\": [\n    {\n      \"fulfillmentLineItemId\": \"gid://shopify/FulfillmentLineItem/000\",\n      \"quantity\": 1,\n      \"returnReason\": \"DEFECTIVE\",\n      \"returnReasonNote\": \"Stitching loose\"\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "List subscriptions",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/subscriptions?first=20",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "subscriptions"
-                  ],
-                  "query": [
-                    {
-                      "key": "first",
-                      "value": "20"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Update subscription",
-              "request": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/subscription?id={{subscription_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "subscription"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{subscription_id}}"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nextBillingDate\": \"2026-08-01\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Pause subscription",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/subscription/pause?id={{subscription_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "subscription",
-                    "pause"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{subscription_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Cancel subscription",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/subscription/cancel?id={{subscription_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "subscription",
-                    "cancel"
-                  ],
-                  "query": [
-                    {
-                      "key": "id",
-                      "value": "{{subscription_id}}"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Store credit balance",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/store-credit",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "store-credit"
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Gift cards (owned by customer)",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/gift-cards?first=20",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "gift-cards"
-                  ],
-                  "query": [
-                    {
-                      "key": "first",
-                      "value": "20"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Marketing preferences",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/marketing-prefs",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "marketing-prefs"
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Payment methods (saved cards/wallets)",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Customer-Token",
-                    "value": "{{customer_token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/storefront/customer/payment-methods",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "storefront",
-                    "customer",
-                    "payment-methods"
                   ]
                 }
               }

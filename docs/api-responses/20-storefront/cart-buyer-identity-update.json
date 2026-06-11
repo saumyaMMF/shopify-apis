@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/storefront/cart/buyer-identity?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
+    "url": "/storefront/cart/buyer-identity?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCpqYChUnqGMjZrWjGV64%3Fkey%3D69ac2cc5dc508e8124679301db979cb7",
     "headers": {},
     "body": {
       "email": "buyer@example.com",
@@ -13,8 +13,8 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
-      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4&_s=dc6239f0-7766-42b4-b205-074739ea558d&_y=33e32fc7-7de5-45a1-8c06-53da9785560f",
+      "id": "gid://shopify/Cart/hWNDCpqYChUnqGMjZrWjGV64?key=69ac2cc5dc508e8124679301db979cb7",
+      "checkoutUrl": "https://test-store-uzhiv0ib.myshopify.com/cart/c/hWNDCpqYChUnqGMjZrWjGV64?key=69ac2cc5dc508e8124679301db979cb7&_s=7be3b718-84b4-4447-9487-e44ebf2183c4&_y=d86ce1e5-a4af-46e0-ae13-3d0adb4c4641",
       "totalQuantity": 0,
       "cost": {
         "subtotalAmount": {
@@ -37,5 +37,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-11T05:54:16Z"
+  "capturedAt": "2026-06-11T06:20:01Z"
 }

@@ -198,8 +198,19 @@
         "taxNumber": null,
         "paymentTerms": "NET-45",
         "isActive": true
+      },
+      {
+        "id": "4ad14932-ba0e-465c-a73c-89246f8f28e1",
+        "name": "Capture Vendor",
+        "contactName": null,
+        "email": "capture@v.com",
+        "phone": null,
+        "address": null,
+        "taxNumber": null,
+        "paymentTerms": "NET-45",
+        "isActive": true
       }
     ]
   },
-  "capturedAt": "2026-06-11T05:53:43Z"
+  "capturedAt": "2026-06-11T06:19:26Z"
 }

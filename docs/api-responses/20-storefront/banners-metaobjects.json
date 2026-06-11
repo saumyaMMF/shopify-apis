@@ -1,10 +1,8 @@
 {
   "request": {
     "method": "GET",
-    "url": "/banners/from-metaobjects?type=banner",
-    "headers": {
-      "Authorization": "Bearer <REDACTED>"
-    },
+    "url": "/storefront/banners/metaobjects?type=banner",
+    "headers": {},
     "body": null
   },
   "response": {
@@ -17,5 +15,5 @@
       "banners": []
     }
   },
-  "capturedAt": "2026-06-11T06:19:30Z"
+  "capturedAt": "2026-06-11T06:19:55Z"
 }

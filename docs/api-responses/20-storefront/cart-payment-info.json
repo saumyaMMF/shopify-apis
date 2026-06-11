@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/storefront/cart/payment-info?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCnEnoKY0SZplXjuFCoGC%3Fkey%3Dae85cd2e79c6bdcbe6b99ebc0b5acee4",
+    "url": "/storefront/cart/payment-info?id=gid%3A%2F%2Fshopify%2FCart%2FhWNDCpqYChUnqGMjZrWjGV64%3Fkey%3D69ac2cc5dc508e8124679301db979cb7",
     "headers": {},
     "body": null
   },
@@ -10,7 +10,7 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Cart/hWNDCnEnoKY0SZplXjuFCoGC?key=ae85cd2e79c6bdcbe6b99ebc0b5acee4",
+      "id": "gid://shopify/Cart/hWNDCpqYChUnqGMjZrWjGV64?key=69ac2cc5dc508e8124679301db979cb7",
       "cost": {
         "totalAmount": {
           "amount": "0.0",
@@ -25,5 +25,5 @@
       }
     }
   },
-  "capturedAt": "2026-06-11T05:54:19Z"
+  "capturedAt": "2026-06-11T06:20:04Z"
 }

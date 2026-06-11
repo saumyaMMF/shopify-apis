@@ -4,7 +4,7 @@
     "url": "/storefront/newsletter",
     "headers": {},
     "body": {
-      "email": "subscriber-1781157248590@yopmail.com",
+      "email": "subscriber-1781158790995@yopmail.com",
       "firstName": "Sub",
       "acceptsMarketing": true
     }
@@ -14,12 +14,12 @@
     "ok": true,
     "error": null,
     "body": {
-      "id": "gid://shopify/Customer/9692335538477",
-      "email": "subscriber-1781157248590@yopmail.com",
+      "id": "gid://shopify/Customer/9692371353901",
+      "email": "subscriber-1781158790995@yopmail.com",
       "firstName": "Sub",
       "lastName": null,
       "acceptsMarketing": true
     }
   },
-  "capturedAt": "2026-06-11T05:54:09Z"
+  "capturedAt": "2026-06-11T06:19:51Z"
 }

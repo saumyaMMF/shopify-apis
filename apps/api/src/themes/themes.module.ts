@@ -9,5 +9,6 @@ import { ShopifyModule } from '../shopify/shopify.module';
   imports: [ShopifyModule],
   controllers: [ThemesController, BannersController],
   providers: [ThemesService, BannersService],
+  exports: [BannersService, ThemesService],
 })
 export class ThemesModule {}
