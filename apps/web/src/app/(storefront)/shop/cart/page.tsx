@@ -1,38 +1,38 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { StorefrontAPI, cartStore, type Cart } from '@/lib/storefront';
-import Link from 'next/link';
+import { StorefrontAPI, cartStore, type Cart, apiErrorMessage } from '@/lib/storefront';
+import { money } from '@/lib/format';
+import { Button, LinkButton, EmptyState, Skeleton, Spinner } from '@/components/ui';
+import { CartIcon } from '@/components/ui/icons';
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null);
+  const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const id = cartStore.get();
-    if (!id) return;
-    StorefrontAPI.cartGet(id).then(setCart).catch(() => cartStore.clear());
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+    StorefrontAPI.cartGet(id)
+      .then(setCart)
+      .catch(() => cartStore.clear())
+      .finally(() => setLoading(false));
   }, []);
 
-  async function updateQty(lineId: string, quantity: number) {
-    if (!cart) return;
+  async function mutate(fn: () => Promise<Cart>) {
     setBusy(true);
+    setError(null);
     try {
-      const updated = await StorefrontAPI.cartLinesUpdate(cart.id, [{ id: lineId, quantity }]);
+      const updated = await fn();
       setCart(updated);
       window.dispatchEvent(new CustomEvent('cart:update', { detail: updated }));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function remove(lineId: string) {
-    if (!cart) return;
-    setBusy(true);
-    try {
-      const updated = await StorefrontAPI.cartLinesRemove(cart.id, [lineId]);
-      setCart(updated);
-      window.dispatchEvent(new CustomEvent('cart:update', { detail: updated }));
+    } catch (e) {
+      setError(apiErrorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -40,55 +40,82 @@ export default function CartPage() {
 
   const lines = cart?.lines?.edges?.map((e) => e.node) ?? [];
 
-  if (!cart || cart.totalQuantity === 0 || lines.length === 0) {
+  if (loading) {
     return (
-      <div className="p-6 text-center space-y-4">
-        <div className="text-5xl">🛒</div>
-        <h1 className="text-xl font-bold">Your cart is empty</h1>
-        <p className="text-sm text-gray-600">Browse products and add something you love.</p>
-        <Link href="/shop" className="block w-full bg-black text-white py-3 rounded font-medium">
-          Continue shopping
-        </Link>
-        <Link href="/shop/account" className="block text-sm underline">
-          View past orders
-        </Link>
+      <div className="p-4 space-y-4">
+        <Skeleton className="h-6 w-32" />
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="flex gap-3">
+            <Skeleton className="w-20 h-20 rounded-lg" />
+            <div className="flex-1 space-y-2 pt-1">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/3" />
+              <Skeleton className="h-7 w-28" />
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
-  const fmt = (m: { amount: string; currencyCode: string }) =>
-    (m.currencyCode === 'INR' ? '₹' : '') + Number(m.amount).toFixed(2);
+  if (!cart || cart.totalQuantity === 0 || lines.length === 0) {
+    return (
+      <EmptyState
+        icon={<CartIcon className="w-10 h-10" />}
+        title="Your cart is empty"
+        description="Browse products and add something you love."
+        action={
+          <div className="flex flex-col items-center gap-3">
+            <LinkButton href="/shop" size="lg" className="w-56">Continue shopping</LinkButton>
+            <a href="/shop/account" className="text-sm text-gray-500 underline">View past orders</a>
+          </div>
+        }
+      />
+    );
+  }
 
   return (
-    <div className="p-4 pb-32">
+    <div className="p-4 pb-36">
       <h1 className="text-xl font-bold mb-4">Cart ({cart.totalQuantity})</h1>
+
+      {error && (
+        <div className="mb-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</div>
+      )}
 
       <div className="space-y-4">
         {lines.map((l) => (
-          <div key={l.id} className="flex gap-3 border-b pb-4">
-            <div className="w-20 h-20 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+          <div key={l.id} className="flex gap-3 border-b border-gray-100 pb-4">
+            <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
               {l.merchandise.image?.url && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={l.merchandise.image.url} alt="" className="w-full h-full object-cover" />
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium line-clamp-2">{l.merchandise.product.title}</div>
-              <div className="text-xs text-gray-500">{l.merchandise.title}</div>
-              <div className="text-sm mt-1">{fmt(l.cost.totalAmount)}</div>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="text-sm font-medium line-clamp-2 leading-snug">{l.merchandise.product.title}</div>
+              {l.merchandise.title !== 'Default Title' && (
+                <div className="text-xs text-gray-500 mt-0.5">{l.merchandise.title}</div>
+              )}
+              <div className="text-sm mt-1 font-medium">{money(l.cost.totalAmount)}</div>
+              <div className="flex items-center gap-1.5 mt-2">
                 <button
-                  onClick={() => updateQty(l.id, Math.max(0, l.quantity - 1))}
+                  onClick={() => mutate(() => StorefrontAPI.cartLinesUpdate(cart.id, [{ id: l.id, quantity: Math.max(0, l.quantity - 1) }]))}
                   disabled={busy}
-                  className="w-7 h-7 border rounded text-sm"
+                  aria-label="Decrease quantity"
+                  className="w-8 h-8 border border-gray-300 rounded-lg text-base leading-none disabled:opacity-40 hover:bg-gray-50"
                 >−</button>
-                <span className="text-sm w-6 text-center">{l.quantity}</span>
+                <span className="text-sm w-7 text-center tabular-nums">{l.quantity}</span>
                 <button
-                  onClick={() => updateQty(l.id, l.quantity + 1)}
+                  onClick={() => mutate(() => StorefrontAPI.cartLinesUpdate(cart.id, [{ id: l.id, quantity: l.quantity + 1 }]))}
                   disabled={busy}
-                  className="w-7 h-7 border rounded text-sm"
+                  aria-label="Increase quantity"
+                  className="w-8 h-8 border border-gray-300 rounded-lg text-base leading-none disabled:opacity-40 hover:bg-gray-50"
                 >+</button>
-                <button onClick={() => remove(l.id)} disabled={busy} className="ml-auto text-xs text-red-600">Remove</button>
+                <button
+                  onClick={() => mutate(() => StorefrontAPI.cartLinesRemove(cart.id, [l.id]))}
+                  disabled={busy}
+                  className="ml-auto text-xs text-gray-500 hover:text-red-600 transition-colors"
+                >Remove</button>
               </div>
             </div>
           </div>
@@ -96,24 +123,23 @@ export default function CartPage() {
       </div>
 
       {/* Sticky checkout */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t">
-        <div className="max-w-md mx-auto p-4 space-y-2">
-          <div className="flex justify-between text-sm">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-gray-100">
+        <div className="max-w-md mx-auto p-4 space-y-3">
+          <div className="flex justify-between text-sm text-gray-600">
             <span>Subtotal</span>
-            <span>{fmt(cart.cost.subtotalAmount)}</span>
+            <span className="font-medium text-black">{money(cart.cost.subtotalAmount)}</span>
           </div>
-          <button
+          <Button
+            size="lg"
+            disabled={busy}
             onClick={() => {
-              // Open Shopify-hosted checkout. Pass thank-you as return target via
-              // a hidden query param so mobile WebView code can detect completion.
               const url = new URL(cart.checkoutUrl);
               url.searchParams.set('return_to', `${window.location.origin}/shop/thank-you`);
               window.location.href = url.toString();
             }}
-            className="block w-full bg-black text-white text-center py-3 rounded font-medium"
           >
-            Checkout {fmt(cart.cost.totalAmount)}
-          </button>
+            {busy ? <Spinner className="w-5 h-5" /> : <>Checkout · {money(cart.cost.totalAmount)}</>}
+          </Button>
         </div>
       </div>
     </div>

@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { sf, customerStore } from '@/lib/storefront';
+import { sf, customerStore, apiErrorMessage } from '@/lib/storefront';
+import { Button, Skeleton, EmptyState, ErrorState, Spinner, cx } from '@/components/ui';
+import { CheckIcon } from '@/components/ui/icons';
 
 interface Address {
   id: string;
@@ -24,6 +26,37 @@ const EMPTY_ADDR: Partial<Address> = {
   city: '', zip: '', territoryCode: 'IN', zoneCode: '', phoneNumber: '',
 };
 
+const inputCls =
+  'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition-colors focus:outline-none focus:border-black focus:ring-2 focus:ring-black/20';
+const labelCls = 'block text-xs font-medium text-gray-600 mb-1';
+
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className={labelCls}>{label}</label>
+      <input
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder ?? label}
+        className={inputCls}
+      />
+    </div>
+  );
+}
+
 export default function Profile() {
   const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
@@ -34,6 +67,9 @@ export default function Profile() {
   const [editingAddr, setEditingAddr] = useState<Address | Partial<Address> | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [saveErr, setSaveErr] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (!customerStore.get()) { router.replace('/shop/account'); return; }
@@ -41,6 +77,7 @@ export default function Profile() {
   }, [router]);
 
   async function load() {
+    setLoadFailed(false);
     try {
       const [p, a] = await Promise.all([
         sf.get('/customer').then((r) => r.data),
@@ -53,21 +90,32 @@ export default function Profile() {
       setErr(null);
     } catch (e: any) {
       setErr(e?.response?.data?.message ?? 'Failed to load');
+      setLoadFailed(true);
     }
+  }
+
+  function flashSaved() {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   }
 
   async function saveProfile() {
     setBusy(true);
+    setSaveErr(null);
     try {
       await sf.patch('/customer', editName);
       setEditProfile(false);
+      flashSaved();
       load();
+    } catch (e: any) {
+      setSaveErr(apiErrorMessage(e));
     } finally { setBusy(false); }
   }
 
   async function saveAddress() {
     if (!editingAddr) return;
     setBusy(true);
+    setSaveErr(null);
     const { id, ...address } = editingAddr as any;
     try {
       if (id) {
@@ -76,9 +124,10 @@ export default function Profile() {
         await sf.post('/customer/addresses', { address, defaultAddress: addresses.length === 0 });
       }
       setEditingAddr(null);
+      flashSaved();
       load();
     } catch (e: any) {
-      alert(e?.response?.data?.message ?? 'Save failed');
+      setSaveErr(apiErrorMessage(e));
     } finally { setBusy(false); }
   }
 
@@ -109,86 +158,153 @@ export default function Profile() {
     router.replace('/shop/account');
   }
 
-  if (!profile) return <div className="p-4">{err ?? 'Loading…'}</div>;
+  if (loadFailed && !profile) {
+    return (
+      <div className="p-4">
+        <ErrorState onRetry={load} message={err ?? undefined} />
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="p-4 space-y-6">
+        <div className="flex gap-4 border-b text-sm pb-2">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+        <div className="border rounded-lg p-4 space-y-3">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-24 w-full rounded-lg" />
+          <Skeleton className="h-24 w-full rounded-lg" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 space-y-6 pb-8">
-      <div className="flex gap-4 border-b text-sm">
-        <Link href="/shop/account" className="pb-2 text-gray-500">Orders</Link>
-        <span className="pb-2 border-b-2 border-black font-medium">Profile</span>
+      <div className="flex gap-5 border-b text-sm">
+        <Link href="/shop/account" className="pb-2 text-gray-500 hover:text-black transition-colors">Orders</Link>
+        <span className="pb-2 border-b-2 border-black font-semibold">Profile</span>
       </div>
 
+      {saved && (
+        <div className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+          <CheckIcon className="w-4 h-4" />
+          Saved
+        </div>
+      )}
+
       {/* Profile block */}
-      <section className="border rounded p-4">
+      <section className="rounded-lg border p-4">
         {editProfile ? (
-          <div className="space-y-2">
-            <input
+          <div className="space-y-3">
+            <Field
+              id="firstName"
+              label="First name"
               value={editName.firstName}
-              onChange={(e) => setEditName({ ...editName, firstName: e.target.value })}
-              placeholder="First name"
-              className="w-full px-3 py-2 border rounded text-sm"
+              onChange={(v) => setEditName({ ...editName, firstName: v })}
             />
-            <input
+            <Field
+              id="lastName"
+              label="Last name"
               value={editName.lastName}
-              onChange={(e) => setEditName({ ...editName, lastName: e.target.value })}
-              placeholder="Last name"
-              className="w-full px-3 py-2 border rounded text-sm"
+              onChange={(v) => setEditName({ ...editName, lastName: v })}
             />
+            {saveErr && (
+              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{saveErr}</p>
+            )}
             <div className="flex gap-2">
-              <button onClick={saveProfile} disabled={busy} className="flex-1 bg-black text-white py-2 rounded text-sm">Save</button>
-              <button onClick={() => setEditProfile(false)} className="flex-1 border py-2 rounded text-sm">Cancel</button>
+              <Button onClick={saveProfile} disabled={busy} className="flex-1">
+                {busy && <Spinner className="w-4 h-4" />}
+                Save
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => { setEditProfile(false); setSaveErr(null); }}
+                disabled={busy}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
             </div>
           </div>
         ) : (
-          <div className="flex justify-between">
-            <div>
+          <div className="flex justify-between gap-4">
+            <div className="min-w-0">
               <div className="font-semibold">
                 {profile.firstName ?? ''} {profile.lastName ?? ''}
                 {!profile.firstName && !profile.lastName && <span className="text-gray-500">No name set</span>}
               </div>
-              <div className="text-xs text-gray-500 mt-1">Email</div>
-              <div className="text-sm">{profile.emailAddress?.emailAddress}</div>
+              <div className="text-xs text-gray-500 mt-2">Email</div>
+              <div className="text-sm truncate">{profile.emailAddress?.emailAddress}</div>
             </div>
-            <button onClick={() => setEditProfile(true)} className="text-xs underline">Edit</button>
+            <button
+              onClick={() => { setEditProfile(true); setSaveErr(null); }}
+              className="shrink-0 text-xs font-medium text-gray-600 underline hover:text-black"
+            >
+              Edit
+            </button>
           </div>
         )}
       </section>
 
       {/* Addresses */}
       <section>
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-between items-center mb-3">
           <h2 className="font-semibold">Addresses</h2>
-          <button onClick={() => setEditingAddr({ ...EMPTY_ADDR })} className="text-xs underline">+ Add</button>
+          <button
+            onClick={() => { setEditingAddr({ ...EMPTY_ADDR }); setSaveErr(null); }}
+            className="text-xs font-medium text-gray-600 underline hover:text-black"
+          >
+            + Add
+          </button>
         </div>
 
         {addresses.length === 0 && !editingAddr && (
-          <p className="text-sm text-gray-500">No addresses yet.</p>
+          <EmptyState
+            title="No addresses yet"
+            description="Add a shipping address to speed up checkout."
+            action={
+              <Button onClick={() => { setEditingAddr({ ...EMPTY_ADDR }); setSaveErr(null); }}>
+                Add address
+              </Button>
+            }
+          />
         )}
 
         <div className="space-y-3">
           {addresses.map((a) => (
-            <div key={a.id} className="border rounded p-3 text-sm">
+            <div key={a.id} className="rounded-lg border p-4 text-sm">
               {defaultId === a.id && (
-                <div className="text-[10px] uppercase text-green-700 mb-1">Default</div>
+                <div className="mb-1.5 inline-block rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-green-700">
+                  Default
+                </div>
               )}
               <div className="font-medium">{a.firstName} {a.lastName}</div>
-              <div className="text-gray-700 text-xs whitespace-pre-line">
+              <div className="mt-1 text-xs leading-relaxed text-gray-600 whitespace-pre-line">
                 {[a.address1, a.address2, `${a.city ?? ''}, ${a.zoneCode ?? ''} ${a.zip ?? ''}`, a.territoryCode, a.phoneNumber].filter(Boolean).join('\n')}
               </div>
-              <div className="flex gap-3 mt-2 text-xs">
-                <button onClick={() => setEditingAddr(a)} className="underline">Edit</button>
+              <div className="mt-3 flex gap-4 text-xs">
+                <button onClick={() => { setEditingAddr(a); setSaveErr(null); }} className="font-medium underline hover:text-black">Edit</button>
                 {defaultId !== a.id && (
-                  <button onClick={() => setDefault(a.id)} className="underline">Set default</button>
+                  <button onClick={() => setDefault(a.id)} disabled={busy} className="font-medium underline hover:text-black disabled:opacity-50">Set default</button>
                 )}
-                <button onClick={() => deleteAddress(a.id)} className="underline text-red-600">Delete</button>
+                <button onClick={() => deleteAddress(a.id)} disabled={busy} className="font-medium text-red-600 underline hover:text-red-700 disabled:opacity-50">Delete</button>
               </div>
             </div>
           ))}
         </div>
 
         {editingAddr && (
-          <div className="border rounded p-3 mt-3 space-y-2 bg-gray-50">
-            <div className="font-medium text-sm">{(editingAddr as any).id ? 'Edit address' : 'New address'}</div>
+          <div className="mt-3 rounded-lg border bg-gray-50 p-4 space-y-3">
+            <div className="text-sm font-semibold">{(editingAddr as any).id ? 'Edit address' : 'New address'}</div>
             {([
               ['firstName', 'First name'], ['lastName', 'Last name'],
               ['address1', 'Address line 1'], ['address2', 'Address line 2'],
@@ -196,26 +312,44 @@ export default function Profile() {
               ['zip', 'PIN code'], ['territoryCode', 'Country code (e.g. IN)'],
               ['phoneNumber', 'Phone'],
             ] as const).map(([k, label]) => (
-              <input
+              <Field
                 key={k}
+                id={`addr-${k}`}
+                label={label}
                 value={(editingAddr as any)[k] ?? ''}
-                onChange={(e) => setEditingAddr({ ...editingAddr, [k]: e.target.value })}
-                placeholder={label}
-                className="w-full px-3 py-2 border rounded text-sm"
+                onChange={(v) => setEditingAddr({ ...editingAddr, [k]: v })}
               />
             ))}
+            {saveErr && (
+              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{saveErr}</p>
+            )}
             <div className="flex gap-2">
-              <button onClick={saveAddress} disabled={busy} className="flex-1 bg-black text-white py-2 rounded text-sm">Save</button>
-              <button onClick={() => setEditingAddr(null)} className="flex-1 border py-2 rounded text-sm">Cancel</button>
+              <Button onClick={saveAddress} disabled={busy} className="flex-1">
+                {busy && <Spinner className="w-4 h-4" />}
+                Save
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => { setEditingAddr(null); setSaveErr(null); }}
+                disabled={busy}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
             </div>
           </div>
         )}
       </section>
 
-      <div className="pt-4 border-t space-y-2">
-        <button onClick={logoutAllDevices} className="w-full border border-red-300 text-red-600 py-2 rounded text-sm">
+      <div className="pt-4 border-t">
+        <Button
+          variant="outline"
+          onClick={logoutAllDevices}
+          size="lg"
+          className="border-red-300 text-red-600 hover:bg-red-50"
+        >
           Sign out of all devices
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -159,6 +159,27 @@ export class StorefrontController {
     return this.sf.productReviews(handle);
   }
 
+  // ---------- New: Full review list (Judge.me) ----------
+  @Get('products/:handle/reviews/list')
+  productReviewList(
+    @Param('handle') handle: string,
+    @Query('page') page?: string,
+    @Query('perPage') perPage?: string,
+  ) {
+    return this.sf.productReviewList(handle, page ? Number(page) : 1, perPage ? Number(perPage) : 10);
+  }
+
+  // ---------- New: Submit a review (Judge.me) ----------
+  // Note: Judge.me's API is create + read only — no edit/delete is exposed,
+  // so there is intentionally no PATCH/DELETE route here. See docs/LIMITATIONS.md.
+  @Post('products/:handle/reviews')
+  createReview(
+    @Param('handle') handle: string,
+    @Body() body: { name: string; email: string; rating: number; body: string; title?: string },
+  ) {
+    return this.sf.createProductReview(handle, body);
+  }
+
   // ---------- New: Variant by selected options ----------
   // POST body: { handle: "the-complete-snowboard", selectedOptions: [{ name: "Color", value: "Ice" }] }
   @Post('products/variant')

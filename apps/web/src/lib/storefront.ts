@@ -1,7 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // Storefront client — no JWT, no withCredentials. Uses Next.js rewrite to NestJS.
-export const sf = axios.create({ baseURL: '/api/backend/storefront' });
+export const sf = axios.create({
+  baseURL: '/api/backend/storefront',
+  timeout: 15000, // fail fast instead of hanging the UI
+});
 
 // Customer token (passed as X-Customer-Token header) — read from localStorage on every request.
 sf.interceptors.request.use((cfg) => {
@@ -11,6 +14,34 @@ sf.interceptors.request.use((cfg) => {
   }
   return cfg;
 });
+
+// Retry transient failures (network error / timeout / 5xx) up to 2 times with
+// backoff. Mutations (POST/PATCH/DELETE) are NOT retried to avoid duplicates.
+const MAX_RETRIES = 2;
+sf.interceptors.response.use(undefined, async (error: AxiosError) => {
+  const cfg: any = error.config ?? {};
+  const method = (cfg.method ?? 'get').toLowerCase();
+  const isIdempotent = method === 'get' || method === 'head';
+  const status = error.response?.status;
+  const transient = !error.response || error.code === 'ECONNABORTED' || (status != null && status >= 500);
+
+  if (isIdempotent && transient) {
+    cfg.__retryCount = (cfg.__retryCount ?? 0) + 1;
+    if (cfg.__retryCount <= MAX_RETRIES) {
+      await new Promise((r) => setTimeout(r, 300 * cfg.__retryCount));
+      return sf(cfg);
+    }
+  }
+  return Promise.reject(error);
+});
+
+// Normalize an axios error to a user-safe message.
+export function apiErrorMessage(err: unknown): string {
+  const e = err as AxiosError<any>;
+  if (e?.code === 'ECONNABORTED') return 'The request timed out. Please try again.';
+  if (!e?.response) return 'Network error. Check your connection and try again.';
+  return e.response.data?.message ?? 'Something went wrong. Please try again.';
+}
 
 // ---------- Types ----------
 export interface Money { amount: string; currencyCode: string }
@@ -102,12 +133,41 @@ export const StorefrontAPI = {
   customerOrder: (id: string) => sf.get('/customer/order', { params: { id } }).then((r) => r.data),
   customerAddresses: () => sf.get('/customer/addresses').then((r) => r.data),
 
-  // Pages
-  page: (handle: string) => sf.get(`/pages/${handle}`).then((r) => r.data),
+  // Pages (with custom fields / metafields)
+  page: (handle: string) =>
+    sf
+      .get<{
+        id: string;
+        title: string;
+        handle: string;
+        body: string;
+        bodySummary: string;
+        seo: { title: string | null; description: string | null };
+        metafields: { namespace: string; key: string; value: string; type: string }[];
+        customFields: Record<string, any>;
+      }>(`/pages/${handle}`)
+      .then((r) => r.data),
 
   // Reviews
   productReviews: (handle: string) =>
     sf.get<{ rating: number | null; count: number; scaleMin: number; scaleMax: number }>(`/products/${handle}/reviews`).then((r) => r.data),
+
+  // Submit a review (Judge.me)
+  createReview: (
+    handle: string,
+    review: { name: string; email: string; rating: number; body: string; title?: string },
+  ) => sf.post<{ ok: boolean }>(`/products/${handle}/reviews`, review).then((r) => r.data),
+
+  // Full review list (Judge.me)
+  productReviewList: (handle: string, page = 1) =>
+    sf
+      .get<{
+        configured: boolean;
+        reviews: { id: number; rating: number; title: string; body: string; name: string; verified: boolean; createdAt: string; pictures: string[]; reply: string | null }[];
+        currentPage: number;
+        perPage: number;
+      }>(`/products/${handle}/reviews/list`, { params: { page } })
+      .then((r) => r.data),
 };
 
 // ---------- Ensure cart exists ----------

@@ -172,8 +172,52 @@ export class StorefrontApiService {
   }
 
   async getPage(handle: string) {
+    // Core page (title/body/seo) from Storefront API.
     const data = await this.client.request<any>(PAGE_BY_HANDLE, { handle });
-    return data.page;
+    const page = data.page;
+    if (!page) return null;
+
+    // Custom fields (metafields) via admin — returns ALL metafields without
+    // needing a Storefront-access definition. Same pattern as productReviews().
+    const ADMIN_PAGE_METAFIELDS = `
+      query PageMetafields($q: String!) {
+        pages(first: 1, query: $q) {
+          edges { node { metafields(first: 50) { edges { node {
+            namespace key value type
+            reference { ... on MediaImage { image { url } alt } ... on GenericFile { url } }
+            references(first: 25) { edges { node {
+              ... on MediaImage { image { url } alt } ... on GenericFile { url }
+            } } }
+          } } } } }
+        }
+      }
+    `;
+    let metafields: any[] = [];
+    try {
+      const mfData = await this.admin.request(ADMIN_PAGE_METAFIELDS, { q: `handle:${handle}` });
+      metafields = ((mfData as any).pages?.edges?.[0]?.node?.metafields?.edges ?? []).map((e: any) => e.node);
+    } catch {}
+
+    const fileUrl = (ref: any): string | null => ref?.image?.url ?? ref?.url ?? null;
+
+    // Flatten to a convenient { "namespace.key": typedValue } map.
+    const customFields: Record<string, any> = {};
+    for (const m of metafields) {
+      let v: any = m.value;
+      if (m.type === 'file_reference') v = fileUrl(m.reference);
+      else if (m.type === 'list.file_reference') v = (m.references?.edges ?? []).map((e: any) => fileUrl(e.node)).filter(Boolean);
+      else if (m.type === 'number_integer') v = Number(m.value);
+      else if (m.type === 'number_decimal') v = parseFloat(m.value);
+      else if (m.type === 'boolean') v = m.value === 'true';
+      else if (m.type?.startsWith('list.') || m.type === 'json') {
+        try { v = JSON.parse(m.value); } catch {}
+      }
+      customFields[`${m.namespace}.${m.key}`] = v;
+    }
+    // Strip heavy reference objects from the raw array (keep value + type).
+    metafields = metafields.map((m: any) => ({ namespace: m.namespace, key: m.key, value: m.value, type: m.type }));
+
+    return { ...page, metafields, customFields };
   }
 
   async listBlogs(first = 24, after?: string) {
@@ -242,6 +286,117 @@ export class StorefrontApiService {
       scaleMax: scaleMax ?? 5,
     };
   }
+
+  // ---------- New: Full review list (Judge.me public REST API) ----------
+  // Aggregate stars come from productReviews() (Shopify metafields synced by
+  // Judge.me). Individual review text/author live in Judge.me only — fetch via
+  // its public API. Requires JUDGEME_PUBLIC_TOKEN + JUDGEME_SHOP_DOMAIN in env.
+  private async judgemeFetch(path: string, params: Record<string, string>) {
+    const token = process.env.JUDGEME_PUBLIC_TOKEN;
+    const shopDomain = process.env.JUDGEME_SHOP_DOMAIN;
+    if (!token || !shopDomain) return null;
+    const qs = new URLSearchParams({ api_token: token, shop_domain: shopDomain, ...params });
+    const res = await fetch(`https://judge.me/api/v1/${path}?${qs.toString()}`);
+    if (!res.ok) throw new Error(`Judge.me ${path} ${res.status}`);
+    return res.json() as Promise<any>;
+  }
+
+  // Resolve a product handle -> numeric Shopify product id (Judge.me external_id).
+  private async shopifyProductExternalId(handle: string): Promise<string> {
+    const ID_QUERY = `query($handle:String!){ productByHandle(handle:$handle){ id } }`;
+    const idData = await this.admin.request(ID_QUERY, { handle });
+    const gid = (idData as any).productByHandle?.id as string | undefined;
+    if (!gid) throw new NotFoundException('Product not found');
+    return gid.split('/').pop()!;
+  }
+
+  // Submit a new review to Judge.me. Requires the PRIVATE token (write scope).
+  async createProductReview(
+    handle: string,
+    input: { name: string; email: string; rating: number; body: string; title?: string },
+  ) {
+    const token = process.env.JUDGEME_PUBLIC_TOKEN; // holds the private token
+    const shopDomain = process.env.JUDGEME_SHOP_DOMAIN;
+    if (!token || !shopDomain) {
+      throw new BadRequestException('Reviews are not configured');
+    }
+    if (!input.email || !input.name || !input.body || !input.rating) {
+      throw new BadRequestException('Name, email, rating and review text are required');
+    }
+    const rating = Math.max(1, Math.min(5, Math.round(Number(input.rating))));
+    const externalId = await this.shopifyProductExternalId(handle);
+
+    const body = {
+      api_token: token,
+      shop_domain: shopDomain,
+      platform: 'shopify',
+      id: externalId, // product external id
+      email: input.email,
+      name: input.name,
+      rating,
+      body: input.body,
+      title: input.title ?? '',
+    };
+    const res = await fetch('https://judge.me/api/v1/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new BadRequestException(`Could not submit review (${res.status}) ${text}`.trim());
+    }
+    return { ok: true };
+  }
+
+  async productReviewList(handle: string, page = 1, perPage = 10) {
+    // 1) Resolve Shopify numeric product id from handle (admin).
+    const ID_QUERY = `query($handle:String!){ productByHandle(handle:$handle){ id } }`;
+    const idData = await this.admin.request(ID_QUERY, { handle });
+    const gid = (idData as any).productByHandle?.id as string | undefined;
+    if (!gid) throw new NotFoundException('Product not found');
+    const externalId = gid.split('/').pop()!;
+
+    if (!process.env.JUDGEME_PUBLIC_TOKEN || !process.env.JUDGEME_SHOP_DOMAIN) {
+      return { configured: false, reviews: [], currentPage: page, perPage, total: 0 };
+    }
+
+    let prod: any, data: any;
+    try {
+      // 2) Map Shopify product id -> Judge.me internal product id.
+      prod = await this.judgemeFetch('products/-1', { external_id: externalId });
+      const jmProductId = prod?.product?.id;
+      if (!jmProductId) {
+        return { configured: true, reviews: [], currentPage: page, perPage, total: 0 };
+      }
+
+      // 3) Fetch reviews for that product.
+      data = await this.judgemeFetch('reviews', {
+        product_id: String(jmProductId),
+        page: String(page),
+        per_page: String(perPage),
+      });
+    } catch (err: any) {
+      // Bad/expired token or Judge.me outage — degrade to empty instead of 500.
+      return { configured: true, error: String(err?.message ?? err), reviews: [], currentPage: page, perPage, total: 0 };
+    }
+    const reviews = (data?.reviews ?? []).map((r: any) => ({
+      id: r.id,
+      rating: r.rating,
+      title: r.title ?? '',
+      body: r.body ?? '',
+      name: r.reviewer?.name ?? 'Anonymous',
+      verified: r.verified === 'buyer' || r.verified === true,
+      createdAt: r.created_at,
+      pictures: (r.pictures ?? []).map((pic: any) => pic.urls?.original || pic.urls?.compact).filter(Boolean),
+      reply: r.hidden ? null : r.reply ?? null,
+    }));
+    return { configured: true, reviews, currentPage: page, perPage, total: reviews.length };
+  }
+
+  // NOTE: Judge.me's API is create + read only. It exposes no working update or
+  // delete for reviews (PUT no-ops, DELETE 404s), so review editing is not
+  // possible in-app — only via the Judge.me dashboard. See docs/LIMITATIONS.md.
 
   // ---------- New: Variant by selected options ----------
   async variantBySelectedOptions(handle: string, selectedOptions: { name: string; value: string }[]) {
